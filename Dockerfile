@@ -34,12 +34,12 @@ RUN composer install --no-dev --optimize-autoloader --no-interaction --ignore-pl
 # Install npm dependencies and build production assets
 RUN npm ci && npm run build
 
-# Create necessary runtime directories and sqlite file
-RUN mkdir -p database storage/framework/sessions storage/framework/views storage/framework/cache storage/logs bootstrap/cache \
+# Create necessary runtime directories and sqlite file with proper permissions
+RUN mkdir -p database storage/framework/sessions storage/framework/views storage/framework/cache storage/logs bootstrap/cache public/build \
     && touch database/database.sqlite \
     && chmod +x docker/entrypoint.sh \
-    && chown -R www-data:www-data /var/www/html/database /var/www/html/storage /var/www/html/bootstrap/cache \
-    && chmod -R 775 /var/www/html/database /var/www/html/storage /var/www/html/bootstrap/cache
+    && chown -R www-data:www-data /var/www/html \
+    && chmod -R 775 /var/www/html/database /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/public
 
 # Copy Nginx & Supervisord configurations
 COPY ./docker/nginx.conf /etc/nginx/http.d/default.conf
