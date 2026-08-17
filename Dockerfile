@@ -34,14 +34,17 @@ RUN composer install --no-dev --optimize-autoloader --no-interaction --ignore-pl
 # Install npm dependencies and build production assets
 RUN npm ci && npm run build
 
-# Configure Nginx & PHP-FPM permissions
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache \
-    && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
+# Create necessary runtime directories and sqlite file
+RUN mkdir -p database storage/framework/sessions storage/framework/views storage/framework/cache storage/logs bootstrap/cache \
+    && touch database/database.sqlite \
+    && chmod +x docker/entrypoint.sh \
+    && chown -R www-data:www-data /var/www/html/database /var/www/html/storage /var/www/html/bootstrap/cache \
+    && chmod -R 775 /var/www/html/database /var/www/html/storage /var/www/html/bootstrap/cache
 
-# Copy Nginx configuration
+# Copy Nginx & Supervisord configurations
 COPY ./docker/nginx.conf /etc/nginx/http.d/default.conf
 COPY ./docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 EXPOSE 80
 
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
+CMD ["/var/www/html/docker/entrypoint.sh"]
