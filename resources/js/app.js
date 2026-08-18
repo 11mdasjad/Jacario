@@ -13,8 +13,35 @@ window.toast = function (message, type = 'success') {
     }));
 };
 
-// Global Cart Drawer & State Manager
+// Global Store Initializations
 document.addEventListener('alpine:init', () => {
+    
+    // Global Navigation & Mobile Menu Store
+    Alpine.store('nav', {
+        mobileMenuOpen: false,
+        searchOpen: false,
+        quickMenuOpen: false,
+
+        toggleMobile() {
+            this.mobileMenuOpen = !this.mobileMenuOpen;
+            document.body.style.overflow = this.mobileMenuOpen ? 'hidden' : '';
+        },
+
+        closeMobile() {
+            this.mobileMenuOpen = false;
+            document.body.style.overflow = '';
+        },
+
+        toggleQuickMenu() {
+            this.quickMenuOpen = !this.quickMenuOpen;
+        },
+
+        closeQuickMenu() {
+            this.quickMenuOpen = false;
+        }
+    });
+
+    // Global Cart Drawer & State Manager
     Alpine.store('cartDrawer', {
         isOpen: false,
         isLoading: false,
@@ -59,7 +86,6 @@ document.addEventListener('alpine:init', () => {
                 if (response.ok) {
                     const data = await response.json();
                     this.cartData = data;
-                    // Update any standalone badge count elements
                     window.dispatchEvent(new CustomEvent('cart-updated', { detail: data }));
                 }
             } catch (error) {
@@ -68,6 +94,12 @@ document.addEventListener('alpine:init', () => {
         },
 
         async addItem(variantId, quantity = 1) {
+            const parsedId = parseInt(variantId, 10);
+            if (!parsedId || isNaN(parsedId) || parsedId <= 0) {
+                window.toast('Please select an available size / color before adding to bag.', 'error');
+                return;
+            }
+
             this.isLoading = true;
             try {
                 const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
@@ -78,7 +110,7 @@ document.addEventListener('alpine:init', () => {
                         'Accept': 'application/json',
                         'X-CSRF-TOKEN': csrfToken
                     },
-                    body: JSON.stringify({ variant_id: variantId, quantity })
+                    body: JSON.stringify({ variant_id: parsedId, quantity: Math.max(1, parseInt(quantity, 10) || 1) })
                 });
 
                 const result = await response.json();
@@ -91,7 +123,7 @@ document.addEventListener('alpine:init', () => {
                     window.toast(result.message || 'Could not add to bag.', 'error');
                 }
             } catch (err) {
-                window.toast('An unexpected error occurred. Please try again.', 'error');
+                window.toast('Unable to add item to bag. Please refresh and try again.', 'error');
             } finally {
                 this.isLoading = false;
             }

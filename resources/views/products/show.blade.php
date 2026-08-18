@@ -533,6 +533,28 @@
         </div>
     </div>
 
+    <!-- Mobile Sticky Bottom Quick Buy Bar -->
+    <div class="fixed bottom-0 inset-x-0 bg-white/95 backdrop-blur-md border-t border-zinc-200 px-4 py-3 z-40 lg:hidden shadow-2xl flex items-center justify-between space-x-3">
+        <div>
+            <span class="text-[10px] text-zinc-500 block uppercase tracking-wider font-semibold">Total Price</span>
+            <div class="flex items-baseline space-x-1.5">
+                <span class="text-sm font-bold text-zinc-950">₹{{ number_format($product->sale_price ?? $product->base_price) }}</span>
+                @if($product->has_discount)
+                    <span class="text-[11px] text-zinc-400 line-through">₹{{ number_format($product->base_price) }}</span>
+                @endif
+            </div>
+        </div>
+        <div class="flex items-center space-x-2 flex-1 max-w-[220px]">
+            <button type="button" 
+                    @click="if (isInStock && currentVariant) $store.cartDrawer.addItem(currentVariant.id, quantity)"
+                    :disabled="!isInStock || !currentVariant"
+                    class="w-full py-3 bg-[#0B0D10] text-[#DFCAAB] disabled:bg-zinc-300 disabled:text-zinc-500 text-xs font-bold uppercase tracking-wider rounded-xl transition-colors shadow-md flex items-center justify-center space-x-1.5 active:scale-95">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+                <span x-text="isInStock ? 'Add to Bag' : 'Out of Stock'"></span>
+            </button>
+        </div>
+    </div>
+
 </div>
 
 @endsection

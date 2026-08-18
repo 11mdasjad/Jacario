@@ -56,7 +56,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('styles')
 </head>
-<body class="min-h-full flex flex-col bg-[#FAFAFA] text-zinc-900 selection:bg-[#C5A880] selection:text-white" x-data="{ mobileMenuOpen: false, searchOpen: false }">
+<body class="min-h-full flex flex-col bg-[#FAFAFA] text-zinc-900 selection:bg-[#C5A880] selection:text-white">
 
     <!-- Top Announcement Bar -->
     <div class="bg-[#0B0D10] text-[#DFCAAB] text-xs font-medium tracking-widest uppercase py-2 px-4 text-center border-b border-zinc-800">

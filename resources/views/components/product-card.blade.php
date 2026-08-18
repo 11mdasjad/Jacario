@@ -17,7 +17,18 @@
         variants: @js($product->activeVariants->map(fn($v) => ['id' => $v->id, 'size_id' => $v->size_id, 'color_id' => $v->color_id, 'stock' => $v->stock_quantity])),
         getSelectedVariantId() {
             const v = this.variants.find(item => item.size_id == this.selectedSizeId && item.stock > 0);
-            return v ? v.id : '{{ $firstVariant ? $firstVariant->id : 0 }}';
+            if (v && v.id) return v.id;
+            const anyAvailable = this.variants.find(item => item.stock > 0);
+            return anyAvailable ? anyAvailable.id : {{ $firstVariant ? $firstVariant->id : 0 }};
+        },
+        addToCart() {
+            const varId = this.getSelectedVariantId();
+            if (!varId || varId <= 0) {
+                window.toast('This silhouette is currently out of stock.', 'error');
+                return;
+            }
+            $store.cartDrawer.addItem(varId, 1);
+            this.quickAddOpen = false;
         }
      }">
     
@@ -142,9 +153,10 @@
                     @endforeach
                 </div>
                 <button type="button" 
-                        @click="$store.cartDrawer.addItem(getSelectedVariantId(), 1); quickAddOpen = false" 
-                        class="w-full py-1.5 bg-[#0B0D10] text-[#DFCAAB] text-[11px] font-bold uppercase tracking-wider rounded transition-colors hover:bg-black">
-                    Add to Bag
+                        @click="addToCart()" 
+                        class="w-full py-2 bg-[#0B0D10] text-[#DFCAAB] text-[11px] font-bold uppercase tracking-wider rounded-lg transition-colors hover:bg-black flex items-center justify-center space-x-1.5 shadow-sm">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+                    <span>Add to Bag</span>
                 </button>
             </div>
 
