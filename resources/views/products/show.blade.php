@@ -17,11 +17,13 @@
     $sizes = $product->availableSizes();
     $defaultColor = $colors->first();
     $defaultSize = $sizes->first();
+    $isWishlisted = Auth::check() && Auth::user()->wishlists()->where('product_id', $product->id)->exists();
 @endphp
 
 <div class="bg-white" 
      x-data="{
         activeImg: '{{ $primaryImg ? $primaryImg->url : asset('images/placeholder-polo.svg') }}',
+        activeImgIndex: 1,
         selectedColorId: {{ $defaultColor ? $defaultColor->id : 0 }},
         selectedColorName: '{{ $defaultColor ? $defaultColor->name : '' }}',
         selectedSizeId: {{ $defaultSize ? $defaultSize->id : 0 }},
@@ -74,40 +76,45 @@
         }
      }">
 
-    <!-- Breadcrumbs -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
-        <nav class="flex items-center space-x-2 text-xs text-zinc-500">
+    <!-- Breadcrumbs (Desktop) -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6">
+        <nav class="flex items-center space-x-2 text-[11px] sm:text-xs text-zinc-500">
             <a href="{{ route('home') }}" class="hover:text-black transition-colors">Home</a>
             <span>/</span>
-            <a href="{{ route('shop.index') }}" class="hover:text-black transition-colors">Polo T-Shirts</a>
+            <a href="{{ route('shop.index') }}" class="hover:text-black transition-colors">Polos</a>
             <span>/</span>
             <a href="{{ route('shop.index', ['category' => $product->category->slug]) }}" class="hover:text-black transition-colors">{{ $product->category->name }}</a>
             <span>/</span>
-            <span class="text-zinc-900 font-semibold truncate max-w-[200px] sm:max-w-none">{{ $product->name }}</span>
+            <span class="text-zinc-900 font-semibold truncate max-w-[150px] sm:max-w-none">{{ $product->name }}</span>
         </nav>
     </div>
 
     <!-- Main Product Layout Grid -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8 lg:py-12">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-12">
             
             <!-- Left: Gallery & Zoom Showcase (7 Cols) -->
-            <div class="lg:col-span-7 space-y-4">
+            <div class="lg:col-span-7 space-y-3 sm:space-y-4">
                 <!-- Large Stage Image View -->
-                <div class="relative aspect-[4/5] bg-zinc-100 rounded-2xl border border-zinc-200 overflow-hidden flex items-center justify-center">
+                <div class="relative aspect-[4/5] bg-zinc-100 rounded-2xl sm:rounded-3xl border border-zinc-200 overflow-hidden flex items-center justify-center">
                     
                     <!-- Badges -->
-                    <div class="absolute top-4 left-4 z-10 flex flex-col space-y-1.5">
+                    <div class="absolute top-3 left-3 sm:top-4 sm:left-4 z-10 flex flex-col space-y-1.5">
                         @if($product->has_discount)
-                            <span class="px-2.5 py-1 rounded text-[11px] font-bold uppercase tracking-wider bg-[#0B0D10] text-[#DFCAAB] border border-zinc-700">
-                                -{{ $product->discount_percent }}% OFF
+                            <span class="px-2 py-0.5 sm:px-2.5 sm:py-1 rounded text-[10px] sm:text-[11px] font-bold uppercase tracking-wider bg-[#0B0D10] text-[#DFCAAB] border border-zinc-700 shadow-sm">
+                                {{ $product->discount_percent }}% OFF
                             </span>
                         @endif
                         @if($product->is_bestseller)
-                            <span class="px-2.5 py-1 rounded text-[11px] font-bold uppercase tracking-wider bg-[#C5A880] text-zinc-950">
+                            <span class="px-2 py-0.5 sm:px-2.5 sm:py-1 rounded text-[10px] sm:text-[11px] font-bold uppercase tracking-wider bg-[#C5A880] text-zinc-950 shadow-sm">
                                 Best Seller
                             </span>
                         @endif
+                    </div>
+
+                    <!-- Photo Index Badge (Myntra Style 1/4) -->
+                    <div class="absolute bottom-3 right-3 z-10 px-2 py-0.5 rounded-full bg-black/60 backdrop-blur-xs text-white text-[10px] font-bold">
+                        <span x-text="activeImgIndex"></span> / {{ max(1, $product->images->count()) }}
                     </div>
 
                     <!-- Main Real Photo Render -->
@@ -116,13 +123,13 @@
                          class="w-full h-full object-cover filter transition-all duration-300 transform hover:scale-105 cursor-zoom-in">
                 </div>
 
-                <!-- Thumbnails Gallery Row -->
-                <div class="grid grid-cols-4 gap-3">
-                    @foreach($product->images as $img)
+                <!-- Thumbnails Gallery Row (Horizontal Scroll on Mobile) -->
+                <div class="flex sm:grid sm:grid-cols-4 gap-2.5 overflow-x-auto no-scrollbar pb-1">
+                    @foreach($product->images as $index => $img)
                         <button type="button" 
-                                @click="activeImg = '{{ $img->url }}'"
+                                @click="activeImg = '{{ $img->url }}'; activeImgIndex = {{ $index + 1 }}"
                                 :class="activeImg === '{{ $img->url }}' ? 'border-zinc-950 ring-2 ring-zinc-950 ring-offset-2' : 'border-zinc-200 hover:border-zinc-400'"
-                                class="aspect-square bg-zinc-100 rounded-xl border overflow-hidden transition-all focus:outline-none">
+                                class="w-16 h-20 sm:w-auto sm:aspect-square bg-zinc-100 rounded-xl border overflow-hidden transition-all focus:outline-none shrink-0">
                             <img src="{{ $img->url }}" alt="{{ $img->alt_text }}" class="w-full h-full object-cover">
                         </button>
                     @endforeach
@@ -130,30 +137,30 @@
             </div>
 
             <!-- Right: Product Purchase Details & Selectors (5 Cols) -->
-            <div class="lg:col-span-5 space-y-6">
+            <div class="lg:col-span-5 space-y-5 sm:space-y-6">
                 
-                <!-- Title & Style -->
+                <!-- Title & Brand -->
                 <div>
-                    <p class="text-xs font-bold uppercase tracking-[0.2em] text-[#A4845B] mb-1">
-                        {{ $product->category->name }}
-                    </p>
-                    <h1 class="text-2xl sm:text-3xl font-serif-luxury font-bold text-zinc-900 tracking-tight leading-snug">
+                    <div class="flex items-center justify-between">
+                        <p class="text-[11px] sm:text-xs font-bold uppercase tracking-[0.2em] text-[#8C6D46]">
+                            JACARIO • {{ $product->category->name }}
+                        </p>
+                    </div>
+                    <h1 class="text-xl sm:text-3xl font-serif-luxury font-bold text-zinc-900 tracking-tight leading-snug mt-1">
                         {{ $product->name }}
                     </h1>
-                    <p class="text-xs text-zinc-400 font-mono mt-1">SKU: <span x-text="currentVariant ? currentVariant.sku : '{{ $product->sku }}'"></span></p>
+                    <p class="text-[11px] text-zinc-400 font-mono mt-0.5">SKU: <span x-text="currentVariant ? currentVariant.sku : '{{ $product->sku }}'"></span></p>
                 </div>
 
-                <!-- Ratings & Review Count -->
-                <div class="flex items-center space-x-3 pb-4 border-b border-zinc-100">
-                    <div class="flex items-center space-x-1 text-amber-500">
-                        @for($i = 1; $i <= 5; $i++)
-                            <svg class="w-4 h-4 {{ $i <= round($product->average_rating) ? 'fill-amber-400' : 'fill-zinc-200' }}" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                        @endfor
+                <!-- Myntra-Style Ratings Pill Header -->
+                <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-lg bg-zinc-50 border border-zinc-200">
+                    <div class="flex items-center space-x-1 text-amber-500 font-bold text-xs">
+                        <span>{{ number_format($product->average_rating, 1) }}</span>
+                        <svg class="w-3.5 h-3.5 fill-amber-400" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
                     </div>
-                    <span class="text-xs font-bold text-zinc-800">{{ number_format($product->average_rating, 1) }} / 5.0</span>
-                    <span class="text-zinc-300">•</span>
-                    <a href="#reviews-section" class="text-xs text-zinc-500 hover:text-black underline">
-                        {{ $product->reviews_count }} verified reviews
+                    <span class="text-zinc-300">|</span>
+                    <a href="#reviews-section" class="text-xs font-semibold text-zinc-600 hover:text-black">
+                        {{ $product->reviews_count }} Ratings & Reviews
                     </a>
                 </div>
 
@@ -533,26 +540,26 @@
         </div>
     </div>
 
-    <!-- Mobile Sticky Bottom Quick Buy Bar -->
-    <div class="fixed bottom-0 inset-x-0 bg-white/95 backdrop-blur-md border-t border-zinc-200 px-4 py-3 z-40 lg:hidden shadow-2xl flex items-center justify-between space-x-3">
-        <div>
-            <span class="text-[10px] text-zinc-500 block uppercase tracking-wider font-semibold">Total Price</span>
-            <div class="flex items-baseline space-x-1.5">
-                <span class="text-sm font-bold text-zinc-950">₹{{ number_format($product->sale_price ?? $product->base_price) }}</span>
-                @if($product->has_discount)
-                    <span class="text-[11px] text-zinc-400 line-through">₹{{ number_format($product->base_price) }}</span>
-                @endif
-            </div>
-        </div>
-        <div class="flex items-center space-x-2 flex-1 max-w-[220px]">
-            <button type="button" 
-                    @click="if (isInStock && currentVariant) $store.cartDrawer.addItem(currentVariant.id, quantity)"
-                    :disabled="!isInStock || !currentVariant"
-                    class="w-full py-3 bg-[#0B0D10] text-[#DFCAAB] disabled:bg-zinc-300 disabled:text-zinc-500 text-xs font-bold uppercase tracking-wider rounded-xl transition-colors shadow-md flex items-center justify-center space-x-1.5 active:scale-95">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
-                <span x-text="isInStock ? 'Add to Bag' : 'Out of Stock'"></span>
-            </button>
-        </div>
+    <!-- Myntra-Style Mobile Sticky Bottom Action Bar (WISHLIST + ADD TO BAG) -->
+    <div class="fixed bottom-0 inset-x-0 bg-white border-t border-zinc-200 px-3 py-2.5 z-40 lg:hidden shadow-[0_-4px_20px_rgba(0,0,0,0.12)] flex items-center space-x-2.5 pb-safe">
+        
+        <!-- 1. Wishlist Button -->
+        <button type="button" 
+                @click="$store.wishlist.toggle({{ $product->id }}, $el)"
+                class="w-1/3 py-3 border border-zinc-300 rounded-xl text-xs font-bold uppercase tracking-wider text-zinc-800 flex items-center justify-center space-x-1.5 active:bg-zinc-100 transition-colors">
+            <svg class="w-4 h-4 text-zinc-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+            <span>Wishlist</span>
+        </button>
+
+        <!-- 2. Add to Bag Button -->
+        <button type="button" 
+                @click="if (isInStock && currentVariant) $store.cartDrawer.addItem(currentVariant.id, quantity)"
+                :disabled="!isInStock || !currentVariant"
+                class="w-2/3 py-3 bg-[#0B0D10] text-[#DFCAAB] disabled:bg-zinc-300 disabled:text-zinc-500 text-xs font-bold uppercase tracking-wider rounded-xl transition-all shadow-md flex items-center justify-center space-x-2 active:scale-95">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+            <span x-text="isInStock ? 'Add to Bag' : 'Out of Stock'"></span>
+        </button>
+
     </div>
 
 </div>

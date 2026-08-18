@@ -216,6 +216,20 @@
 
     </div>
 
+    <!-- Myntra-Style Mobile Sticky Bottom Checkout Bar -->
+    <div class="fixed bottom-0 inset-x-0 bg-white border-t border-zinc-200 px-4 py-3 z-40 lg:hidden shadow-[0_-4px_20px_rgba(0,0,0,0.12)] flex items-center justify-between pb-safe"
+         x-show="$store.cartDrawer.cartData.items && $store.cartDrawer.cartData.items.length > 0">
+        <div>
+            <span class="text-[10px] text-zinc-500 block uppercase tracking-wider font-semibold">Total Amount</span>
+            <span class="text-base font-bold text-zinc-950" x-text="'₹' + Number($store.cartDrawer.cartData.total).toLocaleString('en-IN')"></span>
+        </div>
+        <a href="{{ route('checkout.index') }}" 
+           class="px-6 py-3 bg-[#0B0D10] text-[#DFCAAB] text-xs font-bold uppercase tracking-wider rounded-xl shadow-md flex items-center space-x-1.5 active:scale-95 transition-all">
+            <span>Place Order</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+        </a>
+    </div>
+
 </div>
 
 @endsection

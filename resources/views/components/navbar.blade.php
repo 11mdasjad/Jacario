@@ -41,88 +41,42 @@
 
             </nav>
 
-            <!-- Actions (Search, Three-Dot Quick Menu, Account, Wishlist, Cart) -->
-            <div class="flex items-center space-x-1 sm:space-x-3 text-zinc-800">
+            <!-- Actions (Search, Wishlist, Cart Drawer) -->
+            <div class="flex items-center space-x-1 sm:space-x-2.5 text-zinc-800">
                 
                 <!-- Search Button -->
                 <button @click="$store.nav.searchOpen = true" type="button" class="p-2 sm:p-2.5 rounded-xl text-zinc-700 hover:text-black hover:bg-zinc-100 transition-colors focus:outline-none" aria-label="Search Collection">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                 </button>
 
-                <!-- Mobile Three-Dot Quick Menu Button (High Precision on Mobile) -->
-                <div class="relative lg:hidden">
-                    <button @click="$store.nav.toggleQuickMenu()" 
-                            type="button" 
-                            class="p-2 rounded-xl text-zinc-800 hover:bg-zinc-100 hover:text-black transition-colors focus:outline-none flex items-center justify-center" 
-                            aria-label="More Options">
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
-                        </svg>
-                    </button>
+                <!-- Wishlist Icon (Mobile & Desktop with dynamic Alpine count badge) -->
+                <a href="{{ route('wishlist.index') }}" class="relative p-2 sm:p-2.5 rounded-xl text-zinc-800 hover:bg-zinc-100 hover:text-black transition-colors" aria-label="Wishlist">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+                    <span x-show="$store.wishlist && $store.wishlist.count > 0" 
+                          x-text="$store.wishlist.count" 
+                          class="absolute top-1 right-1 bg-rose-600 text-white text-[10px] font-black w-4 h-4 rounded-full flex items-center justify-center shadow-xs"
+                          style="{{ (Auth::check() && Auth::user()->wishlists()->count() > 0) ? '' : 'display: none;' }}">
+                        {{ Auth::check() ? Auth::user()->wishlists()->count() : '' }}
+                    </span>
+                </a>
 
-                    <!-- Three-Dot Dropdown Card for Mobile -->
-                    <div x-show="$store.nav.quickMenuOpen" 
-                         @click.away="$store.nav.closeQuickMenu()"
-                         x-transition:enter="transition ease-out duration-200"
-                         x-transition:enter-start="opacity-0 scale-95"
-                         x-transition:enter-end="opacity-100 scale-100"
-                         x-transition:leave="transition ease-in duration-150"
-                         x-transition:leave-start="opacity-100 scale-100"
-                         x-transition:leave-end="opacity-0 scale-95"
-                         class="absolute right-0 mt-2 w-64 bg-white rounded-2xl shadow-2xl border border-zinc-200 p-3 z-50 text-zinc-900 space-y-1"
-                         style="display: none;">
-                        
-                        <div class="px-3 py-2 border-b border-zinc-100 flex items-center justify-between">
-                            <span class="text-[10px] font-bold uppercase tracking-wider text-zinc-400">Quick Navigation</span>
-                            <button @click="$store.nav.closeQuickMenu()" class="text-zinc-400 hover:text-black text-xs">✕</button>
-                        </div>
-
-                        <a href="{{ route('shop.index', ['category' => 'mens-polo-t-shirts']) }}" @click="$store.nav.closeQuickMenu()" class="flex items-center space-x-2.5 px-3 py-2 text-xs font-semibold text-zinc-800 hover:bg-zinc-50 rounded-xl transition-colors">
-                            <span class="w-2 h-2 rounded-full bg-[#A4845B]"></span>
-                            <span>Men's Polo T-Shirt</span>
-                        </a>
-
-                        <a href="{{ route('shop.index', ['category' => 'round-neck-t-shirts']) }}" @click="$store.nav.closeQuickMenu()" class="flex items-center space-x-2.5 px-3 py-2 text-xs font-semibold text-zinc-800 hover:bg-zinc-50 rounded-xl transition-colors">
-                            <span class="w-2 h-2 rounded-full bg-zinc-800"></span>
-                            <span>Round Neck T-Shirt</span>
-                        </a>
-
-                        <a href="{{ route('shop.index', ['category' => 'new-arrival-t-shirts']) }}" @click="$store.nav.closeQuickMenu()" class="flex items-center space-x-2.5 px-3 py-2 text-xs font-semibold text-zinc-800 hover:bg-zinc-50 rounded-xl transition-colors">
-                            <span class="w-2 h-2 rounded-full bg-emerald-600"></span>
-                            <span>New Arrival T-Shirt</span>
-                        </a>
-
-                        <div class="border-t border-zinc-100 my-1"></div>
-
-                        <a href="{{ route('orders.track') }}" @click="$store.nav.closeQuickMenu()" class="flex items-center space-x-2 px-3 py-2 text-xs font-medium text-zinc-700 hover:bg-zinc-50 rounded-xl transition-colors">
-                            <svg class="w-4 h-4 text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                            <span>Track My Order</span>
-                        </a>
-
-                        <a href="{{ route('wishlist.index') }}" @click="$store.nav.closeQuickMenu()" class="flex items-center space-x-2 px-3 py-2 text-xs font-medium text-zinc-700 hover:bg-zinc-50 rounded-xl transition-colors">
-                            <svg class="w-4 h-4 text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
-                            <span>My Wishlist</span>
-                        </a>
-
-                        @auth
-                            <a href="{{ route('account.dashboard') }}" @click="$store.nav.closeQuickMenu()" class="flex items-center space-x-2 px-3 py-2 text-xs font-bold text-zinc-950 bg-zinc-50 hover:bg-zinc-100 rounded-xl transition-colors">
-                                <svg class="w-4 h-4 text-zinc-800" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
-                                <span>My Account</span>
-                            </a>
-                        @else
-                            <a href="{{ route('login') }}" @click="$store.nav.closeQuickMenu()" class="block text-center py-2 bg-zinc-950 text-white rounded-xl text-xs font-bold uppercase tracking-wider mt-1">
-                                Sign In / Register
-                            </a>
-                        @endauth
-                    </div>
-                </div>
+                <!-- Shopping Bag / Cart Drawer Button -->
+                <button @click="$store.cartDrawer.open()" type="button" class="relative p-2 sm:p-2.5 rounded-xl text-zinc-800 hover:bg-zinc-100 hover:text-black transition-colors focus:outline-none" aria-label="Shopping Bag">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+                    <span x-show="$store.cartDrawer.cartData.item_count > 0" 
+                          x-text="$store.cartDrawer.cartData.item_count" 
+                          class="absolute top-1 right-1 bg-[#A4845B] text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center shadow-xs">
+                    </span>
+                </button>
 
                 <!-- Desktop Customer Account Dropdown -->
-                <div class="relative hidden sm:block" x-data="{ userMenuOpen: false }">
+                <div class="relative hidden lg:block" x-data="{ userMenuOpen: false }">
                     @auth
                         <button @click="userMenuOpen = !userMenuOpen" @click.away="userMenuOpen = false" type="button" class="flex items-center space-x-1.5 p-2 rounded-xl text-zinc-800 hover:bg-zinc-100 hover:text-black focus:outline-none">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
-                            <span class="hidden md:inline text-xs font-bold tracking-wider text-zinc-900">{{ Str::words(Auth::user()->name, 1, '') }}</span>
+                            <div class="w-7 h-7 rounded-full bg-zinc-900 text-[#DFCAAB] flex items-center justify-center text-xs font-bold">
+                                {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                            </div>
+                            <span class="text-xs font-bold tracking-wider text-zinc-900">{{ Str::words(Auth::user()->name, 1, '') }}</span>
                         </button>
 
                         <div x-show="userMenuOpen" x-transition class="absolute right-0 mt-2 w-56 rounded-2xl shadow-2xl bg-white border border-zinc-200 p-2 z-50 text-zinc-900">
@@ -163,38 +117,16 @@
                     @else
                         <a href="{{ route('login') }}" class="p-2 rounded-xl text-zinc-800 hover:bg-zinc-100 hover:text-black transition-colors focus:outline-none flex items-center space-x-1.5" aria-label="Sign In">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
-                            <span class="hidden md:inline text-xs font-bold tracking-wider text-zinc-900">Sign In</span>
+                            <span class="text-xs font-bold tracking-wider text-zinc-900">Sign In</span>
                         </a>
                     @endauth
                 </div>
-
-                <!-- Wishlist Icon (Desktop) -->
-                <a href="{{ route('wishlist.index') }}" class="relative hidden sm:flex p-2 rounded-xl text-zinc-800 hover:bg-zinc-100 hover:text-black transition-colors" aria-label="Wishlist">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
-                    @auth
-                        @php $wishlistCount = Auth::user()->wishlists()->count(); @endphp
-                        @if($wishlistCount > 0)
-                            <span class="absolute top-1 right-1 bg-zinc-950 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center shadow-xs">
-                                {{ $wishlistCount }}
-                            </span>
-                        @endif
-                    @endauth
-                </a>
-
-                <!-- Shopping Bag / Cart Drawer Button -->
-                <button @click="$store.cartDrawer.open()" type="button" class="relative p-2 sm:p-2.5 rounded-xl text-zinc-800 hover:bg-zinc-100 hover:text-black transition-colors focus:outline-none" aria-label="Shopping Bag">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
-                    <span x-show="$store.cartDrawer.cartData.item_count > 0" 
-                          x-text="$store.cartDrawer.cartData.item_count" 
-                          class="absolute top-1 right-1 bg-[#A4845B] text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center shadow-xs">
-                    </span>
-                </button>
 
             </div>
         </div>
     </div>
 
-    <!-- Mobile Fullscreen Slide-Out Drawer -->
+    <!-- Mobile Fullscreen Slide-Out Drawer (Myntra-Style Category Explorer) -->
     <div x-show="$store.nav.mobileMenuOpen" 
          x-transition:enter="transition ease-out duration-300"
          x-transition:enter-start="opacity-0"
@@ -216,50 +148,111 @@
              x-transition:leave="transform transition ease-in duration-200"
              x-transition:leave-start="translate-x-0"
              x-transition:leave-end="-translate-x-full"
-             class="relative max-w-xs w-full bg-white text-zinc-900 h-full shadow-2xl flex flex-col justify-between py-6 px-6 z-10 overflow-y-auto border-r border-zinc-200">
+             class="relative max-w-xs w-full bg-white text-zinc-900 h-full shadow-2xl flex flex-col justify-between z-10 overflow-y-auto border-r border-zinc-200">
             
             <div>
-                <!-- Mobile Drawer Header -->
-                <div class="flex items-center justify-between pb-6 border-b border-zinc-100">
-                    <img src="{{ asset('images/logo.png') }}" alt="JACARIO" class="h-10 w-auto object-contain">
-                    <button @click="$store.nav.closeMobile()" class="p-2 rounded-xl text-zinc-400 hover:text-black hover:bg-zinc-100 transition-colors" aria-label="Close Menu">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-                    </button>
+                <!-- Myntra-Style User Header Card in Drawer -->
+                <div class="bg-gradient-to-br from-zinc-950 via-zinc-900 to-zinc-950 text-white p-5">
+                    <div class="flex items-center justify-between pb-3">
+                        <img src="{{ asset('images/logo.png') }}" alt="JACARIO" class="h-8 w-auto object-contain brightness-200 contrast-200">
+                        <button @click="$store.nav.closeMobile()" class="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors" aria-label="Close Menu">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                        </button>
+                    </div>
+
+                    @auth
+                        <div class="flex items-center space-x-3 pt-2">
+                            <div class="w-11 h-11 rounded-full bg-[#DFCAAB] text-zinc-950 flex items-center justify-center font-bold text-sm shadow-md">
+                                {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                            </div>
+                            <div class="min-w-0 flex-1">
+                                <div class="flex items-center space-x-1.5">
+                                    <p class="text-xs font-bold text-white truncate">{{ Auth::user()->name }}</p>
+                                    <span class="text-[9px] font-bold text-amber-300 bg-amber-950/80 px-1.5 py-0.2 rounded border border-amber-500/40">VIP</span>
+                                </div>
+                                <p class="text-[10px] text-zinc-400 truncate">{{ Auth::user()->email }}</p>
+                            </div>
+                        </div>
+                    @else
+                        <div class="pt-2">
+                            <p class="text-xs font-bold text-white uppercase tracking-wider">Welcome to JACARIO</p>
+                            <p class="text-[11px] text-zinc-400 mt-0.5">Luxury Polo T-Shirts for Every Move</p>
+                            <div class="flex items-center space-x-2 mt-3">
+                                <a href="{{ route('login') }}" @click="$store.nav.closeMobile()" class="flex-1 py-2 text-center bg-[#DFCAAB] text-zinc-950 rounded-lg text-xs font-bold uppercase tracking-wider shadow-sm">
+                                    Log In
+                                </a>
+                                <a href="{{ route('register') }}" @click="$store.nav.closeMobile()" class="flex-1 py-2 text-center border border-zinc-700 hover:border-zinc-400 text-white rounded-lg text-xs font-bold uppercase tracking-wider">
+                                    Sign Up
+                                </a>
+                            </div>
+                        </div>
+                    @endauth
                 </div>
 
-                <!-- Three Primary Header Categories on Mobile -->
-                <div class="mt-6 space-y-2">
-                    <p class="text-[10px] font-bold uppercase tracking-widest text-zinc-400 px-3 pb-1">Bespoke Collections</p>
+                <!-- Primary Category Navigation List -->
+                <div class="p-4 space-y-1">
+                    <p class="text-[10px] font-bold uppercase tracking-widest text-zinc-400 px-3 py-1">Shop by Category</p>
 
-                    <a href="{{ route('shop.index', ['category' => 'mens-polo-t-shirts']) }}" @click="$store.nav.closeMobile()" class="flex items-center justify-between px-3 py-3 text-xs font-bold tracking-[0.15em] uppercase text-zinc-900 bg-zinc-50 hover:bg-[#A4845B]/10 rounded-xl transition-colors">
-                        <span>Men's Polo T-Shirt</span>
+                    <a href="{{ route('shop.index', ['category' => 'mens-polo-t-shirts']) }}" @click="$store.nav.closeMobile()" class="flex items-center justify-between px-3 py-3 text-xs font-bold tracking-wider uppercase text-zinc-900 hover:bg-zinc-50 rounded-xl transition-colors">
+                        <div class="flex items-center space-x-3">
+                            <span class="w-2 h-2 rounded-full bg-[#A4845B]"></span>
+                            <span>Men's Polo T-Shirt</span>
+                        </div>
                         <svg class="w-4 h-4 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                     </a>
                     
-                    <a href="{{ route('shop.index', ['category' => 'round-neck-t-shirts']) }}" @click="$store.nav.closeMobile()" class="flex items-center justify-between px-3 py-3 text-xs font-bold tracking-[0.15em] uppercase text-zinc-900 bg-zinc-50 hover:bg-[#A4845B]/10 rounded-xl transition-colors">
-                        <span>Round Neck T-Shirt</span>
+                    <a href="{{ route('shop.index', ['category' => 'round-neck-t-shirts']) }}" @click="$store.nav.closeMobile()" class="flex items-center justify-between px-3 py-3 text-xs font-bold tracking-wider uppercase text-zinc-900 hover:bg-zinc-50 rounded-xl transition-colors">
+                        <div class="flex items-center space-x-3">
+                            <span class="w-2 h-2 rounded-full bg-zinc-800"></span>
+                            <span>Round Neck T-Shirt</span>
+                        </div>
                         <svg class="w-4 h-4 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                     </a>
 
-                    <a href="{{ route('shop.index', ['category' => 'new-arrival-t-shirts']) }}" @click="$store.nav.closeMobile()" class="flex items-center justify-between px-3 py-3 text-xs font-bold tracking-[0.15em] uppercase text-zinc-900 bg-zinc-50 hover:bg-[#A4845B]/10 rounded-xl transition-colors">
-                        <span>New Arrival T-Shirt</span>
+                    <a href="{{ route('shop.index', ['category' => 'new-arrival-t-shirts']) }}" @click="$store.nav.closeMobile()" class="flex items-center justify-between px-3 py-3 text-xs font-bold tracking-wider uppercase text-zinc-900 hover:bg-zinc-50 rounded-xl transition-colors">
+                        <div class="flex items-center space-x-3">
+                            <span class="w-2 h-2 rounded-full bg-emerald-600"></span>
+                            <span>New Arrival T-Shirt</span>
+                        </div>
+                        <span class="text-[9px] font-bold uppercase bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full">NEW</span>
+                    </a>
+
+                    <a href="{{ route('shop.index', ['collection' => 'bestsellers']) }}" @click="$store.nav.closeMobile()" class="flex items-center justify-between px-3 py-3 text-xs font-bold tracking-wider uppercase text-zinc-900 hover:bg-zinc-50 rounded-xl transition-colors">
+                        <div class="flex items-center space-x-3">
+                            <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+                            <span>Best Sellers</span>
+                        </div>
                         <svg class="w-4 h-4 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                     </a>
                 </div>
 
-                <!-- Secondary Client Links -->
-                <div class="mt-6 pt-4 border-t border-zinc-100 space-y-1 text-xs font-medium text-zinc-700">
-                    <a href="{{ route('orders.track') }}" @click="$store.nav.closeMobile()" class="flex items-center space-x-2.5 px-3 py-2 hover:bg-zinc-50 rounded-xl">
+                <!-- Secondary Customer Links -->
+                <div class="p-4 pt-1 border-t border-zinc-100 space-y-1 text-xs font-medium text-zinc-700">
+                    <p class="text-[10px] font-bold uppercase tracking-widest text-zinc-400 px-3 py-1">Quick Services</p>
+
+                    <a href="{{ route('orders.track') }}" @click="$store.nav.closeMobile()" class="flex items-center space-x-3 px-3 py-2.5 hover:bg-zinc-50 rounded-xl">
                         <svg class="w-4 h-4 text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                         <span>Track Delivery Status</span>
                     </a>
 
-                    <a href="{{ route('wishlist.index') }}" @click="$store.nav.closeMobile()" class="flex items-center space-x-2.5 px-3 py-2 hover:bg-zinc-50 rounded-xl">
+                    <a href="{{ route('wishlist.index') }}" @click="$store.nav.closeMobile()" class="flex items-center space-x-3 px-3 py-2.5 hover:bg-zinc-50 rounded-xl">
                         <svg class="w-4 h-4 text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
                         <span>My Wishlist</span>
                     </a>
 
-                    <a href="{{ route('about') }}" @click="$store.nav.closeMobile()" class="flex items-center space-x-2.5 px-3 py-2 hover:bg-zinc-50 rounded-xl">
+                    @auth
+                        <a href="{{ route('account.orders') }}" @click="$store.nav.closeMobile()" class="flex items-center space-x-3 px-3 py-2.5 hover:bg-zinc-50 rounded-xl">
+                            <svg class="w-4 h-4 text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+                            <span>My Orders</span>
+                        </a>
+
+                        <a href="{{ route('account.addresses') }}" @click="$store.nav.closeMobile()" class="flex items-center space-x-3 px-3 py-2.5 hover:bg-zinc-50 rounded-xl">
+                            <svg class="w-4 h-4 text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                            <span>Saved Addresses</span>
+                        </a>
+                    @endauth
+
+                    <a href="{{ route('about') }}" @click="$store.nav.closeMobile()" class="flex items-center space-x-3 px-3 py-2.5 hover:bg-zinc-50 rounded-xl">
                         <svg class="w-4 h-4 text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
                         <span>The Atelier Heritage</span>
                     </a>
@@ -267,33 +260,14 @@
             </div>
 
             <!-- Footer User Area in Mobile Drawer -->
-            <div class="border-t border-zinc-100 pt-6">
+            <div class="border-t border-zinc-100 p-4">
                 @auth
-                    <div class="flex items-center space-x-3 mb-4 p-3 bg-zinc-50 rounded-xl">
-                        <div class="w-10 h-10 rounded-full bg-zinc-900 text-[#DFCAAB] flex items-center justify-center font-bold text-sm">
-                            {{ substr(Auth::user()->name, 0, 1) }}
-                        </div>
-                        <div class="min-w-0 flex-1">
-                            <p class="text-xs font-bold text-zinc-900 truncate">{{ Auth::user()->name }}</p>
-                            <p class="text-[10px] text-zinc-500 truncate">{{ Auth::user()->email }}</p>
-                        </div>
-                    </div>
-                    
-                    <div class="space-y-2">
-                        <a href="{{ route('account.orders') }}" @click="$store.nav.closeMobile()" class="block w-full text-center py-2.5 bg-zinc-950 text-white rounded-xl text-xs font-bold uppercase tracking-wider">
-                            My Orders & Invoices
-                        </a>
-                        <a href="{{ route('account.dashboard') }}" @click="$store.nav.closeMobile()" class="block w-full text-center py-2.5 border border-zinc-300 text-zinc-800 rounded-xl text-xs font-bold uppercase tracking-wider">
-                            Account Dashboard
-                        </a>
-                    </div>
-                @else
-                    <a href="{{ route('login') }}" @click="$store.nav.closeMobile()" class="block w-full text-center py-3 bg-zinc-950 text-white rounded-xl text-xs font-bold uppercase tracking-wider mb-2 shadow-md">
-                        Sign In
-                    </a>
-                    <a href="{{ route('register') }}" @click="$store.nav.closeMobile()" class="block w-full text-center py-2.5 border border-zinc-300 text-zinc-800 hover:border-black rounded-xl text-xs font-bold uppercase tracking-wider">
-                        Create Private Account
-                    </a>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="w-full py-2.5 text-center text-xs font-bold text-rose-600 hover:bg-rose-50 rounded-xl transition-colors">
+                            Sign Out
+                        </button>
+                    </form>
                 @endauth
             </div>
         </div>

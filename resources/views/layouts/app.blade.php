@@ -83,7 +83,7 @@
     @include('components.search-modal')
 
     <!-- Main Content Area -->
-    <main class="flex-grow">
+    <main class="flex-grow pb-16 lg:pb-0">
         <!-- Flash Alert Messages -->
         @if(session('success'))
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4" x-data="{ show: true }" x-show="show" x-transition>
@@ -111,6 +111,9 @@
 
         @yield('content')
     </main>
+
+    <!-- Myntra-Style Mobile Bottom Navigation Bar -->
+    @include('components.mobile-bottom-nav')
 
     <!-- Luxury Footer -->
     @include('components.footer')
