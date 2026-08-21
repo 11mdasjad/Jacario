@@ -24,13 +24,15 @@
 }">
 
     <!-- Breadcrumb & Running 3-Banner Shop Header Carousel -->
-    <div class="relative bg-zinc-950 text-white pt-8 pb-4 sm:pt-10 sm:pb-5 border-b border-zinc-800 overflow-hidden"
+    <div class="relative bg-zinc-950 text-white pt-6 pb-4 sm:pt-10 sm:pb-5 border-b border-zinc-800 overflow-hidden"
          x-data="{
             currentShopSlide: 0,
             totalShopSlides: {{ count($shopBanners) }},
             progress: 0,
             isPaused: false,
             timer: null,
+            touchStartX: 0,
+            touchEndX: 0,
             init() {
                 this.startProgress();
             },
@@ -56,17 +58,30 @@
             goToSlide(idx) {
                 this.currentShopSlide = idx;
                 this.progress = 0;
+            },
+            handleTouchStart(e) {
+                this.touchStartX = e.changedTouches[0].screenX;
+            },
+            handleTouchEnd(e) {
+                this.touchEndX = e.changedTouches[0].screenX;
+                if (this.touchStartX - this.touchEndX > 40) {
+                    this.nextSlide();
+                } else if (this.touchEndX - this.touchStartX > 40) {
+                    this.prevSlide();
+                }
             }
          }"
          @mouseenter="isPaused = true"
-         @mouseleave="isPaused = false">
+         @mouseleave="isPaused = false"
+         @touchstart="handleTouchStart($event)"
+         @touchend="handleTouchEnd($event)">
         
         <!-- Background Pattern -->
         <div class="absolute inset-0 opacity-20 bg-[radial-gradient(#DFCAAB_1px,transparent_1px)] [background-size:20px_20px] pointer-events-none z-10"></div>
-        <div class="absolute inset-0 bg-gradient-to-r from-zinc-950 via-zinc-950/80 to-transparent pointer-events-none z-10 w-full sm:w-3/4"></div>
+        <div class="absolute inset-0 bg-gradient-to-r from-zinc-950 via-zinc-950/90 to-transparent pointer-events-none z-10 w-full sm:w-3/4"></div>
 
         <!-- Carousel Slides -->
-        <div class="relative w-full min-h-[210px] sm:min-h-[220px] lg:min-h-[230px]">
+        <div class="relative w-full min-h-[180px] sm:min-h-[220px]">
             @foreach($shopBanners as $index => $sBanner)
                 <div class="absolute inset-0 w-full h-full transition-all duration-700 ease-in-out"
                      x-show="currentShopSlide === {{ $index }}"
