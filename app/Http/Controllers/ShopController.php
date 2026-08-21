@@ -131,6 +131,43 @@ class ShopController extends Controller
 
         $products = $query->paginate(12)->withQueryString();
 
+        // 3 Running Shop Catalog Banners
+        $shopBanners = \App\Models\Banner::shop()->get();
+        if ($shopBanners->isEmpty()) {
+            $shopBanners = collect([
+                (object)[
+                    'id' => 1,
+                    'title' => 'The Polo Collection',
+                    'subtitle' => 'Meticulously tailored from 100% American Supima® cotton, Mulberry silk blends, and stay-flat collar technology.',
+                    'badge_text' => '✦ 50 Bespoke Silhouettes',
+                    'cta_text' => 'Shop Supima® Series',
+                    'cta_url' => '/shop?fabric=Supima',
+                    'image_url' => asset('images/banners/banner-studio-haute.jpg'),
+                    'mobile_image_url' => asset('images/banners/banner-studio-haute.jpg'),
+                ],
+                (object)[
+                    'id' => 2,
+                    'title' => 'Mulberry Silk & 24-Gauge Knits',
+                    'subtitle' => 'Ultra-fine natural luster meets athletic breathability for effortless evening elegance.',
+                    'badge_text' => '★ Rare Silk Collection',
+                    'cta_text' => 'Explore Silk Knits',
+                    'cta_url' => '/shop?fabric=Silk',
+                    'image_url' => asset('images/banners/banner-silk-atelier.jpg'),
+                    'mobile_image_url' => asset('images/banners/banner-silk-atelier.jpg'),
+                ],
+                (object)[
+                    'id' => 3,
+                    'title' => 'Riviera Earth & Espresso Drop',
+                    'subtitle' => '14 new season colorways inspired by Portofino coastlines and dyed with eco-friendly reactive pigments.',
+                    'badge_text' => '◆ New Season Arrivals',
+                    'cta_text' => 'Shop New Arrivals',
+                    'cta_url' => '/shop?collection=new-arrivals',
+                    'image_url' => asset('images/banners/banner-riviera-earth.jpg'),
+                    'mobile_image_url' => asset('images/banners/banner-riviera-earth.jpg'),
+                ],
+            ]);
+        }
+
         // Filter sidebar data
         $categories = Category::active()->withCount('products')->get();
         $sizes = Size::orderBy('sort_order')->get();
@@ -142,7 +179,8 @@ class ShopController extends Controller
             'categories',
             'sizes',
             'colors',
-            'fits'
+            'fits',
+            'shopBanners'
         ));
     }
 }

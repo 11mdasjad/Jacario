@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\Admin\BannerController as AdminBannerController;
 use App\Http\Controllers\Admin\CouponController as AdminCouponController;
 use App\Http\Controllers\Admin\CustomerController as AdminCustomerController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
@@ -139,6 +140,10 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::resource('products', AdminProductController::class);
     Route::post('products/{id}/restore', [AdminProductController::class, 'restore'])->name('products.restore');
     Route::post('variants/{variantId}/stock', [AdminProductController::class, 'updateVariantStock'])->name('variants.stock');
+
+    // Hero Promotional Banners
+    Route::resource('banners', AdminBannerController::class);
+    Route::post('banners/{banner}/toggle-active', [AdminBannerController::class, 'toggleActive'])->name('banners.toggle-active');
 
     // Orders & Shipments
     Route::get('orders', [AdminOrderController::class, 'index'])->name('orders.index');

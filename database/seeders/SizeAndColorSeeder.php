@@ -26,13 +26,17 @@ class SizeAndColorSeeder extends Seeder
             ['name' => 'Obsidian Black', 'slug' => 'obsidian-black', 'hex_code' => '#18181B'],
             ['name' => 'Pure White', 'slug' => 'pure-white', 'hex_code' => '#F8FAFC'],
             ['name' => 'Royal Navy', 'slug' => 'royal-navy', 'hex_code' => '#1E293B'],
+            ['name' => 'Royal Blue', 'slug' => 'royal-blue', 'hex_code' => '#1D4ED8'],
+            ['name' => 'Sky Blue', 'slug' => 'sky-blue', 'hex_code' => '#7DD3FC'],
             ['name' => 'Olive Dusk', 'slug' => 'olive-dusk', 'hex_code' => '#3F4E3F'],
+            ['name' => 'Forest Green', 'slug' => 'forest-emerald', 'hex_code' => '#1B4332'],
             ['name' => 'Heather Grey', 'slug' => 'heather-grey', 'hex_code' => '#64748B'],
-            ['name' => 'Burgundy Royale', 'slug' => 'burgundy-royale', 'hex_code' => '#5C1D24'],
-            ['name' => 'Desert Sand', 'slug' => 'desert-sand', 'hex_code' => '#D6C7B2'],
-            ['name' => 'Forest Emerald', 'slug' => 'forest-emerald', 'hex_code' => '#1B4332'],
             ['name' => 'Slate Charcoal', 'slug' => 'slate-charcoal', 'hex_code' => '#334155'],
-            ['name' => 'Sapphire Blue', 'slug' => 'sapphire-blue', 'hex_code' => '#1D4ED8'],
+            ['name' => 'Sand Beige', 'slug' => 'desert-sand', 'hex_code' => '#D6C7B2'],
+            ['name' => 'Classic Maroon', 'slug' => 'classic-maroon', 'hex_code' => '#800000'],
+            ['name' => 'Burgundy Royale', 'slug' => 'burgundy-royale', 'hex_code' => '#5C1D24'],
+            ['name' => 'Warm Mustard', 'slug' => 'warm-mustard', 'hex_code' => '#D97706'],
+            ['name' => 'Ivory Cream', 'slug' => 'ivory-cream', 'hex_code' => '#FFFBEB'],
         ];
 
         foreach ($colors as $c) {

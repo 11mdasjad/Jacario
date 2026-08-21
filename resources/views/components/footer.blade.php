@@ -6,8 +6,8 @@
             
             <!-- Brand Column -->
             <div class="lg:col-span-2 space-y-4">
-                <a href="{{ route('home') }}" class="inline-block bg-white p-2 rounded-xl shadow-xs">
-                    <img src="{{ asset('images/logo.png') }}" alt="JACARIO" class="h-8 sm:h-10 w-auto object-contain">
+                <a href="{{ route('home') }}" class="inline-block focus:outline-none">
+                    <img src="{{ asset('images/logo.png') }}" alt="JACARIO" class="h-9 sm:h-11 w-auto object-contain brightness-0 invert opacity-90 hover:opacity-100 transition-opacity">
                 </a>
                 <p class="text-xs uppercase tracking-widest text-[#C5A880] font-semibold">
                     The Polo & T-Shirt Atelier

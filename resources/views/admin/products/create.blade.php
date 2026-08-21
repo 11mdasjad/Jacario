@@ -6,12 +6,15 @@
 @section('content')
 
 <div class="max-w-5xl mx-auto space-y-6" x-data="{
-    imageUrls: [''],
+    imageUrls: ['', '', '', '', ''],
     primaryIndex: 0,
     filePreviews: [],
+    slotLabels: ['Slot 1: Main Front View (Primary)', 'Slot 2: Side Profile Angle', 'Slot 3: Fabric & Button Detail', 'Slot 4: Model Lifestyle Look', 'Slot 5: Back View & Collar Fit'],
     
     addImageUrl() {
-        this.imageUrls.push('');
+        if (this.imageUrls.length < 5) {
+            this.imageUrls.push('');
+        }
     },
     removeImageUrl(index) {
         if (this.imageUrls.length > 1) {
@@ -106,24 +109,24 @@
             </div>
         </div>
 
-        <!-- Multiple Product Images Section (Add 3–4 Images with Live Preview & Delete) -->
+        <!-- Multiple Product Images Section (Add up to 5 Images with Live Preview & Delete) -->
         <div class="p-6 sm:p-8 bg-white rounded-2xl border border-zinc-200 shadow-xs space-y-6">
             <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-zinc-100 gap-2">
                 <div>
                     <h3 class="text-xs font-bold uppercase tracking-wider text-[#8C6D46]">
-                        Product Photography (Add 3–4 Images)
+                        Product Photography (5 Dedicated Image Slots)
                     </h3>
-                    <p class="text-xs text-zinc-500 mt-0.5">Upload image files or paste direct image URLs (Front, Side, Back, Model Look)</p>
+                    <p class="text-xs text-zinc-500 mt-0.5">Provide up to 5 multi-angle images (Main Front, Side Angle, Fabric Detail, Model Look, Back View)</p>
                 </div>
-                <button type="button" @click="addImageUrl()" class="px-4 py-2 bg-zinc-100 hover:bg-zinc-950 hover:text-white text-zinc-900 rounded-xl text-xs font-bold uppercase tracking-wider transition-colors flex items-center space-x-1 self-start sm:self-auto">
+                <button type="button" @click="addImageUrl()" x-show="imageUrls.length < 5" class="px-4 py-2 bg-zinc-100 hover:bg-zinc-950 hover:text-white text-zinc-900 rounded-xl text-xs font-bold uppercase tracking-wider transition-colors flex items-center space-x-1 self-start sm:self-auto">
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-                    <span>+ Add Another Image URL</span>
+                    <span>+ Add Slot</span>
                 </button>
             </div>
 
             <!-- Image URL Rows with Live Preview and Delete -->
             <div class="space-y-3">
-                <p class="text-[11px] font-bold uppercase tracking-wider text-zinc-600">Option 1: Paste Image Web URLs (Fast & High-Res)</p>
+                <p class="text-[11px] font-bold uppercase tracking-wider text-zinc-600">Option 1: 5 Image Web URLs (Fast & High-Res)</p>
 
                 <template x-for="(url, index) in imageUrls" :key="index">
                     <div class="p-3 bg-zinc-50 rounded-2xl border border-zinc-200 flex flex-col sm:flex-row items-start sm:items-center gap-3">
@@ -141,18 +144,18 @@
                         <!-- Input Field -->
                         <div class="flex-1 w-full">
                             <div class="flex items-center justify-between mb-1">
-                                <span class="text-[11px] font-semibold text-zinc-700" x-text="'Image #' + (index + 1) + (index === 0 ? ' (Main View)' : (index === 1 ? ' (Side Angle)' : (index === 2 ? ' (Fabric Detail)' : ' (Model Look)')))"></span>
+                                <span class="text-[11px] font-semibold text-zinc-700" x-text="slotLabels[index] || ('Slot #' + (index + 1))"></span>
                                 
                                 <label class="flex items-center space-x-1.5 text-[11px] text-zinc-600 cursor-pointer">
                                     <input type="radio" name="primary_image_index" :value="index" x-model="primaryIndex" class="text-black focus:ring-black">
                                     <span :class="primaryIndex == index ? 'font-bold text-zinc-950' : ''">Set as Primary</span>
                                 </label>
                             </div>
-                            <input type="url" name="image_urls[]" x-model="imageUrls[index]" placeholder="https://images.unsplash.com/... or Google Image URL" class="w-full text-xs bg-white border border-zinc-200 rounded-xl px-3 py-2 text-zinc-900 focus:outline-none focus:border-black shadow-2xs">
+                            <input type="url" name="image_urls[]" x-model="imageUrls[index]" placeholder="https://images.unsplash.com/... or image URL" class="w-full text-xs bg-white border border-zinc-200 rounded-xl px-3 py-2 text-zinc-900 focus:outline-none focus:border-black shadow-2xs">
                         </div>
 
                         <!-- Delete Button -->
-                        <button type="button" @click="removeImageUrl(index)" title="Remove Image" class="p-2.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 transition-colors shrink-0 self-end sm:self-center">
+                        <button type="button" @click="removeImageUrl(index)" title="Clear / Remove Slot" class="p-2.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 transition-colors shrink-0 self-end sm:self-center">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
                         </button>
                     </div>

@@ -23,39 +23,157 @@
     activeFilterTab: 'category'
 }">
 
-    <!-- Breadcrumb & Header Banner -->
-    <div class="bg-gradient-to-r from-[#F7F4EE] via-[#FAF8F5] to-[#F5F2EC] text-zinc-900 py-6 sm:py-10 border-b border-zinc-200/80">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <nav class="flex items-center space-x-2 text-[11px] text-zinc-500 mb-2 sm:mb-3">
-                <a href="{{ route('home') }}" class="hover:text-black transition-colors">Home</a>
-                <span>/</span>
-                <span class="text-[#8C6D46] font-bold">Collection</span>
-            </nav>
+    <!-- Breadcrumb & Running 3-Banner Shop Header Carousel -->
+    <div class="relative bg-zinc-950 text-white pt-8 pb-4 sm:pt-10 sm:pb-5 border-b border-zinc-800 overflow-hidden"
+         x-data="{
+            currentShopSlide: 0,
+            totalShopSlides: {{ count($shopBanners) }},
+            progress: 0,
+            isPaused: false,
+            timer: null,
+            init() {
+                this.startProgress();
+            },
+            startProgress() {
+                clearInterval(this.timer);
+                this.timer = setInterval(() => {
+                    if (!this.isPaused) {
+                        this.progress += 2;
+                        if (this.progress >= 100) {
+                            this.nextSlide();
+                        }
+                    }
+                }, 90);
+            },
+            nextSlide() {
+                this.currentShopSlide = (this.currentShopSlide + 1) % this.totalShopSlides;
+                this.progress = 0;
+            },
+            prevSlide() {
+                this.currentShopSlide = (this.currentShopSlide - 1 + this.totalShopSlides) % this.totalShopSlides;
+                this.progress = 0;
+            },
+            goToSlide(idx) {
+                this.currentShopSlide = idx;
+                this.progress = 0;
+            }
+         }"
+         @mouseenter="isPaused = true"
+         @mouseleave="isPaused = false">
+        
+        <!-- Background Pattern -->
+        <div class="absolute inset-0 opacity-20 bg-[radial-gradient(#DFCAAB_1px,transparent_1px)] [background-size:20px_20px] pointer-events-none z-10"></div>
+        <div class="absolute inset-0 bg-gradient-to-r from-zinc-950 via-zinc-950/80 to-transparent pointer-events-none z-10 w-full sm:w-3/4"></div>
 
-            <div class="flex items-end justify-between">
-                <div>
-                    <h1 class="text-xl sm:text-3xl lg:text-4xl font-serif-luxury font-bold text-zinc-950 tracking-tight">
-                        @if(request('collection') === 'bestsellers')
-                            Best Selling Polos
-                        @elseif(request('collection') === 'new-arrivals')
-                            New Season Arrivals
-                        @elseif(request('category'))
-                            {{ $categories->firstWhere('slug', request('category'))->name ?? 'The Collection' }}
-                        @elseif(request('q'))
-                            Search: "{{ request('q') }}"
-                        @else
-                            The Polo Collection
-                        @endif
-                    </h1>
-                    <p class="text-xs text-zinc-500 font-light mt-0.5 hidden sm:block">
-                        Meticulously tailored from 100% Supima® cotton, Mulberry silk blends, and engineered athletic knit.
-                    </p>
+        <!-- Carousel Slides -->
+        <div class="relative w-full min-h-[210px] sm:min-h-[220px] lg:min-h-[230px]">
+            @foreach($shopBanners as $index => $sBanner)
+                <div class="absolute inset-0 w-full h-full transition-all duration-700 ease-in-out"
+                     x-show="currentShopSlide === {{ $index }}"
+                     x-transition:enter="transition ease-out duration-700"
+                     x-transition:enter-start="opacity-0 translate-x-4"
+                     x-transition:enter-end="opacity-100 translate-x-0"
+                     x-transition:leave="transition ease-in duration-500"
+                     x-transition:leave-start="opacity-100 translate-x-0"
+                     x-transition:leave-end="opacity-0 -translate-x-4"
+                     style="{{ $index === 0 ? '' : 'display: none;' }}">
+                    
+                    <!-- Slide Background Image with Soft Fade -->
+                    <div class="absolute right-0 top-0 bottom-0 w-full sm:w-2/3 lg:w-1/2 opacity-35 sm:opacity-45 overflow-hidden pointer-events-none">
+                        <img src="{{ $sBanner->image_url ?? $sBanner->image_path }}" 
+                             alt="{{ $sBanner->title }}" 
+                             class="w-full h-full object-cover object-[center_25%] filter brightness-90">
+                        <div class="absolute inset-0 bg-gradient-to-r from-zinc-950 via-zinc-950/50 to-transparent"></div>
+                    </div>
+
+                    <!-- Slide Content -->
+                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20 h-full flex flex-col justify-between">
+                        
+                        <!-- Breadcrumbs -->
+                        <nav class="flex items-center space-x-2 text-[11px] text-zinc-400 mb-2 sm:mb-3">
+                            <a href="{{ route('home') }}" class="hover:text-white transition-colors">Home</a>
+                            <span>/</span>
+                            <span class="text-[#DFCAAB] font-bold">Catalog</span>
+                            @if(request('collection') || request('category') || request('fabric'))
+                                <span>/</span>
+                                <span class="text-white capitalize">{{ request('collection') ?? request('category') ?? request('fabric') }}</span>
+                            @endif
+                        </nav>
+
+                        <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+                            <div class="space-y-1.5 max-w-2xl">
+                                @if(!empty($sBanner->badge_text))
+                                    <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/15 text-[#DFCAAB] text-[10px] sm:text-xs font-bold uppercase tracking-widest">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-[#DFCAAB] animate-pulse"></span>
+                                        <span>{{ $sBanner->badge_text }}</span>
+                                    </div>
+                                @endif
+
+                                <h1 class="text-2xl sm:text-4xl lg:text-5xl font-serif-luxury font-bold text-white tracking-tight leading-tight">
+                                    @if(request('collection') === 'bestsellers')
+                                        Customer Icons & Best Sellers
+                                    @elseif(request('collection') === 'new-arrivals')
+                                        New Season Arrivals
+                                    @elseif(request('fabric'))
+                                        {{ request('fabric') }} Collection
+                                    @elseif(request('category'))
+                                        {{ $categories->firstWhere('slug', request('category'))->name ?? 'The Collection' }}
+                                    @elseif(request('q'))
+                                        Search Results for "{{ request('q') }}"
+                                    @else
+                                        {{ $sBanner->title }}
+                                    @endif
+                                </h1>
+
+                                <p class="text-xs sm:text-sm text-zinc-300 font-light leading-relaxed max-w-xl">
+                                    {{ $sBanner->subtitle }}
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+
                 </div>
-                <p class="text-[11px] sm:text-xs text-zinc-500 font-medium whitespace-nowrap">
-                    <strong class="text-zinc-900">{{ $products->total() }}</strong> items
-                </p>
+            @endforeach
+        </div>
+
+        <!-- Running Banner Carousel Controls (Bottom Indicator Bar - No Line) -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20 mt-6 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <span class="text-[11px] font-mono text-[#DFCAAB] font-bold" x-text="`0${currentShopSlide + 1} / 0${totalShopSlides}`">01 / 03</span>
+                <div class="flex items-center space-x-2">
+                    @foreach($shopBanners as $index => $sBanner)
+                        <button type="button" 
+                                @click="goToSlide({{ $index }})" 
+                                class="relative w-12 sm:w-16 h-1.5 rounded-full bg-white/20 overflow-hidden cursor-pointer group"
+                                aria-label="Go to banner {{ $index + 1 }}">
+                            <div class="absolute inset-y-0 left-0 bg-[#DFCAAB] rounded-full transition-all"
+                                 :style="currentShopSlide === {{ $index }} 
+                                            ? `width: ${progress}%; transition: width 90ms linear;` 
+                                            : (currentShopSlide > {{ $index }} ? 'width: 100%;' : 'width: 0%;')">
+                            </div>
+                        </button>
+                    @endforeach
+                </div>
+            </div>
+
+            <!-- Prev / Next Micro Chevrons -->
+            <div class="flex items-center space-x-1.5">
+                <button type="button" 
+                        @click="prevSlide()" 
+                        class="w-7 h-7 rounded-lg bg-white/10 hover:bg-white/25 text-white flex items-center justify-center transition-colors text-xs" 
+                        aria-label="Previous Banner">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                </button>
+                <button type="button" 
+                        @click="nextSlide()" 
+                        class="w-7 h-7 rounded-lg bg-white/10 hover:bg-white/25 text-white flex items-center justify-center transition-colors text-xs" 
+                        aria-label="Next Banner">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                </button>
             </div>
         </div>
+
     </div>
 
     <!-- Myntra-Style Horizontal Category Filter Bar (Scrollable on Mobile) -->
@@ -169,6 +287,21 @@
                             <button type="submit" class="absolute right-2.5 top-2.5 text-zinc-400 hover:text-black">
                                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                             </button>
+                        </div>
+                    </div>
+
+                    <!-- Collection Style / Categories -->
+                    <div class="pb-6 border-b border-zinc-200 space-y-2">
+                        <h4 class="text-xs font-bold uppercase tracking-widest text-zinc-900 mb-2">Collection Style</h4>
+                        <div class="space-y-1.5">
+                            <a href="{{ route('shop.index') }}" class="block text-xs {{ !request('category') ? 'font-bold text-zinc-950' : 'text-zinc-600 hover:text-black' }}">
+                                All Polos ({{ $products->total() }})
+                            </a>
+                            @foreach($categories as $cat)
+                                <a href="{{ route('shop.index', ['category' => $cat->slug]) }}" class="block text-xs {{ request('category') === $cat->slug ? 'font-bold text-zinc-950' : 'text-zinc-600 hover:text-black' }}">
+                                    {{ $cat->name }}
+                                </a>
+                            @endforeach
                         </div>
                     </div>
 

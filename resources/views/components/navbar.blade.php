@@ -1,10 +1,10 @@
 <header class="sticky top-0 z-40 w-full transition-all duration-300 bg-white/95 backdrop-blur-md border-b border-zinc-200/80 shadow-xs">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between h-20 sm:h-24">
+        <div class="flex items-center justify-between h-16 sm:h-20">
             
             <!-- Left on Mobile: Hamburger Menu Button -->
             <div class="flex items-center space-x-1 lg:hidden">
-                <button @click="$store.nav.toggleMobile()" type="button" class="p-2.5 rounded-xl text-zinc-800 hover:bg-zinc-100 hover:text-black focus:outline-none transition-colors" aria-label="Open Navigation Menu">
+                <button @click="$store.nav.toggleMobile()" type="button" class="p-2 rounded-xl text-zinc-800 hover:bg-zinc-100 hover:text-black focus:outline-none transition-colors" aria-label="Open Navigation Menu">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
                     </svg>
@@ -14,7 +14,7 @@
             <!-- Brand Logo -->
             <div class="flex-shrink-0 flex items-center py-1">
                 <a href="{{ route('home') }}" class="group flex items-center focus:outline-none">
-                    <img src="{{ asset('images/logo.png') }}" alt="JACARIO" class="h-10 sm:h-14 md:h-16 w-auto object-contain transition-transform duration-200 group-hover:scale-105">
+                    <img src="{{ asset('images/logo.png') }}" alt="JACARIO" class="h-8 sm:h-9 md:h-10 w-auto object-contain transition-transform duration-200 group-hover:scale-105">
                 </a>
             </div>
 
@@ -126,6 +126,30 @@
         </div>
     </div>
 
+    <!-- Mobile Horizontal Category / Navigation Strip (All, New Arrivals, Best Sellers, Classic, Premium, Slim Fit) -->
+    <div class="lg:hidden bg-[#FAF8F5] border-t border-zinc-200/80 px-3 py-2 overflow-x-auto no-scrollbar">
+        <div class="flex items-center space-x-2 min-w-max">
+            <a href="{{ route('shop.index') }}" class="px-3 py-1 rounded-full text-[11px] font-bold tracking-tight transition-colors {{ !request('collection') && !request('category') && !request('fit') && !request('fabric') ? 'bg-zinc-950 text-white shadow-xs' : 'bg-white text-zinc-700 border border-zinc-200' }}">
+                All
+            </a>
+            <a href="{{ route('shop.index', ['collection' => 'new-arrivals']) }}" class="px-3 py-1 rounded-full text-[11px] font-bold tracking-tight transition-colors {{ request('collection') === 'new-arrivals' ? 'bg-[#0B0D10] text-[#DFCAAB] shadow-xs' : 'bg-white text-zinc-700 border border-zinc-200' }}">
+                ✨ New Arrivals
+            </a>
+            <a href="{{ route('shop.index', ['collection' => 'bestsellers']) }}" class="px-3 py-1 rounded-full text-[11px] font-bold tracking-tight transition-colors {{ request('collection') === 'bestsellers' ? 'bg-[#0B0D10] text-[#DFCAAB] shadow-xs' : 'bg-white text-zinc-700 border border-zinc-200' }}">
+                🔥 Best Sellers
+            </a>
+            <a href="{{ route('shop.index', ['fit' => ['Regular Fit']]) }}" class="px-3 py-1 rounded-full text-[11px] font-bold tracking-tight transition-colors bg-white text-zinc-700 border border-zinc-200">
+                Classic Fit
+            </a>
+            <a href="{{ route('shop.index', ['fabric' => 'Supima']) }}" class="px-3 py-1 rounded-full text-[11px] font-bold tracking-tight transition-colors bg-white text-zinc-700 border border-zinc-200">
+                Premium Supima®
+            </a>
+            <a href="{{ route('shop.index', ['fit' => ['Slim Fit']]) }}" class="px-3 py-1 rounded-full text-[11px] font-bold tracking-tight transition-colors bg-white text-zinc-700 border border-zinc-200">
+                Slim Fit
+            </a>
+        </div>
+    </div>
+
     <!-- Mobile Fullscreen Slide-Out Drawer (Myntra-Style Category Explorer) -->
     <div x-show="$store.nav.mobileMenuOpen" 
          x-transition:enter="transition ease-out duration-300"
@@ -154,7 +178,7 @@
                 <!-- Myntra-Style User Header Card in Drawer -->
                 <div class="bg-gradient-to-br from-zinc-950 via-zinc-900 to-zinc-950 text-white p-5">
                     <div class="flex items-center justify-between pb-3">
-                        <img src="{{ asset('images/logo.png') }}" alt="JACARIO" class="h-8 w-auto object-contain brightness-200 contrast-200">
+                        <img src="{{ asset('images/logo.png') }}" alt="JACARIO" class="h-7 sm:h-8 w-auto object-contain brightness-0 invert opacity-95">
                         <button @click="$store.nav.closeMobile()" class="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors" aria-label="Close Menu">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                         </button>

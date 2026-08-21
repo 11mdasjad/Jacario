@@ -7,6 +7,25 @@
     $sizes = $product->availableSizes();
     $firstVariant = $product->activeVariants()->where('stock_quantity', '>', 0)->first();
     $isWishlisted = Auth::check() && Auth::user()->wishlists()->where('product_id', $product->id)->exists();
+
+    $quickViewData = [
+        'id' => $product->id,
+        'name' => $product->name,
+        'slug' => $product->slug,
+        'category_name' => $product->category ? $product->category->name : 'Polo T-Shirt',
+        'image' => $primaryImage ? $primaryImage->url : asset('images/placeholder-polo.svg'),
+        'base_price' => number_format($product->base_price),
+        'sale_price' => $product->sale_price ? number_format($product->sale_price) : null,
+        'effective_price' => number_format($product->effective_price),
+        'has_discount' => $product->has_discount,
+        'discount_percent' => $product->discount_percent,
+        'rating' => number_format($product->average_rating, 1),
+        'reviews_count' => $product->reviews_count,
+        'description' => $product->short_description ?: $product->fabric,
+        'sizes' => $sizes->map(fn($s) => ['id' => $s->id, 'code' => $s->code]),
+        'colors' => $colors->map(fn($c) => ['id' => $c->id, 'name' => $c->name, 'hex_code' => $c->hex_code]),
+        'variants' => $product->activeVariants->map(fn($v) => ['id' => $v->id, 'size_id' => $v->size_id, 'color_id' => $v->color_id, 'stock' => $v->stock_quantity]),
+    ];
 @endphp
 
 <div class="group relative flex flex-col bg-white rounded-2xl border border-zinc-200/80 overflow-hidden hover:shadow-xl hover:border-zinc-300 transition-all duration-300"
@@ -29,6 +48,9 @@
             }
             $store.cartDrawer.addItem(varId, 1);
             this.quickAddOpen = false;
+        },
+        openQuickView() {
+            window.dispatchEvent(new CustomEvent('open-quick-view', { detail: @js($quickViewData) }));
         }
      }">
     
@@ -71,6 +93,14 @@
                  loading="lazy"
                  class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500">
         </a>
+
+        <!-- Desktop Hover Quick View Overlay Button -->
+        <button type="button" 
+                @click.prevent="openQuickView()" 
+                class="hidden md:flex absolute inset-x-3 bottom-3 py-2 bg-white/95 backdrop-blur-md text-zinc-950 text-[11px] font-bold uppercase tracking-widest rounded-xl items-center justify-center space-x-1.5 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300 shadow-md hover:bg-black hover:text-white z-10">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+            <span>Quick View</span>
+        </button>
 
         <!-- Myntra-Style Floating Rating Pill on Image -->
         <div class="absolute bottom-2 left-2 z-10 inline-flex items-center space-x-1 px-1.5 py-0.5 rounded-md bg-white/90 backdrop-blur-xs border border-zinc-200/80 shadow-xs text-[10px] font-bold text-zinc-800">
@@ -155,4 +185,3 @@
         </div>
     </div>
 </div>
-

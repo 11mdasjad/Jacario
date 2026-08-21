@@ -32,12 +32,14 @@ class DashboardController extends Controller
         $totalProducts = Product::count();
 
         // Low stock (< 5 units) & Out of stock (0 units)
-        $lowStockVariants = ProductVariant::with(['product', 'size', 'color'])
+        $lowStockVariants = ProductVariant::whereHas('product')
+            ->with(['product', 'size', 'color'])
             ->where('stock_quantity', '>', 0)
             ->where('stock_quantity', '<=', 5)
             ->get();
 
-        $outOfStockVariants = ProductVariant::with(['product', 'size', 'color'])
+        $outOfStockVariants = ProductVariant::whereHas('product')
+            ->with(['product', 'size', 'color'])
             ->where('stock_quantity', '<=', 0)
             ->get();
 

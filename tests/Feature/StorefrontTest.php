@@ -24,7 +24,7 @@ class StorefrontTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee('JACARIO');
         $response->assertSee('The Polo, Perfected');
-        $response->assertSee('Shop Polo T-Shirts');
+        $response->assertSee('Shop Now');
     }
 
     public function test_shop_catalog_page_displays_polo_products_and_style_filters(): void

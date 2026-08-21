@@ -59,14 +59,34 @@
 <body class="min-h-full flex flex-col bg-[#FAFAFA] text-zinc-900 selection:bg-[#C5A880] selection:text-white">
 
     <!-- Top Announcement Bar -->
-    <div class="bg-[#0B0D10] text-[#DFCAAB] text-xs font-medium tracking-widest uppercase py-2 px-4 text-center border-b border-zinc-800">
-        <div class="max-w-7xl mx-auto flex items-center justify-center space-x-3 overflow-hidden whitespace-nowrap">
-            <span class="inline-block w-2 h-2 rounded-full bg-[#C5A880] animate-pulse"></span>
+    <div class="bg-[#0B0D10] text-[#DFCAAB] text-[11px] sm:text-xs font-medium tracking-widest uppercase py-2 px-4 text-center border-b border-zinc-800"
+         x-data="{
+            announcements: [
+                'Complimentary Express Shipping on Orders Above ₹1,999',
+                'Use Code FIRSTPOLO for ₹300 Off Inaugural Order',
+                '15-Day Hassle-Free Doorstep Exchanges & Returns'
+            ],
+            activeIdx: 0,
+            init() {
+                setInterval(() => {
+                    this.activeIdx = (this.activeIdx + 1) % this.announcements.length;
+                }, 4000);
+            }
+         }">
+        <!-- Desktop Multi-pill Layout -->
+        <div class="max-w-7xl mx-auto hidden md:flex items-center justify-center space-x-3 overflow-hidden whitespace-nowrap">
+            <span class="inline-block w-1.5 h-1.5 rounded-full bg-[#C5A880] animate-pulse"></span>
             <span>Complimentary Express Shipping on Orders Above ₹1,999</span>
-            <span class="text-zinc-600 hidden sm:inline">•</span>
-            <span class="hidden sm:inline">Use Code <strong class="text-white tracking-wider">FIRSTPOLO</strong> for ₹300 Off</span>
-            <span class="text-zinc-600 hidden md:inline">•</span>
-            <span class="hidden md:inline">15-Day Hassle-Free Doorstep Exchanges</span>
+            <span class="text-zinc-600">•</span>
+            <span>Use Code <strong class="text-white tracking-wider">FIRSTPOLO</strong> for ₹300 Off</span>
+            <span class="text-zinc-600">•</span>
+            <span>15-Day Hassle-Free Doorstep Exchanges</span>
+        </div>
+
+        <!-- Mobile Rotating Single-Line Carousel -->
+        <div class="md:hidden flex items-center justify-center space-x-2">
+            <span class="inline-block w-1.5 h-1.5 rounded-full bg-[#C5A880] animate-pulse shrink-0"></span>
+            <span class="truncate transition-all duration-500" x-text="announcements[activeIdx]"></span>
         </div>
     </div>
 
@@ -81,6 +101,9 @@
 
     <!-- Global Search Modal -->
     @include('components.search-modal')
+
+    <!-- Global Quick View Modal -->
+    @include('components.quick-view-modal')
 
     <!-- Main Content Area -->
     <main class="flex-grow pb-16 lg:pb-0">

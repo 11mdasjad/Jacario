@@ -5,7 +5,7 @@
     $wishlistInitialCount = Auth::check() ? Auth::user()->wishlists()->count() : 0;
 @endphp
 
-<!-- Myntra-Style Floating / Fixed Mobile Bottom Navigation Bar -->
+<!-- Fixed Mobile Bottom Navigation Bar (5 Items: Home, Categories, Search, Wishlist, Account) -->
 <nav class="fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur-lg border-t border-zinc-200/90 shadow-[0_-4px_20px_rgba(0,0,0,0.06)] lg:hidden transition-transform duration-300 pb-safe"
      x-data="{ 
         init() {
@@ -24,10 +24,10 @@
                     <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
                 </svg>
                 @if($currentRoute === 'home')
-                    <span class="absolute -top-1 right-0 w-1.5 h-1.5 rounded-full bg-[#8C6D46] active-tab-dot"></span>
+                    <span class="absolute -top-1 right-0 w-1.5 h-1.5 rounded-full bg-[#8C6D46]"></span>
                 @endif
             </div>
-            <span class="text-[10px] font-bold tracking-tight mt-1 {{ $currentRoute === 'home' ? 'font-extrabold text-[#8C6D46]' : 'font-medium' }}">Home</span>
+            <span class="text-[10px] tracking-tight mt-1 {{ $currentRoute === 'home' ? 'font-extrabold text-[#8C6D46]' : 'font-medium' }}">Home</span>
         </a>
 
         <!-- 2. Categories Tab -->
@@ -39,22 +39,20 @@
                     <path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
                 </svg>
             </div>
-            <span class="text-[10px] font-bold tracking-tight mt-1 font-medium">Categories</span>
+            <span class="text-[10px] tracking-tight mt-1 font-medium">Categories</span>
         </button>
 
-        <!-- 3. Studio / Trends Tab -->
-        <a href="{{ route('shop.index', ['collection' => 'new-arrivals']) }}" 
-           class="flex flex-col items-center justify-center py-1 group relative transition-all {{ $currentCollection === 'new-arrivals' ? 'text-[#8C6D46]' : 'text-zinc-500 hover:text-zinc-900' }}">
+        <!-- 3. Search Tab -->
+        <button type="button" 
+                @click="$store.nav.searchOpen = true" 
+                class="flex flex-col items-center justify-center py-1 group relative transition-all text-zinc-500 hover:text-zinc-900">
             <div class="relative flex items-center justify-center">
-                <svg class="w-5 h-5 transition-transform duration-200 group-active:scale-90 {{ $currentCollection === 'new-arrivals' ? 'stroke-[2.2]' : 'stroke-[1.8]' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
+                <svg class="w-5 h-5 transition-transform duration-200 group-active:scale-90 stroke-[1.8]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                 </svg>
-                @if($currentCollection === 'new-arrivals')
-                    <span class="absolute -top-1 right-0 w-1.5 h-1.5 rounded-full bg-[#8C6D46] active-tab-dot"></span>
-                @endif
             </div>
-            <span class="text-[10px] font-bold tracking-tight mt-1 {{ $currentCollection === 'new-arrivals' ? 'font-extrabold text-[#8C6D46]' : 'font-medium' }}">Studio</span>
-        </a>
+            <span class="text-[10px] tracking-tight mt-1 font-medium">Search</span>
+        </button>
 
         <!-- 4. Wishlist Tab -->
         <a href="{{ route('wishlist.index') }}" 
@@ -70,10 +68,10 @@
                     {{ $wishlistInitialCount }}
                 </span>
             </div>
-            <span class="text-[10px] font-bold tracking-tight mt-1 {{ $currentRoute === 'wishlist.index' ? 'font-extrabold text-[#8C6D46]' : 'font-medium' }}">Wishlist</span>
+            <span class="text-[10px] tracking-tight mt-1 {{ $currentRoute === 'wishlist.index' ? 'font-extrabold text-[#8C6D46]' : 'font-medium' }}">Wishlist</span>
         </a>
 
-        <!-- 5. Profile Tab -->
+        <!-- 5. Account Tab -->
         <a href="{{ Auth::check() ? route('account.dashboard') : route('login') }}" 
            class="flex flex-col items-center justify-center py-1 group relative transition-all {{ str_starts_with($currentRoute, 'account.') || $currentRoute === 'login' || $currentRoute === 'register' ? 'text-[#8C6D46]' : 'text-zinc-500 hover:text-zinc-900' }}">
             <div class="relative flex items-center justify-center">
@@ -87,8 +85,8 @@
                     </svg>
                 @endauth
             </div>
-            <span class="text-[10px] font-bold tracking-tight mt-1 {{ str_starts_with($currentRoute, 'account.') ? 'font-extrabold text-[#8C6D46]' : 'font-medium' }}">
-                {{ Auth::check() ? 'Profile' : 'Profile' }}
+            <span class="text-[10px] tracking-tight mt-1 {{ str_starts_with($currentRoute, 'account.') ? 'font-extrabold text-[#8C6D46]' : 'font-medium' }}">
+                {{ Auth::check() ? 'Account' : 'Account' }}
             </span>
         </a>
 

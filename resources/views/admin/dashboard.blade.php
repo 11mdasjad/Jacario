@@ -117,8 +117,8 @@
                     @forelse($lowStockVariants as $var)
                         <div class="p-3 bg-zinc-50 rounded-xl border border-zinc-200 flex items-center justify-between text-xs">
                             <div>
-                                <p class="font-bold text-zinc-900">{{ $var->product->name }}</p>
-                                <p class="text-[11px] text-zinc-500">{{ $var->size->name }} / {{ $var->color->name }} (SKU: {{ $var->sku }})</p>
+                                <p class="font-bold text-zinc-900">{{ $var->product?->name ?? 'Discontinued Item' }}</p>
+                                <p class="text-[11px] text-zinc-500">{{ $var->size?->name ?? 'Standard' }} / {{ $var->color?->name ?? 'Standard' }} (SKU: {{ $var->sku ?? 'N/A' }})</p>
                             </div>
                             <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-900 border border-amber-300">
                                 {{ $var->stock_quantity }} left
