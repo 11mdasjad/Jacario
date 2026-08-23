@@ -4,9 +4,9 @@
 
 @section('content')
 
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10" x-data="{ couponInput: '' }">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10" x-data="{ couponInput: '' }">
     
-    <h1 class="text-3xl font-serif-luxury font-bold text-zinc-900 tracking-tight mb-8">
+    <h1 class="text-xl sm:text-3xl font-serif-luxury font-bold text-zinc-900 tracking-tight mb-6 sm:mb-8">
         Your Shopping Bag
     </h1>
 
@@ -217,7 +217,7 @@
     </div>
 
     <!-- Myntra-Style Mobile Sticky Bottom Checkout Bar -->
-    <div class="fixed bottom-0 inset-x-0 bg-white border-t border-zinc-200 px-4 py-3 z-40 lg:hidden shadow-[0_-4px_20px_rgba(0,0,0,0.12)] flex items-center justify-between pb-safe"
+    <div class="fixed bottom-16 inset-x-0 bg-white border-t border-zinc-200 px-4 py-3 z-30 lg:hidden lg:bottom-0 shadow-[0_-4px_20px_rgba(0,0,0,0.12)] flex items-center justify-between pb-safe"
          x-show="$store.cartDrawer.cartData.items && $store.cartDrawer.cartData.items.length > 0">
         <div>
             <span class="text-[10px] text-zinc-500 block uppercase tracking-wider font-semibold">Total Amount</span>

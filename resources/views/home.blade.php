@@ -314,37 +314,37 @@
                 <h2 class="text-2xl sm:text-4xl font-serif-luxury font-bold text-zinc-950">Curated Silhouettes</h2>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6">
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-6">
                 <!-- 1. Tailored Regular Fit -->
-                <a href="{{ route('shop.index', ['fit' => ['Regular Fit']]) }}" class="group relative rounded-3xl bg-zinc-900 overflow-hidden aspect-[4/5] border border-zinc-200 shadow-md">
+                <a href="{{ route('shop.index', ['fit' => ['Regular Fit']]) }}" class="group relative rounded-2xl sm:rounded-3xl bg-zinc-900 overflow-hidden aspect-[3/4] sm:aspect-[4/5] border border-zinc-200 shadow-md">
                     <img src="https://images.unsplash.com/photo-1578932750294-f5075e85f44a?w=900&auto=format&fit=crop&q=80" alt="Regular Fit Polo" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-80 group-hover:opacity-90">
                     <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent"></div>
-                    <div class="absolute bottom-6 left-6 right-6 space-y-1.5">
-                        <span class="text-[10px] font-bold uppercase tracking-widest text-[#DFCAAB]">Classic Silhouette</span>
-                        <h3 class="text-xl font-serif-luxury font-bold text-white group-hover:text-[#DFCAAB] transition-colors">Tailored Regular Fit</h3>
-                        <p class="text-xs text-zinc-300 font-light">Engineered for timeless proportions with balanced chest drape.</p>
+                    <div class="absolute bottom-4 sm:bottom-6 left-4 sm:left-6 right-4 sm:right-6 space-y-1 sm:space-y-1.5">
+                        <span class="text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-[#DFCAAB]">Classic Silhouette</span>
+                        <h3 class="text-sm sm:text-xl font-serif-luxury font-bold text-white group-hover:text-[#DFCAAB] transition-colors">Tailored Regular Fit</h3>
+                        <p class="text-[10px] sm:text-xs text-zinc-300 font-light hidden sm:block">Engineered for timeless proportions with balanced chest drape.</p>
                     </div>
                 </a>
 
                 <!-- 2. Sartorial Slim Fit -->
-                <a href="{{ route('shop.index', ['fit' => ['Slim Fit']]) }}" class="group relative rounded-3xl bg-zinc-900 overflow-hidden aspect-[4/5] border border-zinc-200 shadow-md">
+                <a href="{{ route('shop.index', ['fit' => ['Slim Fit']]) }}" class="group relative rounded-2xl sm:rounded-3xl bg-zinc-900 overflow-hidden aspect-[3/4] sm:aspect-[4/5] border border-zinc-200 shadow-md">
                     <img src="https://images.unsplash.com/photo-1516257984-b1b4d707412e?w=900&auto=format&fit=crop&q=80" alt="Slim Fit Polo" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-80 group-hover:opacity-90">
                     <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent"></div>
-                    <div class="absolute bottom-6 left-6 right-6 space-y-1.5">
-                        <span class="text-[10px] font-bold uppercase tracking-widest text-[#DFCAAB]">Sculpted Cut</span>
-                        <h3 class="text-xl font-serif-luxury font-bold text-white group-hover:text-[#DFCAAB] transition-colors">Sartorial Slim Fit</h3>
-                        <p class="text-xs text-zinc-300 font-light">Tapered waist and contoured sleeves designed for athletic builds.</p>
+                    <div class="absolute bottom-4 sm:bottom-6 left-4 sm:left-6 right-4 sm:right-6 space-y-1 sm:space-y-1.5">
+                        <span class="text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-[#DFCAAB]">Sculpted Cut</span>
+                        <h3 class="text-sm sm:text-xl font-serif-luxury font-bold text-white group-hover:text-[#DFCAAB] transition-colors">Sartorial Slim Fit</h3>
+                        <p class="text-[10px] sm:text-xs text-zinc-300 font-light hidden sm:block">Tapered waist and contoured sleeves designed for athletic builds.</p>
                     </div>
                 </a>
 
                 <!-- 3. Mulberry Silk & Supima -->
-                <a href="{{ route('shop.index', ['fabric' => 'Silk']) }}" class="group relative rounded-3xl bg-zinc-900 overflow-hidden aspect-[4/5] border border-zinc-200 shadow-md">
+                <a href="{{ route('shop.index', ['fabric' => 'Silk']) }}" class="group relative rounded-2xl sm:rounded-3xl bg-zinc-900 overflow-hidden aspect-[3/4] sm:aspect-[4/5] border border-zinc-200 shadow-md col-span-2 md:col-span-1">
                     <img src="https://images.unsplash.com/photo-1520975954732-35dd22299614?w=900&auto=format&fit=crop&q=80" alt="Silk Blend Polo" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-80 group-hover:opacity-90">
                     <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent"></div>
-                    <div class="absolute bottom-6 left-6 right-6 space-y-1.5">
-                        <span class="text-[10px] font-bold uppercase tracking-widest text-[#DFCAAB]">Haute Yarns</span>
-                        <h3 class="text-xl font-serif-luxury font-bold text-white group-hover:text-[#DFCAAB] transition-colors">Mulberry Silk & Supima®</h3>
-                        <p class="text-xs text-zinc-300 font-light">Ultra-fine gauge knit offering silken luster and thermal airflow.</p>
+                    <div class="absolute bottom-4 sm:bottom-6 left-4 sm:left-6 right-4 sm:right-6 space-y-1 sm:space-y-1.5">
+                        <span class="text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-[#DFCAAB]">Haute Yarns</span>
+                        <h3 class="text-sm sm:text-xl font-serif-luxury font-bold text-white group-hover:text-[#DFCAAB] transition-colors">Mulberry Silk & Supima®</h3>
+                        <p class="text-[10px] sm:text-xs text-zinc-300 font-light hidden sm:block">Ultra-fine gauge knit offering silken luster and thermal airflow.</p>
                     </div>
                 </a>
             </div>
@@ -618,9 +618,9 @@
                 <h2 class="text-2xl sm:text-3xl font-serif-luxury font-bold text-zinc-950">What Our Clients Say</h2>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="flex overflow-x-auto no-scrollbar gap-4 pb-2 md:grid md:grid-cols-3 md:overflow-visible md:pb-0 -mx-4 px-4 md:mx-0 md:px-0">
                 @foreach($featuredReviews->take(3) as $review)
-                    <div class="p-6 sm:p-8 rounded-3xl bg-[#FAF8F5] border border-zinc-200 flex flex-col justify-between space-y-4">
+                    <div class="min-w-[280px] sm:min-w-0 p-5 sm:p-8 rounded-2xl sm:rounded-3xl bg-[#FAF8F5] border border-zinc-200 flex flex-col justify-between space-y-3 sm:space-y-4 shrink-0 md:shrink">
                         <div class="space-y-2.5">
                             <div class="flex items-center space-x-1 text-amber-500">
                                 @for($i = 0; $i < $review->rating; $i++)
@@ -644,7 +644,7 @@
          13. VIP SOCIETY NEWSLETTER
          ========================================== -->
     <section class="py-16 bg-[#FAF8F5] border-t border-zinc-200">
-        <div class="max-w-4xl mx-auto px-4 text-center space-y-5 bg-gradient-to-br from-[#F5EFEB] via-[#EFE7DE] to-[#E8DDD1] p-8 sm:p-14 rounded-3xl border border-[#DDCFBF]">
+        <div class="max-w-4xl mx-auto px-4 text-center space-y-4 sm:space-y-5 bg-gradient-to-br from-[#F5EFEB] via-[#EFE7DE] to-[#E8DDD1] p-6 sm:p-14 rounded-2xl sm:rounded-3xl border border-[#DDCFBF]">
             <p class="text-xs font-bold uppercase tracking-[0.25em] text-[#8C6D46]">Private Archive</p>
             <h2 class="text-2xl sm:text-4xl font-serif-luxury font-bold text-zinc-950">Join the JACARIO Society</h2>
             <p class="text-xs sm:text-sm text-zinc-600 max-w-md mx-auto font-light">

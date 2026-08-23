@@ -4,18 +4,18 @@
 
 @section('content')
 
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10" x-data="{ 
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10 pb-24 lg:pb-10" x-data="{ 
     useSavedAddress: {{ $savedAddresses->isNotEmpty() ? 'true' : 'false' }},
     selectedAddressId: '{{ $savedAddresses->firstWhere('is_default', true)?->id ?? $savedAddresses->first()?->id ?? '' }}',
     paymentMethod: 'razorpay'
 }">
     
-    <div class="mb-8">
-        <h1 class="text-3xl font-serif-luxury font-bold text-zinc-900 tracking-tight">Express Checkout</h1>
+    <div class="mb-6 sm:mb-8">
+        <h1 class="text-xl sm:text-3xl font-serif-luxury font-bold text-zinc-900 tracking-tight">Express Checkout</h1>
         <p class="text-xs text-zinc-500 mt-1">Direct from our Mumbai atelier to your doorstep with full tracking</p>
     </div>
 
-    <form method="POST" action="{{ route('checkout.order') }}">
+    <form method="POST" action="{{ route('checkout.order') }}" id="checkout-form">
         @csrf
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
@@ -255,6 +255,18 @@
         </div>
 
     </form>
+
+    <!-- Mobile Sticky Checkout Bar -->
+    <div class="fixed bottom-16 inset-x-0 bg-white border-t border-zinc-200 px-4 py-3 z-30 lg:hidden shadow-[0_-4px_20px_rgba(0,0,0,0.12)] flex items-center justify-between pb-safe">
+        <div>
+            <span class="text-[10px] text-zinc-500 block uppercase tracking-wider font-semibold">Total Payable</span>
+            <span class="text-base font-bold text-zinc-950">₹{{ number_format($cartSummary['total']) }}</span>
+        </div>
+        <button type="submit" form="checkout-form" class="px-6 py-3 bg-[#0B0D10] text-[#DFCAAB] text-xs font-bold uppercase tracking-wider rounded-xl shadow-md flex items-center space-x-1.5 active:scale-95 transition-all">
+            <span>Place Order</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+        </button>
+    </div>
 
 </div>
 

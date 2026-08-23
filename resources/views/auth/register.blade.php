@@ -4,8 +4,8 @@
 
 @section('content')
 
-<div class="min-h-[75vh] flex items-center justify-center px-4 sm:px-6 lg:px-8 py-16">
-    <div class="max-w-md w-full bg-white rounded-2xl border border-zinc-200 shadow-2xl p-8 sm:p-10 space-y-8">
+<div class="min-h-[75vh] flex items-center justify-center px-4 sm:px-6 lg:px-8 py-8 sm:py-16">
+    <div class="max-w-md w-full bg-white rounded-2xl border border-zinc-200 shadow-2xl p-5 sm:p-8 space-y-6 sm:space-y-8">
         
         <div class="text-center space-y-3">
             <div class="flex justify-center">

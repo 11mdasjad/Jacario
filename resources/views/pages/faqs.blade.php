@@ -4,11 +4,11 @@
 
 @section('content')
 
-<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-16">
     
     <div class="text-center space-y-3 mb-12">
         <span class="text-xs font-bold uppercase tracking-[0.25em] text-[#A4845B]">Help & Guidance</span>
-        <h1 class="text-3xl sm:text-4xl font-serif-luxury font-bold text-zinc-900">Frequently Asked Questions</h1>
+        <h1 class="text-xl sm:text-3xl lg:text-4xl font-serif-luxury font-bold text-zinc-900">Frequently Asked Questions</h1>
         <p class="text-xs sm:text-sm text-zinc-500 font-light max-w-md mx-auto">
             Everything you need to know about our luxury Polo T-Shirts, doorstep exchanges, sizing, and international logistics.
         </p>

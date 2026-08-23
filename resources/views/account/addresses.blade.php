@@ -4,14 +4,14 @@
 
 @section('content')
 
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10" x-data="{ newAddressModal: false }">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10" x-data="{ newAddressModal: false }">
     
-    <div class="flex items-center justify-between pb-6 border-b border-zinc-200 mb-8">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-6 border-b border-zinc-200 mb-6 sm:mb-8 gap-3">
         <div>
-            <h1 class="text-3xl font-serif-luxury font-bold text-zinc-900 tracking-tight">Saved Addresses</h1>
+            <h1 class="text-xl sm:text-3xl font-serif-luxury font-bold text-zinc-900 tracking-tight">Saved Addresses</h1>
             <p class="text-xs text-zinc-500 mt-1">Manage delivery locations for swift, one-touch checkout</p>
         </div>
-        <button type="button" @click="newAddressModal = true" class="px-5 py-2.5 bg-zinc-900 hover:bg-black text-[#DFCAAB] text-xs font-bold uppercase tracking-wider rounded-lg transition-colors">
+        <button type="button" @click="newAddressModal = true" class="w-full sm:w-auto px-5 py-2.5 bg-zinc-900 hover:bg-black text-[#DFCAAB] text-xs font-bold uppercase tracking-wider rounded-lg transition-colors text-center">
             + Add New Address
         </button>
     </div>

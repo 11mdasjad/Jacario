@@ -165,15 +165,15 @@
                 </div>
 
                 <!-- Price Block -->
-                <div class="flex items-baseline space-x-3">
+                <div class="flex items-baseline flex-wrap gap-x-2 gap-y-1">
                     @if($product->has_discount)
-                        <span class="text-3xl font-bold text-zinc-950">₹{{ number_format($product->sale_price) }}</span>
-                        <span class="text-base text-zinc-400 line-through">₹{{ number_format($product->base_price) }}</span>
-                        <span class="text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                        <span class="text-2xl sm:text-3xl font-bold text-zinc-950">₹{{ number_format($product->sale_price) }}</span>
+                        <span class="text-sm sm:text-base text-zinc-400 line-through">₹{{ number_format($product->base_price) }}</span>
+                        <span class="text-[10px] sm:text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
                             Save ₹{{ number_format($product->base_price - $product->sale_price) }} ({{ $product->discount_percent }}% OFF)
                         </span>
                     @else
-                        <span class="text-3xl font-bold text-zinc-950">₹{{ number_format($product->base_price) }}</span>
+                        <span class="text-2xl sm:text-3xl font-bold text-zinc-950">₹{{ number_format($product->base_price) }}</span>
                     @endif
                 </div>
                 <p class="text-[11px] text-zinc-500">Inclusive of all duties & taxes. Complimentary express courier dispatch.</p>
@@ -458,7 +458,7 @@
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-6">
                     @foreach($relatedProducts as $relProduct)
                         <x-product-card :product="$relProduct" />
                     @endforeach
@@ -541,7 +541,7 @@
     </div>
 
     <!-- Myntra-Style Mobile Sticky Bottom Action Bar (WISHLIST + ADD TO BAG) -->
-    <div class="fixed bottom-0 inset-x-0 bg-white border-t border-zinc-200 px-3 py-2.5 z-40 lg:hidden shadow-[0_-4px_20px_rgba(0,0,0,0.12)] flex items-center space-x-2.5 pb-safe">
+    <div class="fixed bottom-16 inset-x-0 bg-white border-t border-zinc-200 px-3 py-2.5 z-30 lg:hidden lg:bottom-0 shadow-[0_-4px_20px_rgba(0,0,0,0.12)] flex items-center space-x-2.5 pb-safe">
         
         <!-- 1. Wishlist Button -->
         <button type="button" 

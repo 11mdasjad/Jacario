@@ -4,14 +4,14 @@
 
 @section('content')
 
-<div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+<div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-16">
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
         
         <!-- Left: Coordinates (5 Cols) -->
         <div class="lg:col-span-5 space-y-8">
             <div>
                 <span class="text-xs font-bold uppercase tracking-[0.25em] text-[#A4845B]">Client Concierge</span>
-                <h1 class="text-3xl font-serif-luxury font-bold text-zinc-900 tracking-tight mt-1">
+                <h1 class="text-xl sm:text-3xl font-serif-luxury font-bold text-zinc-900 tracking-tight mt-1">
                     Connect with Our Atelier
                 </h1>
                 <p class="text-xs sm:text-sm text-zinc-500 mt-2 font-light leading-relaxed">

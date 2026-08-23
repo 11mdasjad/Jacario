@@ -4,10 +4,10 @@
 
 @section('content')
 
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
     
-    <div class="mb-8">
-        <h1 class="text-3xl font-serif-luxury font-bold text-zinc-900 tracking-tight">Client Settings & Security</h1>
+    <div class="mb-6 sm:mb-8">
+        <h1 class="text-xl sm:text-3xl font-serif-luxury font-bold text-zinc-900 tracking-tight">Client Settings & Security</h1>
         <p class="text-xs text-zinc-500 mt-1">Manage your personal credentials and encrypted password</p>
     </div>
 
@@ -24,7 +24,7 @@
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
         
         <!-- Personal Information Card -->
-        <div class="p-8 bg-white rounded-2xl border border-zinc-200 shadow-sm space-y-6">
+        <div class="p-5 sm:p-8 bg-white rounded-2xl border border-zinc-200 shadow-sm space-y-6">
             <div class="pb-3 border-b border-zinc-100">
                 <h3 class="text-sm font-bold uppercase tracking-wider text-zinc-900">Personal Information</h3>
                 <p class="text-xs text-zinc-500 mt-0.5">Your name and communication contact</p>

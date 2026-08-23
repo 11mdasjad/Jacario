@@ -414,7 +414,7 @@
     </div>
 
     <!-- Myntra-Style Sticky Bottom Dual Action Bar on Mobile (SORT | FILTER) -->
-    <div class="fixed bottom-16 inset-x-0 z-30 bg-white border-t border-zinc-200 lg:hidden shadow-[0_-4px_16px_rgba(0,0,0,0.08)] flex items-center h-12">
+    <div class="fixed bottom-16 inset-x-0 z-30 bg-white border-t border-zinc-200 lg:hidden shadow-[0_-4px_16px_rgba(0,0,0,0.08)] flex items-center h-12 lg:bottom-0">
         
         <!-- 1. SORT Button -->
         <button type="button" 

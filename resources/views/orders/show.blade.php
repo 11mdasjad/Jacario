@@ -4,13 +4,13 @@
 
 @section('content')
 
-<div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10" x-data="{ cancelModal: false }">
+<div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10" x-data="{ cancelModal: false }">
     
     <!-- Top Bar -->
     <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-6 border-b border-zinc-200 gap-4 mb-8">
         <div>
             <div class="flex items-center space-x-3">
-                <h1 class="text-2xl sm:text-3xl font-serif-luxury font-bold text-zinc-900 tracking-tight">
+                <h1 class="text-lg sm:text-3xl font-serif-luxury font-bold text-zinc-900 tracking-tight">
                     Order #{{ $order->order_number }}
                 </h1>
                 <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border {{ $order->status_badge_color }}">
@@ -20,7 +20,7 @@
             <p class="text-xs text-zinc-500 mt-1">Placed on {{ $order->created_at->format('F j, Y \a\t g:i A') }}</p>
         </div>
 
-        <div class="flex items-center space-x-3">
+        <div class="flex flex-wrap items-center gap-2 sm:gap-3">
             @if($order->can_be_cancelled)
                 <button type="button" @click="cancelModal = true" class="px-4 py-2 border border-rose-300 text-rose-700 hover:bg-rose-50 rounded-lg text-xs font-bold uppercase tracking-wider transition-colors">
                     Cancel Order
@@ -34,7 +34,7 @@
     </div>
 
     <!-- Live Fulfillment Progress Timeline -->
-    <div class="p-8 bg-white rounded-2xl border border-zinc-200 shadow-sm mb-8 space-y-6">
+    <div class="p-4 sm:p-8 bg-white rounded-2xl border border-zinc-200 shadow-sm mb-6 sm:mb-8 space-y-4 sm:space-y-6">
         <h3 class="text-sm font-bold uppercase tracking-wider text-zinc-900">
             Fulfillment & Delivery Progress
         </h3>

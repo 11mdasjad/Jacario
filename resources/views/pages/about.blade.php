@@ -6,10 +6,10 @@
 @section('content')
 
     <!-- Hero Header -->
-    <section class="relative bg-gradient-to-b from-[#F7F4EE] via-[#FAF8F5] to-white text-zinc-900 py-24 border-b border-zinc-200/80">
+    <section class="relative bg-gradient-to-b from-[#F7F4EE] via-[#FAF8F5] to-white text-zinc-900 py-12 sm:py-24 border-b border-zinc-200/80">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
             <span class="text-xs font-bold uppercase tracking-[0.25em] text-[#8C6D46]">The JACARIO Atelier</span>
-            <h1 class="text-4xl sm:text-6xl font-serif-luxury font-bold text-zinc-950 tracking-tight leading-tight">
+            <h1 class="text-2xl sm:text-4xl lg:text-6xl font-serif-luxury font-bold text-zinc-950 tracking-tight leading-tight">
                 One Silhouette. <br>
                 <span class="gold-gradient-text">Zero Compromises.</span>
             </h1>
@@ -20,7 +20,7 @@
     </section>
 
     <!-- Narrative Section -->
-    <section class="py-20 bg-white">
+    <section class="py-10 sm:py-20 bg-white">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
             
             <div class="space-y-6">

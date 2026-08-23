@@ -4,11 +4,11 @@
 
 @section('content')
 
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
     
-    <div class="flex items-center justify-between pb-6 border-b border-zinc-200 mb-8">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-6 border-b border-zinc-200 mb-6 sm:mb-8 gap-3">
         <div>
-            <h1 class="text-3xl font-serif-luxury font-bold text-zinc-900 tracking-tight">My Wishlist</h1>
+            <h1 class="text-xl sm:text-3xl font-serif-luxury font-bold text-zinc-900 tracking-tight">My Wishlist</h1>
             <p class="text-xs text-zinc-500 mt-1">Your curated selection of luxury Polo T-Shirts</p>
         </div>
         <a href="{{ route('shop.index') }}" class="text-xs font-bold uppercase tracking-widest text-zinc-900 hover:text-[#A4845B] transition-colors">

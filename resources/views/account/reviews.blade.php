@@ -4,10 +4,10 @@
 
 @section('content')
 
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
     
-    <div class="mb-8">
-        <h1 class="text-3xl font-serif-luxury font-bold text-zinc-900 tracking-tight">My Product Reviews</h1>
+    <div class="mb-6 sm:mb-8">
+        <h1 class="text-xl sm:text-3xl font-serif-luxury font-bold text-zinc-900 tracking-tight">My Product Reviews</h1>
         <p class="text-xs text-zinc-500 mt-1">Your published reviews and feedback on JACARIO Polo T-Shirts</p>
     </div>
 

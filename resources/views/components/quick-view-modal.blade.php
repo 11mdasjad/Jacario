@@ -64,7 +64,7 @@ style="display: none;"
                 <div class="grid grid-cols-1 sm:grid-cols-2">
                     
                     <!-- Left: Product Image Stage -->
-                    <div class="relative aspect-[4/5] bg-zinc-100 overflow-hidden">
+                    <div class="relative aspect-[4/3] sm:aspect-[4/5] bg-zinc-100 overflow-hidden">
                         <img :src="selectedImage" :alt="product.name" class="w-full h-full object-cover">
                         
                         <!-- Badges -->
@@ -76,7 +76,7 @@ style="display: none;"
                     </div>
 
                     <!-- Right: Product Details & Size Picker -->
-                    <div class="p-6 sm:p-8 flex flex-col justify-between space-y-4">
+                    <div class="p-4 sm:p-8 flex flex-col justify-between space-y-3 sm:space-y-4">
                         <div class="space-y-3">
                             <div class="flex items-center justify-between">
                                 <span class="text-[10px] font-bold uppercase tracking-widest text-[#8C6D46]" x-text="product.category_name"></span>
