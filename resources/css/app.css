@@ -175,11 +175,6 @@ input[type="number"] {
         -webkit-overflow-scrolling: touch;
     }
 
-    /* Ensure minimum touch target size for interactive elements */
-    button, a, [role="button"] {
-        min-height: 36px;
-    }
-
     /* Prevent text size adjustment on orientation change */
     html {
         -webkit-text-size-adjust: 100%;

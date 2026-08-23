@@ -126,26 +126,44 @@
         </div>
     </div>
 
-    <!-- Mobile Horizontal Category / Navigation Strip (All, New Arrivals, Best Sellers, Classic, Premium, Slim Fit) -->
+    <!-- Mobile Horizontal Category / Navigation Strip -->
     <div class="lg:hidden bg-[#FAF8F5] border-t border-zinc-200/80 px-3 py-2 overflow-x-auto no-scrollbar">
         <div class="flex items-center space-x-2 min-w-max">
-            <a href="{{ route('shop.index') }}" class="px-3 py-1 rounded-full text-[11px] font-bold tracking-tight transition-colors {{ !request('collection') && !request('category') && !request('fit') && !request('fabric') ? 'bg-zinc-950 text-white shadow-xs' : 'bg-white text-zinc-700 border border-zinc-200' }}">
-                All
+            <a href="{{ route('shop.index') }}" 
+               class="px-3.5 py-1.5 rounded-full text-xs font-bold tracking-tight transition-colors {{ !request('collection') && !request('category') && !request('fit') && !request('fabric') ? 'bg-zinc-950 text-white shadow-xs' : 'bg-white text-zinc-700 border border-zinc-200 hover:border-zinc-400' }}">
+                All Polos
             </a>
-            <a href="{{ route('shop.index', ['collection' => 'new-arrivals']) }}" class="px-3 py-1 rounded-full text-[11px] font-bold tracking-tight transition-colors {{ request('collection') === 'new-arrivals' ? 'bg-[#0B0D10] text-[#DFCAAB] shadow-xs' : 'bg-white text-zinc-700 border border-zinc-200' }}">
+            <a href="{{ route('shop.index', ['category' => 'mens-polo-t-shirts']) }}" 
+               class="px-3.5 py-1.5 rounded-full text-xs font-bold tracking-tight transition-colors {{ request('category') === 'mens-polo-t-shirts' ? 'bg-[#0B0D10] text-[#DFCAAB] shadow-xs' : 'bg-white text-zinc-700 border border-zinc-200 hover:border-zinc-400' }}">
+                Men's Polo
+            </a>
+            <a href="{{ route('shop.index', ['category' => 'round-neck-t-shirts']) }}" 
+               class="px-3.5 py-1.5 rounded-full text-xs font-bold tracking-tight transition-colors {{ request('category') === 'round-neck-t-shirts' ? 'bg-[#0B0D10] text-[#DFCAAB] shadow-xs' : 'bg-white text-zinc-700 border border-zinc-200 hover:border-zinc-400' }}">
+                Round Neck
+            </a>
+            <a href="{{ route('shop.index', ['collection' => 'new-arrivals']) }}" 
+               class="px-3.5 py-1.5 rounded-full text-xs font-bold tracking-tight transition-colors {{ request('collection') === 'new-arrivals' || request('category') === 'new-arrival-t-shirts' ? 'bg-[#0B0D10] text-[#DFCAAB] shadow-xs' : 'bg-white text-zinc-700 border border-zinc-200 hover:border-zinc-400' }}">
                 ✨ New Arrivals
             </a>
-            <a href="{{ route('shop.index', ['collection' => 'bestsellers']) }}" class="px-3 py-1 rounded-full text-[11px] font-bold tracking-tight transition-colors {{ request('collection') === 'bestsellers' ? 'bg-[#0B0D10] text-[#DFCAAB] shadow-xs' : 'bg-white text-zinc-700 border border-zinc-200' }}">
+            <a href="{{ route('shop.index', ['collection' => 'bestsellers']) }}" 
+               class="px-3.5 py-1.5 rounded-full text-xs font-bold tracking-tight transition-colors {{ request('collection') === 'bestsellers' ? 'bg-[#0B0D10] text-[#DFCAAB] shadow-xs' : 'bg-white text-zinc-700 border border-zinc-200 hover:border-zinc-400' }}">
                 🔥 Best Sellers
             </a>
-            <a href="{{ route('shop.index', ['fit' => ['Regular Fit']]) }}" class="px-3 py-1 rounded-full text-[11px] font-bold tracking-tight transition-colors bg-white text-zinc-700 border border-zinc-200">
+            <a href="{{ route('shop.index', ['fit' => ['Regular Fit']]) }}" 
+               class="px-3.5 py-1.5 rounded-full text-xs font-bold tracking-tight transition-colors {{ in_array('Regular Fit', (array)request('fit', [])) ? 'bg-[#0B0D10] text-[#DFCAAB] shadow-xs' : 'bg-white text-zinc-700 border border-zinc-200 hover:border-zinc-400' }}">
                 Classic Fit
             </a>
-            <a href="{{ route('shop.index', ['fabric' => 'Supima']) }}" class="px-3 py-1 rounded-full text-[11px] font-bold tracking-tight transition-colors bg-white text-zinc-700 border border-zinc-200">
-                Premium Supima®
-            </a>
-            <a href="{{ route('shop.index', ['fit' => ['Slim Fit']]) }}" class="px-3 py-1 rounded-full text-[11px] font-bold tracking-tight transition-colors bg-white text-zinc-700 border border-zinc-200">
+            <a href="{{ route('shop.index', ['fit' => ['Slim Fit']]) }}" 
+               class="px-3.5 py-1.5 rounded-full text-xs font-bold tracking-tight transition-colors {{ in_array('Slim Fit', (array)request('fit', [])) ? 'bg-[#0B0D10] text-[#DFCAAB] shadow-xs' : 'bg-white text-zinc-700 border border-zinc-200 hover:border-zinc-400' }}">
                 Slim Fit
+            </a>
+            <a href="{{ route('shop.index', ['fabric' => 'Supima']) }}" 
+               class="px-3.5 py-1.5 rounded-full text-xs font-bold tracking-tight transition-colors {{ request('fabric') === 'Supima' ? 'bg-[#0B0D10] text-[#DFCAAB] shadow-xs' : 'bg-white text-zinc-700 border border-zinc-200 hover:border-zinc-400' }}">
+                Supima®
+            </a>
+            <a href="{{ route('shop.index', ['fabric' => 'Silk']) }}" 
+               class="px-3.5 py-1.5 rounded-full text-xs font-bold tracking-tight transition-colors {{ request('fabric') === 'Silk' ? 'bg-[#0B0D10] text-[#DFCAAB] shadow-xs' : 'bg-white text-zinc-700 border border-zinc-200 hover:border-zinc-400' }}">
+                Mulberry Silk
             </a>
         </div>
     </div>

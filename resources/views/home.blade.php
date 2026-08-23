@@ -78,7 +78,7 @@
              @keydown.window.arrow-right="nextSlide()">
 
         <!-- Slides Container -->
-        <div class="relative w-full h-[490px] sm:h-[600px] lg:h-[700px] overflow-hidden">
+        <div class="relative w-full h-[520px] sm:h-[600px] lg:h-[700px] overflow-hidden">
             @foreach($banners as $index => $banner)
                 @php
                     $align = $banner->text_alignment ?? 'left';
@@ -123,17 +123,17 @@
                         <img src="{{ $banner->image_url }}" 
                              alt="{{ $banner->title }}" 
                              loading="{{ $index === 0 ? 'eager' : 'lazy' }}"
-                             class="w-full h-full object-cover object-[center_15%] sm:object-[center_25%] transform transition-transform duration-1000 ease-out filter brightness-[0.88] sm:brightness-[0.90] contrast-[1.05]">
+                             class="w-full h-full object-cover object-[70%_center] sm:object-[center_25%] transform transition-transform duration-1000 ease-out filter brightness-[0.88] sm:brightness-[0.90] contrast-[1.05]">
                     </picture>
 
                     <!-- Rich Luxury Gradient Overlays for High Legibility on Mobile & Desktop -->
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-black/20 lg:from-transparent pointer-events-none"></div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/55 to-black/15 lg:from-transparent pointer-events-none"></div>
                     <div class="absolute inset-0 bg-gradient-to-l from-black/85 via-black/55 to-transparent w-full lg:w-3/5 ml-auto pointer-events-none hidden lg:block"></div>
                     <div class="absolute inset-0 bg-radial-vignette opacity-35 pointer-events-none"></div>
 
                     <!-- Slide Editorial Content -->
                     <div class="absolute inset-0 flex items-end sm:items-center z-10">
-                        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pb-14 sm:pb-20 pt-4 flex flex-col lg:flex-row items-center justify-between gap-6">
+                        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pb-16 sm:pb-20 pt-4 flex flex-col lg:flex-row items-center justify-between gap-6">
                             
                             <!-- Left Floating Atelier Rack Pill (Desktop) -->
                             <div class="hidden lg:flex flex-col space-y-2.5 max-w-xs self-end mb-6">
@@ -147,7 +147,7 @@
                             <div class="max-w-xl ml-auto text-left space-y-2.5 sm:space-y-5 w-full">
                                 
                                 @if($banner->badge_text)
-                                    <div class="inline-flex items-center space-x-2 px-3 sm:px-4 py-1 sm:py-1.5 rounded-full bg-black/60 backdrop-blur-md border border-[#DFCAAB]/50 text-[#DFCAAB] text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] shadow-lg">
+                                    <div class="inline-flex items-center space-x-1.5 px-2.5 sm:px-4 py-0.5 sm:py-1.5 rounded-full bg-black/70 backdrop-blur-md border border-[#DFCAAB]/50 text-[#DFCAAB] text-[9px] sm:text-xs font-bold uppercase tracking-[0.2em] shadow-lg">
                                         <span class="w-1.5 h-1.5 rounded-full bg-[#DFCAAB] animate-pulse"></span>
                                         <span>{{ $banner->badge_text }}</span>
                                     </div>
@@ -166,7 +166,7 @@
                                 <!-- CTA Buttons: Sleek Gold Pill + Secondary -->
                                 <div class="pt-1.5 sm:pt-3 flex items-center gap-3 justify-start">
                                     <a href="{{ $banner->cta_url }}" 
-                                       class="px-6 sm:px-9 py-3 sm:py-4 bg-[#DFCAAB] hover:bg-white text-zinc-950 text-xs font-bold uppercase tracking-[0.2em] rounded-full sm:rounded-xl transition-all duration-300 shadow-2xl hover:scale-105 hover:shadow-[#DFCAAB]/25 inline-flex items-center space-x-2 group">
+                                       class="px-6 sm:px-9 py-2.5 sm:py-4 bg-[#DFCAAB] hover:bg-white text-zinc-950 text-xs font-bold uppercase tracking-[0.2em] rounded-full sm:rounded-xl transition-all duration-300 shadow-2xl hover:scale-105 hover:shadow-[#DFCAAB]/25 inline-flex items-center space-x-2 group">
                                         <span>{{ $banner->cta_text }}</span>
                                         <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                                     </a>
@@ -201,13 +201,13 @@
         </button>
 
         <!-- Bottom Luxury Progress Bar & Slide Controller (Visible on Mobile & Desktop) -->
-        <div class="absolute bottom-3 sm:bottom-6 inset-x-0 z-20">
+        <div class="absolute bottom-2.5 sm:bottom-6 inset-x-0 z-20">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex items-center justify-between bg-black/60 backdrop-blur-xl border border-white/20 px-3.5 sm:px-5 py-1.5 sm:py-2.5 rounded-full sm:rounded-2xl max-w-[280px] sm:max-w-xl mx-auto shadow-2xl">
+                <div class="flex items-center justify-between bg-black/75 backdrop-blur-xl border border-white/20 px-3.5 sm:px-5 py-1.5 sm:py-2.5 rounded-full max-w-[270px] sm:max-w-xl mx-auto shadow-2xl">
                     
                     <!-- Slide Counter -->
-                    <div class="flex items-center space-x-1 text-[10px] sm:text-xs font-serif-luxury tracking-widest text-[#DFCAAB]">
-                        <span class="font-bold text-xs sm:text-sm" x-text="String(currentSlide + 1).padStart(2, '0')">01</span>
+                    <div class="flex items-center space-x-1 text-[10px] sm:text-xs font-serif-luxury tracking-widest text-[#DFCAAB] shrink-0">
+                        <span class="font-bold text-xs" x-text="String(currentSlide + 1).padStart(2, '0')">01</span>
                         <span class="text-zinc-500">/</span>
                         <span class="text-zinc-400" x-text="String(totalSlides).padStart(2, '0')">05</span>
                     </div>
@@ -217,7 +217,7 @@
                         @foreach($banners as $index => $banner)
                             <button type="button" 
                                     @click="goToSlide({{ $index }})" 
-                                    class="relative h-1 sm:h-2 flex-1 rounded-full bg-white/20 overflow-hidden group cursor-pointer transition-all"
+                                    class="relative !min-h-0 h-1 sm:h-2 flex-1 rounded-full bg-white/25 overflow-hidden group cursor-pointer transition-all p-0 border-0"
                                     aria-label="Go to Slide {{ $index + 1 }}: {{ $banner->title }}">
                                 <!-- Filled Bar on active, full on past, zero on future -->
                                 <div class="absolute inset-y-0 left-0 bg-[#DFCAAB] rounded-full transition-all"
@@ -230,10 +230,10 @@
                     </div>
 
                     <!-- Pause / Resume Controls -->
-                    <div class="flex items-center space-x-1">
+                    <div class="flex items-center space-x-1 shrink-0">
                         <button type="button" 
                                 @click="togglePause()" 
-                                class="p-1 sm:p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-white/10 transition-colors"
+                                class="!min-h-0 p-1 sm:p-1.5 rounded-full text-zinc-300 hover:text-white hover:bg-white/10 transition-colors border-0 flex items-center justify-center"
                                 :title="isPaused ? 'Resume Autoplay' : 'Pause Autoplay'">
                             <template x-if="!isPaused">
                                 <svg class="w-3 h-3 sm:w-3.5 sm:h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
