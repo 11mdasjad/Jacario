@@ -204,6 +204,9 @@
                                     <img src="{{ $item['image_url'] }}" alt="{{ $item['product_name'] }}" class="w-full h-full object-contain">
                                 </div>
                                 <div class="flex-1 min-w-0">
+                                    @if(!empty($item['is_customized']))
+                                        <span class="text-[8px] font-black uppercase tracking-wider px-1.5 py-0.2 rounded bg-amber-100 text-[#8C6D46] border border-amber-300/60 inline-block mb-0.5">Bespoke Custom</span>
+                                    @endif
                                     <h4 class="text-xs font-bold text-zinc-900 truncate">{{ $item['product_name'] }}</h4>
                                     <p class="text-[11px] text-zinc-500">Size: <strong class="text-zinc-800">{{ $item['size'] }}</strong> • Color: {{ $item['color'] }}</p>
                                     <p class="text-[11px] text-zinc-500">Qty: {{ $item['quantity'] }} × ₹{{ number_format($item['unit_price']) }}</p>

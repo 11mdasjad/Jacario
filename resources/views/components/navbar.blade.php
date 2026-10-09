@@ -39,6 +39,18 @@
                     New Arrival T-Shirt
                 </a>
 
+                <!-- 4. Jacario Dedicated Customize Studio -->
+                <a href="{{ route('customize.index') }}" 
+                   class="group inline-flex items-center space-x-2 px-3 py-1.5 rounded-full text-xs uppercase font-extrabold tracking-[0.18em] transition-all duration-300 {{ request()->routeIs('customize.*') ? 'bg-[#0B0D10] text-[#DFCAAB] shadow-md border border-[#A4845B]/60' : 'bg-gradient-to-r from-amber-500/10 via-amber-600/10 to-amber-500/10 text-zinc-900 hover:bg-[#0B0D10] hover:text-[#DFCAAB] border border-amber-600/30 shadow-xs' }}">
+                    <span class="w-5 h-5 rounded-full bg-[#A4845B] text-white flex items-center justify-center shadow-xs transition-transform duration-300 group-hover:scale-110 group-hover:rotate-12">
+                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+                        </svg>
+                    </span>
+                    <span>Customize</span>
+                    <span class="text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded-sm bg-[#A4845B] text-white transition-colors group-hover:bg-[#DFCAAB] group-hover:text-zinc-950">STUDIO</span>
+                </a>
+
             </nav>
 
             <!-- Actions (Search, Wishlist, Cart Drawer) -->
@@ -233,7 +245,28 @@
 
                 <!-- Primary Category Navigation List -->
                 <div class="p-4 space-y-1">
-                    <p class="text-[10px] font-bold uppercase tracking-widest text-zinc-400 px-3 py-1">Shop by Category</p>
+                    <!-- Featured Jacario Customize Studio Option -->
+                    <div class="mb-3 p-1 rounded-2xl bg-gradient-to-r from-amber-500/20 via-amber-600/10 to-amber-700/20 border border-[#A4845B]/40">
+                        <a href="{{ route('customize.index') }}" @click="$store.nav.closeMobile()" class="flex items-center justify-between p-3 bg-zinc-950 text-white rounded-xl shadow-md group">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-8 h-8 rounded-lg bg-[#A4845B] text-white flex items-center justify-center shadow-xs">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <div class="flex items-center space-x-1.5">
+                                        <span class="text-xs font-black uppercase tracking-widest text-[#DFCAAB]">Customize Studio</span>
+                                        <span class="text-[8px] font-extrabold uppercase px-1.5 py-0.2 rounded bg-amber-400 text-zinc-950">HOT</span>
+                                    </div>
+                                    <p class="text-[10px] text-zinc-400">Polo & T-Shirt Bespoke Print</p>
+                                </div>
+                            </div>
+                            <svg class="w-4 h-4 text-[#A4845B] group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                        </a>
+                    </div>
+
+                    <p class="text-[10px] font-bold uppercase tracking-widest text-zinc-400 px-3 py-1">Shop Catalog</p>
 
                     <a href="{{ route('shop.index', ['category' => 'mens-polo-t-shirts']) }}" @click="$store.nav.closeMobile()" class="flex items-center justify-between px-3 py-3 text-xs font-bold tracking-wider uppercase text-zinc-900 hover:bg-zinc-50 rounded-xl transition-colors">
                         <div class="flex items-center space-x-3">

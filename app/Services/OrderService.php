@@ -5,6 +5,8 @@ namespace App\Services;
 use App\Models\Cart;
 use App\Models\Coupon;
 use App\Models\CouponUsage;
+use App\Models\CustomizableProduct;
+use App\Models\CustomizableProductVariant;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Payment;
@@ -36,11 +38,24 @@ class OrderService
         }
 
         return DB::transaction(function () use ($cart, $customerData, $shippingAddress, $paymentMethod, $billingAddress, $notes) {
-            // 1. Re-validate stock for each variant with exclusive lock
+            // 1. Re-validate stock for each item with exclusive lock
             foreach ($cart->items as $item) {
-                $variant = ProductVariant::lockForUpdate()->find($item->product_variant_id);
-                if (!$variant || !$variant->is_active || $variant->stock_quantity < $item->quantity) {
-                    throw new Exception("Product '{$variant->product->name}' in size {$variant->size->name} is no longer available in the requested quantity.");
+                if ($item->is_customized) {
+                    $customVariant = CustomizableProductVariant::lockForUpdate()
+                        ->where('customizable_product_id', $item->customizable_product_id)
+                        ->where('size_id', $item->custom_size_id)
+                        ->where('color_id', $item->custom_color_id)
+                        ->first();
+
+                    if ($customVariant && (!$customVariant->is_active || $customVariant->stock_quantity < $item->quantity)) {
+                        $prodName = $item->customizableProduct ? $item->customizableProduct->name : 'Custom Item';
+                        throw new Exception("Custom item '{$prodName}' is no longer available in the requested quantity.");
+                    }
+                } else {
+                    $variant = ProductVariant::lockForUpdate()->find($item->product_variant_id);
+                    if (!$variant || !$variant->is_active || $variant->stock_quantity < $item->quantity) {
+                        throw new Exception("Product '{$variant->product->name}' in size {$variant->size->name} is no longer available in the requested quantity.");
+                    }
                 }
             }
 
@@ -70,27 +85,68 @@ class OrderService
 
             // 4. Create snapshot order items and decrement inventory
             foreach ($cart->items as $item) {
-                $variant = $item->variant;
-                $product = $variant->product;
-                $primaryImg = $product->images->firstWhere('color_id', $variant->color_id) ?: $product->primaryImage;
+                if ($item->is_customized) {
+                    $customProd = $item->customizableProduct;
+                    $sizeName = $item->customSize ? $item->customSize->name : 'Custom Size';
+                    $colorName = $item->customColor ? $item->customColor->name : 'Custom Color';
+                    $colorHex = $item->customColor ? $item->customColor->hex_code : '#18181B';
+                    $sku = ($customProd ? $customProd->sku : 'JAC-CUST') . '-' . strtoupper(substr($colorName, 0, 3));
 
-                OrderItem::create([
-                    'order_id' => $order->id,
-                    'product_id' => $product->id,
-                    'product_variant_id' => $variant->id,
-                    'product_name' => $product->name,
-                    'size_name' => $variant->size->name,
-                    'color_name' => $variant->color->name,
-                    'color_hex' => $variant->color->hex_code,
-                    'sku' => $variant->sku,
-                    'image_path' => $primaryImg ? $primaryImg->image_path : null,
-                    'unit_price' => $item->unit_price,
-                    'quantity' => $item->quantity,
-                    'subtotal' => $item->subtotal,
-                ]);
+                    OrderItem::create([
+                        'order_id' => $order->id,
+                        'product_id' => null,
+                        'product_variant_id' => null,
+                        'is_customized' => true,
+                        'customizable_product_id' => $item->customizable_product_id,
+                        'customization_data' => $item->customization_data,
+                        'customization_preview_path' => $item->customization_preview_path,
+                        'artwork_file_path' => $item->artwork_file_path,
+                        'artwork_files' => $item->artwork_files,
+                        'customization_fee' => $item->customization_fee,
+                        'custom_production_status' => 'pending',
+                        'product_name' => 'Custom ' . ($customProd ? $customProd->name : 'Bespoke Item'),
+                        'size_name' => $sizeName,
+                        'color_name' => $colorName,
+                        'color_hex' => $colorHex,
+                        'sku' => $sku,
+                        'image_path' => $item->customization_preview_path ?: ($customProd ? $customProd->featured_image : null),
+                        'unit_price' => $item->unit_price,
+                        'quantity' => $item->quantity,
+                        'subtotal' => $item->subtotal,
+                    ]);
 
-                // Decrement stock
-                $variant->decrement('stock_quantity', $item->quantity);
+                    // Decrement custom stock
+                    $customVariant = CustomizableProductVariant::where('customizable_product_id', $item->customizable_product_id)
+                        ->where('size_id', $item->custom_size_id)
+                        ->where('color_id', $item->custom_color_id)
+                        ->first();
+                    if ($customVariant) {
+                        $customVariant->decrement('stock_quantity', $item->quantity);
+                    }
+                } else {
+                    $variant = $item->variant;
+                    $product = $variant->product;
+                    $primaryImg = $product->images->firstWhere('color_id', $variant->color_id) ?: $product->primaryImage;
+
+                    OrderItem::create([
+                        'order_id' => $order->id,
+                        'product_id' => $product->id,
+                        'product_variant_id' => $variant->id,
+                        'is_customized' => false,
+                        'product_name' => $product->name,
+                        'size_name' => $variant->size->name,
+                        'color_name' => $variant->color->name,
+                        'color_hex' => $variant->color->hex_code,
+                        'sku' => $variant->sku,
+                        'image_path' => $primaryImg ? $primaryImg->image_path : null,
+                        'unit_price' => $item->unit_price,
+                        'quantity' => $item->quantity,
+                        'subtotal' => $item->subtotal,
+                    ]);
+
+                    // Decrement standard stock
+                    $variant->decrement('stock_quantity', $item->quantity);
+                }
             }
 
             // 5. Track coupon usage if applied
@@ -128,9 +184,22 @@ class OrderService
         }
 
         DB::transaction(function () use ($order, $reason) {
-            // Restore inventory
+            // Restore inventory for all items
             foreach ($order->items as $item) {
-                if ($item->product_variant_id) {
+                if ($item->is_customized) {
+                    $customData = $item->customization_data;
+                    $sizeId = $customData['size_id'] ?? null;
+                    $colorId = $customData['color_id'] ?? null;
+                    if ($item->customizable_product_id && $sizeId && $colorId) {
+                        $variant = CustomizableProductVariant::where('customizable_product_id', $item->customizable_product_id)
+                            ->where('size_id', $sizeId)
+                            ->where('color_id', $colorId)
+                            ->first();
+                        if ($variant) {
+                            $variant->increment('stock_quantity', $item->quantity);
+                        }
+                    }
+                } elseif ($item->product_variant_id) {
                     $variant = ProductVariant::find($item->product_variant_id);
                     if ($variant) {
                         $variant->increment('stock_quantity', $item->quantity);
@@ -138,82 +207,75 @@ class OrderService
                 }
             }
 
-            // Rollback coupon count if cancelled
-            if ($order->coupon_code) {
-                $coupon = Coupon::where('code', $order->coupon_code)->first();
-                if ($coupon && $coupon->used_count > 0) {
-                    $coupon->decrement('used_count');
-                }
-            }
-
             $order->update([
                 'status' => 'cancelled',
-                'cancelled_reason' => $reason,
+                'cancelled_at' => Carbon::now(),
+                'cancel_reason' => $reason,
             ]);
+
+            if ($order->payment && $order->payment->status === 'successful') {
+                $order->payment->update(['status' => 'refunded']);
+            }
         });
     }
 
-    public function updateOrderStatus(
-        Order $order,
-        string $status,
-        ?string $trackingNumber = null,
-        ?string $courierName = null
-    ): Order {
-        $data = ['status' => $status];
+    public function updateOrderStatus(Order $order, string $status, ?string $trackingNumber = null, ?string $courierName = null): Order
+    {
+        $allowedStatuses = ['pending', 'confirmed', 'processing', 'packed', 'shipped', 'out_for_delivery', 'delivered', 'cancelled', 'returned', 'refunded'];
 
-        if ($trackingNumber !== null) {
-            $data['tracking_number'] = $trackingNumber;
+        $updateData = ['status' => $status];
+
+        if ($trackingNumber) {
+            $updateData['tracking_number'] = $trackingNumber;
         }
-        if ($courierName !== null) {
-            $data['courier_name'] = $courierName;
+        if ($courierName) {
+            $updateData['courier_name'] = $courierName;
         }
 
         if ($status === 'shipped' && !$order->shipped_at) {
-            $data['shipped_at'] = Carbon::now();
+            $updateData['shipped_at'] = Carbon::now();
+        } elseif ($status === 'delivered' && !$order->delivered_at) {
+            $updateData['delivered_at'] = Carbon::now();
         }
 
-        if ($status === 'delivered' && !$order->delivered_at) {
-            $data['delivered_at'] = Carbon::now();
-            if ($order->payment_method === 'cod') {
-                $data['payment_status'] = 'captured';
-            }
-        }
-
-        $order->update($data);
-        return $order;
+        $order->update($updateData);
+        return $order->fresh();
     }
 
-    public function updatePaymentStatus(Order $order, string $paymentStatus, ?string $paymentId = null, ?array $payload = null): Order
+    public function updatePaymentStatus(Order $order, string $status, ?string $gatewayPaymentId = null, ?array $payload = null): Order
     {
-        $order->update(['payment_status' => $paymentStatus]);
+        $order->update(['payment_status' => $status]);
 
-        if (in_array($paymentStatus, ['captured', 'authorized', 'paid']) && $order->status === 'pending') {
-            $order->update(['status' => 'confirmed']);
+        if ($order->payment) {
+            $paymentData = ['status' => $status];
+            if ($gatewayPaymentId) {
+                $paymentData['gateway_payment_id'] = $gatewayPaymentId;
+            }
+            if ($payload) {
+                $paymentData['gateway_payload'] = $payload;
+            }
+            if ($status === 'successful') {
+                $paymentData['paid_at'] = Carbon::now();
+            }
+            $order->payment->update($paymentData);
         }
 
-        $payment = $order->latestPayment;
-        if ($payment) {
-            $payment->update([
-                'status' => $paymentStatus,
-                'payment_id' => $paymentId ?: $payment->payment_id,
-                'payload' => $payload ?: $payment->payload,
-            ]);
+        // If payment is successful and order is still pending, move to processing
+        if ($status === 'successful' && $order->status === 'pending') {
+            $order->update(['status' => 'processing']);
         }
 
-        return $order;
+        return $order->fresh();
     }
 
     private function generateOrderNumber(): string
     {
         $year = date('Y');
-        $random = strtoupper(Str::random(6));
-        $orderNumber = "JAC-{$year}-{$random}";
-
-        while (Order::where('order_number', $orderNumber)->exists()) {
+        do {
             $random = strtoupper(Str::random(6));
-            $orderNumber = "JAC-{$year}-{$random}";
-        }
+            $number = "JAC-{$year}-{$random}";
+        } while (Order::where('order_number', $number)->exists());
 
-        return $orderNumber;
+        return $number;
     }
 }

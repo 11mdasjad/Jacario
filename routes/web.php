@@ -4,6 +4,7 @@ use App\Http\Controllers\AccountController;
 use App\Http\Controllers\Admin\BannerController as AdminBannerController;
 use App\Http\Controllers\Admin\CouponController as AdminCouponController;
 use App\Http\Controllers\Admin\CustomerController as AdminCustomerController;
+use App\Http\Controllers\Admin\CustomizationController as AdminCustomizationController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
@@ -15,6 +16,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\CustomizationController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PageController;
@@ -31,6 +33,13 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::post('/newsletter/subscribe', [HomeController::class, 'subscribeNewsletter'])->name('newsletter.subscribe');
+
+// Dedicated Jacario Customization Experience
+Route::get('/customize', [CustomizationController::class, 'index'])->name('customize.index');
+Route::get('/customize/{slug}', [CustomizationController::class, 'studio'])->name('customize.studio');
+Route::post('/customize/upload-artwork', [CustomizationController::class, 'uploadArtwork'])->name('customize.upload-artwork');
+Route::post('/customize/add-to-cart', [CustomizationController::class, 'addToCart'])->name('customize.add-to-cart');
+Route::post('/customize/save-design', [CustomizationController::class, 'saveDesign'])->name('customize.save-design');
 
 // Shop & Catalog
 Route::get('/shop', [ShopController::class, 'index'])->name('shop.index');
@@ -165,6 +174,22 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::post('reviews/{id}/toggle-approved', [AdminReviewController::class, 'toggleApproved'])->name('reviews.toggle-approved');
     Route::post('reviews/{id}/toggle-featured', [AdminReviewController::class, 'toggleFeatured'])->name('reviews.toggle-featured');
     Route::delete('reviews/{id}', [AdminReviewController::class, 'destroy'])->name('reviews.destroy');
+
+    // Customization Management & Studio
+    Route::prefix('customizations')->name('customizations.')->group(function () {
+        Route::get('/', [AdminCustomizationController::class, 'index'])->name('index');
+        Route::get('products', [AdminCustomizationController::class, 'products'])->name('products');
+        Route::get('products/{id}/edit', [AdminCustomizationController::class, 'editProduct'])->name('products.edit');
+        Route::post('products/{id}/edit', [AdminCustomizationController::class, 'updateProduct'])->name('products.update');
+        Route::get('products/{id}/variants', [AdminCustomizationController::class, 'variants'])->name('variants');
+        Route::post('products/{id}/variants', [AdminCustomizationController::class, 'updateVariants'])->name('variants.update');
+        Route::get('products/{id}/settings', [AdminCustomizationController::class, 'settings'])->name('settings');
+        Route::post('products/{id}/settings', [AdminCustomizationController::class, 'updateSettings'])->name('settings.update');
+        Route::get('orders', [AdminCustomizationController::class, 'orders'])->name('orders');
+        Route::get('orders/items/{itemId}', [AdminCustomizationController::class, 'showOrderItem'])->name('orders.item');
+        Route::post('orders/items/{itemId}/production-status', [AdminCustomizationController::class, 'updateProductionStatus'])->name('orders.production-status');
+        Route::get('orders/items/{itemId}/download-artwork', [AdminCustomizationController::class, 'downloadArtwork'])->name('orders.download-artwork');
+    });
 
     // Settings & Policies
     Route::get('settings', [AdminSettingController::class, 'index'])->name('settings.index');

@@ -70,6 +70,38 @@
 
     </div>
 
+    <!-- Jacario Customization Studio Performance Banner -->
+    <div class="bg-gradient-to-r from-zinc-950 via-zinc-900 to-zinc-950 text-white rounded-3xl p-6 sm:p-7 border border-zinc-800 shadow-lg flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 relative overflow-hidden">
+        <div class="absolute -right-10 -bottom-10 w-48 h-48 bg-[#A4845B]/15 rounded-full blur-2xl pointer-events-none"></div>
+
+        <div class="space-y-1 z-10">
+            <div class="flex items-center space-x-2">
+                <span class="w-2 h-2 rounded-full bg-[#A4845B] animate-pulse"></span>
+                <span class="text-[10px] font-black uppercase tracking-[0.25em] text-[#DFCAAB]">JACARIO BESPOKE STUDIO</span>
+            </div>
+            <h3 class="text-lg sm:text-xl font-bold font-serif-luxury text-white">Customization Performance & Production Queue</h3>
+            <p class="text-xs text-zinc-400">Polo T-Shirt & Crewneck T-Shirt studio orders and machine queue status.</p>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-4 sm:gap-6 z-10">
+            <div class="bg-zinc-900/90 px-4 py-3 rounded-2xl border border-zinc-800 text-center">
+                <p class="text-[10px] font-bold text-zinc-400 uppercase">Custom Orders</p>
+                <p class="text-lg font-bold font-serif-luxury text-white mt-0.5">{{ number_format($customizedOrdersCount) }}</p>
+            </div>
+            <div class="bg-zinc-900/90 px-4 py-3 rounded-2xl border border-zinc-800 text-center">
+                <p class="text-[10px] font-bold text-amber-400 uppercase">In Production</p>
+                <p class="text-lg font-bold font-serif-luxury text-amber-300 mt-0.5">{{ number_format($pendingCustomProduction) }}</p>
+            </div>
+            <div class="bg-zinc-900/90 px-4 py-3 rounded-2xl border border-zinc-800 text-center">
+                <p class="text-[10px] font-bold text-zinc-400 uppercase">Custom Revenue</p>
+                <p class="text-lg font-bold font-serif-luxury text-[#DFCAAB] mt-0.5">₹{{ number_format($customizationRevenue) }}</p>
+            </div>
+            <a href="{{ route('admin.customizations.index') }}" class="px-5 py-3 rounded-2xl bg-[#A4845B] hover:bg-[#8C6D46] text-white text-xs font-bold uppercase tracking-wider transition-all shadow-md">
+                Open Studio Console →
+            </a>
+        </div>
+    </div>
+
     <!-- 7-Day Revenue Trend Chart & Low Stock Alerts Grid -->
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
         

@@ -92,16 +92,24 @@
                         <div class="py-4 flex items-center justify-between first:pt-0 last:pb-0">
                             <div class="flex items-center space-x-3">
                                 <div class="w-14 h-16 bg-zinc-50 rounded-lg border border-zinc-100 p-1 flex items-center justify-center flex-shrink-0">
-                                    <img src="{{ $item->image_path ? asset(ltrim($item->image_path, '/')) : asset('images/placeholder-polo.svg') }}" alt="{{ $item->product_name }}" class="w-full h-full object-contain">
+                                    <img src="{{ $item->is_customized && $item->customization_preview_path ? asset($item->customization_preview_path) : ($item->image_path ? asset(ltrim($item->image_path, '/')) : asset('images/placeholder-polo.svg')) }}" alt="{{ $item->product_name }}" class="w-full h-full object-contain">
                                 </div>
                                 <div>
+                                    @if($item->is_customized)
+                                        <span class="text-[8px] font-black uppercase tracking-wider px-1.5 py-0.2 rounded bg-amber-100 text-[#8C6D46] border border-amber-300/60 inline-block mb-0.5">Bespoke Custom Print</span>
+                                    @endif
                                     <h4 class="text-xs font-bold text-zinc-900">{{ $item->product_name }}</h4>
                                     <p class="text-[11px] text-zinc-500">Size: <strong class="text-zinc-800">{{ $item->size_name }}</strong> • Color: {{ $item->color_name }}</p>
                                     <p class="text-[11px] text-zinc-400 font-mono">SKU: {{ $item->sku }}</p>
-                                    <p class="text-[11px] text-zinc-600">Qty: {{ $item->quantity }} × ₹{{ number_format($item->unit_price, 2) }}</p>
+                                    @if($item->is_customized)
+                                        <span class="text-[10px] text-[#A4845B] font-semibold">Production Status: {{ ucfirst(str_replace('_', ' ', $item->custom_production_status ?? 'Pending')) }}</span>
+                                    @endif
                                 </div>
                             </div>
-                            <span class="text-xs font-bold text-zinc-900">₹{{ number_format($item->subtotal, 2) }}</span>
+                            <div class="text-right">
+                                <p class="text-xs font-bold text-zinc-900">₹{{ number_format($item->subtotal) }}</p>
+                                <p class="text-[10px] text-zinc-500">{{ $item->quantity }} × ₹{{ number_format($item->unit_price) }}</p>
+                            </div>
                         </div>
                     @endforeach
                 </div>

@@ -51,13 +51,16 @@
                     <div class="p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
                         
                         <div class="flex items-center space-x-4">
-                            <a :href="'/products/' + item.slug" class="w-20 h-24 bg-zinc-50 rounded-xl border border-zinc-100 p-2 flex-shrink-0 flex items-center justify-center">
+                            <a :href="item.is_customized ? '/' + item.slug : '/products/' + item.slug" class="w-20 h-24 bg-zinc-50 rounded-xl border border-zinc-100 p-2 flex-shrink-0 flex items-center justify-center">
                                 <img :src="item.image_url" :alt="item.product_name" class="w-full h-full object-contain">
                             </a>
 
                             <div class="space-y-1">
+                                <div class="flex items-center space-x-1.5" x-show="item.is_customized">
+                                    <span class="text-[9px] font-black uppercase tracking-wider px-1.5 py-0.2 rounded bg-amber-100 text-[#8C6D46] border border-amber-300/60">Bespoke Custom Print</span>
+                                </div>
                                 <h4 class="text-sm font-bold text-zinc-900">
-                                    <a :href="'/products/' + item.slug" x-text="item.product_name" class="hover:text-[#A4845B] transition-colors"></a>
+                                    <a :href="item.is_customized ? '/' + item.slug : '/products/' + item.slug" x-text="item.product_name" class="hover:text-[#A4845B] transition-colors"></a>
                                 </h4>
                                 <div class="flex items-center space-x-3 text-xs text-zinc-500">
                                     <span class="inline-flex items-center space-x-1">

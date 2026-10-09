@@ -93,4 +93,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Review::class);
     }
+
+    public function savedCustomDesigns()
+    {
+        return $this->hasMany(SavedCustomDesign::class)->latest();
+    }
 }

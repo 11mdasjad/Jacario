@@ -31,6 +31,16 @@ class DashboardController extends Controller
         $totalCustomers = User::where('role', 'customer')->count();
         $totalProducts = Product::count();
 
+        // Customization Studio metrics
+        $customizedOrdersCount = Order::whereHas('items', function ($q) {
+            $q->where('is_customized', true);
+        })->count();
+        $pendingCustomProduction = \App\Models\OrderItem::where('is_customized', true)
+            ->whereIn('custom_production_status', ['pending', 'artwork_approved', 'in_printing'])
+            ->count();
+        $customizationRevenue = \App\Models\OrderItem::where('is_customized', true)
+            ->sum('subtotal');
+
         // Low stock (< 5 units) & Out of stock (0 units)
         $lowStockVariants = ProductVariant::whereHas('product')
             ->with(['product', 'size', 'color'])
@@ -78,6 +88,9 @@ class DashboardController extends Controller
             'deliveredOrders',
             'totalCustomers',
             'totalProducts',
+            'customizedOrdersCount',
+            'pendingCustomProduction',
+            'customizationRevenue',
             'lowStockVariants',
             'outOfStockVariants',
             'recentOrders',

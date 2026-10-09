@@ -72,7 +72,12 @@
                         <div class="flex-1 min-w-0 flex flex-col justify-between">
                             <div>
                                 <div class="flex items-start justify-between">
-                                    <h4 class="text-xs font-bold text-zinc-900 truncate pr-2" x-text="item.product_name"></h4>
+                                    <div class="min-w-0 flex-1 pr-2">
+                                        <div class="flex items-center space-x-1.5" x-show="item.is_customized">
+                                            <span class="text-[9px] font-black uppercase tracking-wider px-1.5 py-0.2 rounded bg-amber-100 text-[#8C6D46] border border-amber-300/60">Bespoke Print</span>
+                                        </div>
+                                        <h4 class="text-xs font-bold text-zinc-900 truncate" x-text="item.product_name"></h4>
+                                    </div>
                                     <button @click="$store.cartDrawer.removeItem(item.id)" class="text-zinc-400 hover:text-rose-600 transition-colors" title="Remove item">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
                                     </button>

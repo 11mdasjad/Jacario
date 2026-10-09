@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 700" width="100%" height="100%" class="w-full h-full object-contain">
+  <defs>
+    <linearGradient id="polo_cust_grey_body" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#94A3B8" />
+      <stop offset="50%" stop-color="#64748B" />
+      <stop offset="100%" stop-color="#475569" />
+    </linearGradient>
+    <linearGradient id="polo_cust_grey_collar" x1="0%" y1="0%" x2="100%" y2="50%">
+      <stop offset="0%" stop-color="#94A3B8" />
+      <stop offset="100%" stop-color="#3E4C5E" />
+    </linearGradient>
+    <filter id="polo_cust_grey_shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="16" stdDeviation="20" flood-color="#000000" flood-opacity="0.18"/>
+    </filter>
+    <pattern id="polo_cust_grey_pique" width="6" height="6" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="0.8" fill="#ffffff" fill-opacity="0.04" />
+      <circle cx="5" cy="5" r="0.8" fill="#000000" fill-opacity="0.06" />
+    </pattern>
+  </defs>
+
+  <g filter="url(#polo_cust_grey_shadow)">
+    <!-- Main Body Contour -->
+    <path d="M 210,130 L 130,195 L 85,280 L 140,310 L 175,255 L 180,600 C 180,615 420,615 420,600 L 425,255 L 460,310 L 515,280 L 470,195 L 390,130 C 340,145 260,145 210,130 Z" 
+          fill="url(#polo_cust_grey_body)" stroke="#475569" stroke-width="2" stroke-linejoin="round" />
+
+    <!-- Pique Texture Overlay -->
+    <path d="M 210,130 L 130,195 L 85,280 L 140,310 L 175,255 L 180,600 C 180,615 420,615 420,600 L 425,255 L 460,310 L 515,280 L 470,195 L 390,130 C 340,145 260,145 210,130 Z" 
+          fill="url(#polo_cust_grey_pique)" />
+
+    <!-- Left Sleeve Cuff -->
+    <path d="M 85,280 L 140,310 L 135,322 L 78,290 Z" fill="#3E4C5E" stroke="#475569" stroke-width="1.5"/>
+    <line x1="86" y1="284" x2="137" y2="312" stroke="#CBD5E1" stroke-width="1.5" opacity="0.6"/>
+
+    <!-- Right Sleeve Cuff -->
+    <path d="M 515,280 L 460,310 L 465,322 L 522,290 Z" fill="#3E4C5E" stroke="#475569" stroke-width="1.5"/>
+    <line x1="514" y1="284" x2="463" y2="312" stroke="#CBD5E1" stroke-width="1.5" opacity="0.6"/>
+
+    <!-- Bottom Hem Details -->
+    <path d="M 180,590 C 240,598 360,598 420,590" stroke="#475569" stroke-width="2" fill="none" opacity="0.5"/>
+    <path d="M 180,594 C 240,602 360,602 420,594" stroke="#94A3B8" stroke-width="1" stroke-dasharray="4,4" fill="none" opacity="0.7"/>
+
+    <!-- Inner Neck Label Patch -->
+    <path d="M 260,138 C 280,148 320,148 340,138 L 335,185 C 315,190 285,190 265,185 Z" fill="#0B0D10" />
+    <text x="300" y="165" fill="#C5A880" font-family="'Cinzel', 'Playfair Display', serif" font-size="10" font-weight="bold" letter-spacing="2" text-anchor="middle">JACARIO</text>
+    <text x="300" y="177" fill="#A1A1AA" font-family="sans-serif" font-size="6" letter-spacing="1" text-anchor="middle">CUSTOM STUDIO</text>
+
+    <!-- Placket & Buttons -->
+    <path d="M 285,145 L 315,145 L 315,280 L 285,280 Z" fill="#3E4C5E" stroke="#475569" stroke-width="1.5" />
+    <line x1="287" y1="145" x2="287" y2="280" stroke="#475569" stroke-width="1" stroke-dasharray="2,2" opacity="0.4"/>
+    <line x1="313" y1="145" x2="313" y2="280" stroke="#475569" stroke-width="1" stroke-dasharray="2,2" opacity="0.4"/>
+    
+    <!-- Top & Lower Buttons -->
+    <circle cx="300" cy="180" r="5" fill="#FAF9F6" stroke="#D1D5DB" stroke-width="1"/>
+    <circle cx="300" cy="225" r="5" fill="#FAF9F6" stroke="#D1D5DB" stroke-width="1"/>
+    <circle cx="300" cy="265" r="5" fill="#FAF9F6" stroke="#D1D5DB" stroke-width="1"/>
+
+    <!-- Collar Left -->
+    <path d="M 210,130 C 240,150 270,185 285,215 L 260,195 C 235,175 220,155 210,130 Z" 
+          fill="url(#polo_cust_grey_collar)" stroke="#475569" stroke-width="2" />
+    <!-- Collar Right -->
+    <path d="M 390,130 C 360,150 330,185 315,215 L 340,195 C 365,175 380,155 390,130 Z" 
+          fill="url(#polo_cust_grey_collar)" stroke="#475569" stroke-width="2" />
+
+    <!-- Subdued Jacario Crown Tone on Tone Chest Crest -->
+    <path d="M 360,250 L 366,244 L 372,250 L 378,244 L 384,250 L 381,257 L 363,257 Z" fill="#CBD5E1" opacity="0.4" />
+  </g>
+</svg>

@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             ReviewSeeder::class,
             CouponSeeder::class,
             SettingSeeder::class,
+            CustomizationSeeder::class,
         ]);
     }
 }

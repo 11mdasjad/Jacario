@@ -379,6 +379,105 @@
     </section>
 
     <!-- ==========================================
+         5.5 JACARIO BESPOKE CUSTOMIZATION STUDIO SHOWCASE
+         ========================================== -->
+    <section class="py-12 sm:py-20 bg-gradient-to-br from-[#0B0D10] via-zinc-950 to-[#121418] text-white relative overflow-hidden border-y border-zinc-800">
+        <!-- Subtle Ambient Lighting -->
+        <div class="absolute top-0 right-1/4 w-96 h-96 bg-[#A4845B]/15 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute bottom-0 left-10 w-80 h-80 bg-amber-600/10 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+                
+                <div class="lg:col-span-6 space-y-4 sm:space-y-6">
+                    <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-[#18181B] border border-[#A4845B]/40 text-[#DFCAAB] text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em]">
+                        <span class="w-2 h-2 rounded-full bg-[#A4845B] animate-ping"></span>
+                        <span>JACARIO BESPOKE STUDIO</span>
+                    </div>
+
+                    <h2 class="text-2xl sm:text-4xl lg:text-5xl font-serif-luxury font-bold text-white leading-tight">
+                        Customize Your Polo & T-Shirt in Real Time.
+                    </h2>
+
+                    <p class="text-xs sm:text-sm text-zinc-300 font-normal leading-relaxed">
+                        Design personalized luxury apparel with your company logo, team emblem, or signature typography. Zero minimum order, live 3D vector canvas preview, and high-definition precision printing.
+                    </p>
+
+                    <div class="flex flex-wrap items-center gap-3 pt-2">
+                        <a href="{{ route('customize.index') }}" class="px-7 py-3.5 bg-gradient-to-r from-[#DFCAAB] via-[#F3E5D0] to-[#A4845B] text-zinc-950 text-xs font-extrabold uppercase tracking-widest rounded-xl hover:brightness-110 transition-all shadow-xl flex items-center space-x-2">
+                            <span>Open Customize Studio</span>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                        </a>
+                        <a href="{{ route('customize.studio', 'polo-t-shirt') }}" class="px-6 py-3.5 bg-white/10 hover:bg-white/20 border border-white/20 text-white text-xs font-bold uppercase tracking-wider rounded-xl transition-all">
+                            Customize Polo
+                        </a>
+                        <a href="{{ route('customize.studio', 't-shirt') }}" class="px-6 py-3.5 bg-white/10 hover:bg-white/20 border border-white/20 text-white text-xs font-bold uppercase tracking-wider rounded-xl transition-all">
+                            Customize T-Shirt
+                        </a>
+                    </div>
+
+                    <div class="grid grid-cols-3 gap-3 pt-4 border-t border-zinc-800 text-center">
+                        <div class="p-3 bg-white/5 rounded-xl border border-white/10">
+                            <span class="text-lg font-bold font-serif-luxury text-[#DFCAAB]">0 Min</span>
+                            <p class="text-[9px] text-zinc-400 uppercase tracking-wider mt-0.5">Zero Minimums</p>
+                        </div>
+                        <div class="p-3 bg-white/5 rounded-xl border border-white/10">
+                            <span class="text-lg font-bold font-serif-luxury text-[#DFCAAB]">10+</span>
+                            <p class="text-[9px] text-zinc-400 uppercase tracking-wider mt-0.5">Luxury Colors</p>
+                        </div>
+                        <div class="p-3 bg-white/5 rounded-xl border border-white/10">
+                            <span class="text-lg font-bold font-serif-luxury text-[#DFCAAB]">35% Off</span>
+                            <p class="text-[9px] text-zinc-400 uppercase tracking-wider mt-0.5">Bulk Discounts</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Visual Teaser Cards -->
+                <div class="lg:col-span-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <!-- Polo Card -->
+                    <div class="group p-5 rounded-2xl bg-zinc-900/90 border border-zinc-800 hover:border-[#A4845B]/60 transition-all flex flex-col justify-between">
+                        <div class="aspect-[4/3] bg-zinc-950 rounded-xl p-3 flex items-center justify-center relative overflow-hidden mb-3">
+                            <img src="{{ asset('images/customizer/polo/black.jpg') }}" alt="Customize Polo" class="w-full h-full object-contain filter drop-shadow group-hover:scale-105 transition-transform duration-300">
+                            <span class="absolute top-2 left-2 text-[9px] font-extrabold uppercase px-2 py-0.5 rounded bg-amber-400 text-zinc-950">POLO</span>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-bold text-white font-serif-luxury">Customize Polo T-Shirt</h3>
+                            <p class="text-[11px] text-zinc-400 mt-1 line-clamp-2">240 GSM Supima® double-pique cotton with anti-curl collar.</p>
+                            <div class="flex items-center justify-between mt-3 pt-3 border-t border-zinc-800">
+                                <span class="text-xs font-bold text-[#DFCAAB]">From ₹1,299</span>
+                                <a href="{{ route('customize.studio', 'polo-t-shirt') }}" class="text-[10px] font-bold uppercase tracking-wider text-white hover:text-[#DFCAAB] flex items-center space-x-1">
+                                    <span>Customize</span>
+                                    <span>→</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- T-Shirt Card -->
+                    <div class="group p-5 rounded-2xl bg-zinc-900/90 border border-zinc-800 hover:border-[#A4845B]/60 transition-all flex flex-col justify-between">
+                        <div class="aspect-[4/3] bg-zinc-950 rounded-xl p-3 flex items-center justify-center relative overflow-hidden mb-3">
+                            <img src="{{ asset('images/customizer/tshirt/black.jpg') }}" alt="Customize T-Shirt" class="w-full h-full object-contain filter drop-shadow group-hover:scale-105 transition-transform duration-300">
+                            <span class="absolute top-2 left-2 text-[9px] font-extrabold uppercase px-2 py-0.5 rounded bg-blue-400 text-zinc-950">CREWNECK</span>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-bold text-white font-serif-luxury">Customize T-Shirt</h3>
+                            <p class="text-[11px] text-zinc-400 mt-1 line-clamp-2">220 GSM combed Supima® jersey with modern tailored fit.</p>
+                            <div class="flex items-center justify-between mt-3 pt-3 border-t border-zinc-800">
+                                <span class="text-xs font-bold text-[#DFCAAB]">From ₹849</span>
+                                <a href="{{ route('customize.studio', 't-shirt') }}" class="text-[10px] font-bold uppercase tracking-wider text-white hover:text-[#DFCAAB] flex items-center space-x-1">
+                                    <span>Customize</span>
+                                    <span>→</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
          6. EDITORIAL PROMOTIONAL HIGHLIGHT
          ========================================== -->
     <section class="py-16 sm:py-20 bg-zinc-950 text-white relative overflow-hidden">
