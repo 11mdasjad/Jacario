@@ -4,7 +4,83 @@
 
 @section('content')
 
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10" x-data="{ couponInput: '' }">
+<script>
+    function cartPageData() {
+        return {
+            couponInput: '',
+            cartData: @json($cartSummary),
+            get currentCart() {
+                if (this.$store?.cartDrawer?.cartData && this.$store.cartDrawer.cartData.items) {
+                    return this.$store.cartDrawer.cartData;
+                }
+                return this.cartData;
+            },
+            init() {
+                const drawer = this.$store?.cartDrawer || window.$store?.cartDrawer;
+                if (drawer) {
+                    drawer.cartData = this.cartData;
+                }
+                window.addEventListener('cart-updated', (e) => {
+                    if (e.detail) {
+                        this.cartData = e.detail;
+                        if (drawer) {
+                            drawer.cartData = e.detail;
+                        }
+                    }
+                });
+            },
+            async applyCoupon() {
+                if (!this.couponInput || !this.couponInput.trim()) return;
+                try {
+                    const res = await fetch('{{ route('cart.coupon.apply') }}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'Accept': 'application/json'
+                        },
+                        body: JSON.stringify({ code: this.couponInput.trim() })
+                    });
+                    const data = await res.json();
+                    if (data.success) {
+                        const drawer = this.$store?.cartDrawer || window.$store?.cartDrawer;
+                        if (drawer) { drawer.cartData = data.cart; }
+                        this.cartData = data.cart;
+                        window.dispatchEvent(new CustomEvent('cart-updated', { detail: data.cart }));
+                        window.toast(data.message, 'success');
+                        this.couponInput = '';
+                    } else {
+                        window.toast(data.message || 'Invalid coupon code.', 'error');
+                    }
+                } catch(e) {
+                    window.toast('Error applying promo code.', 'error');
+                }
+            },
+            async removeCoupon() {
+                try {
+                    const res = await fetch('{{ route('cart.coupon.remove') }}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'Accept': 'application/json'
+                        }
+                    });
+                    const data = await res.json();
+                    const drawer = this.$store?.cartDrawer || window.$store?.cartDrawer;
+                    if (drawer) { drawer.cartData = data.cart; }
+                    this.cartData = data.cart;
+                    window.dispatchEvent(new CustomEvent('cart-updated', { detail: data.cart }));
+                    window.toast('Coupon removed', 'info');
+                } catch(e) {
+                    window.toast('Error removing coupon.', 'error');
+                }
+            }
+        };
+    }
+</script>
+
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10" x-data="cartPageData()">
     
     <h1 class="text-xl sm:text-3xl font-serif-luxury font-bold text-zinc-900 tracking-tight mb-6 sm:mb-8">
         Your Shopping Bag
@@ -16,7 +92,7 @@
         <div class="lg:col-span-8 space-y-6">
             
             <!-- Empty State -->
-            <template x-if="!$store.cartDrawer.cartData.items || $store.cartDrawer.cartData.items.length === 0">
+            <template x-if="!currentCart.items || currentCart.items.length === 0">
                 <div class="p-12 text-center bg-white rounded-2xl border border-zinc-200 shadow-sm">
                     <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-zinc-100 flex items-center justify-center text-zinc-400">
                         <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
@@ -30,24 +106,24 @@
             </template>
 
             <!-- Free Shipping Progress -->
-            <div class="p-4 bg-[#F4EFEA] rounded-xl border border-[#E5DCD0]" x-show="$store.cartDrawer.cartData.items && $store.cartDrawer.cartData.items.length > 0">
+            <div class="p-4 bg-[#F4EFEA] rounded-xl border border-[#E5DCD0]" x-show="currentCart.items && currentCart.items.length > 0">
                 <div class="flex items-center justify-between text-xs mb-2">
-                    <span class="font-medium text-zinc-800" x-show="$store.cartDrawer.cartData.remaining_for_free_shipping > 0">
-                        Add <strong class="text-zinc-950" x-text="'₹' + Number($store.cartDrawer.cartData.remaining_for_free_shipping).toLocaleString('en-IN')"></strong> more for Complimentary Express Shipping
+                    <span class="font-medium text-zinc-800" x-show="currentCart.remaining_for_free_shipping > 0">
+                        Add <strong class="text-zinc-950" x-text="'₹' + Number(currentCart.remaining_for_free_shipping).toLocaleString('en-IN')"></strong> more for Complimentary Express Shipping
                     </span>
-                    <span class="font-bold text-emerald-800 flex items-center space-x-1" x-show="$store.cartDrawer.cartData.remaining_for_free_shipping == 0">
+                    <span class="font-bold text-emerald-800 flex items-center space-x-1" x-show="currentCart.remaining_for_free_shipping == 0">
                         <svg class="w-4 h-4 text-emerald-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
                         <span>You have unlocked Complimentary Express Shipping!</span>
                     </span>
                 </div>
                 <div class="w-full bg-zinc-200/80 rounded-full h-2 overflow-hidden">
-                    <div class="bg-[#0B0D10] h-2 rounded-full transition-all duration-500" :style="'width: ' + $store.cartDrawer.cartData.free_shipping_progress + '%'"></div>
+                    <div class="bg-[#0B0D10] h-2 rounded-full transition-all duration-500" :style="'width: ' + currentCart.free_shipping_progress + '%'"></div>
                 </div>
             </div>
 
             <!-- Items List -->
-            <div class="bg-white rounded-2xl border border-zinc-200 shadow-sm divide-y divide-zinc-100 overflow-hidden" x-show="$store.cartDrawer.cartData.items && $store.cartDrawer.cartData.items.length > 0">
-                <template x-for="item in $store.cartDrawer.cartData.items" :key="item.id">
+            <div class="bg-white rounded-2xl border border-zinc-200 shadow-sm divide-y divide-zinc-100 overflow-hidden" x-show="currentCart.items && currentCart.items.length > 0">
+                <template x-for="item in currentCart.items" :key="item.id">
                     <div class="p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
                         
                         <div class="flex items-center space-x-4">
@@ -103,7 +179,7 @@
         </div>
 
         <!-- Order Summary Sidebar (4 Cols) -->
-        <div class="lg:col-span-4 space-y-6" x-show="$store.cartDrawer.cartData.items && $store.cartDrawer.cartData.items.length > 0">
+        <div class="lg:col-span-4 space-y-6" x-show="currentCart.items && currentCart.items.length > 0">
             
             <div class="p-6 bg-white rounded-2xl border border-zinc-200 shadow-sm space-y-6">
                 <h3 class="text-base font-serif-luxury font-bold text-zinc-900 pb-4 border-b border-zinc-100">
@@ -112,63 +188,29 @@
 
                 <!-- Promo Coupon Form -->
                 <div>
-                    <template x-if="!$store.cartDrawer.cartData.coupon_code">
+                    <template x-if="!currentCart.coupon_code">
                         <div class="flex space-x-2">
                             <input type="text" 
                                    x-model="couponInput" 
                                    placeholder="Promo Code (e.g. FIRSTPOLO)" 
                                    class="flex-1 uppercase text-xs bg-zinc-50 border border-zinc-200 rounded-lg px-3 py-2.5 focus:outline-none focus:border-black font-mono">
                             <button type="button" 
-                                    @click="
-                                        fetch('{{ route('cart.coupon.apply') }}', {
-                                            method: 'POST',
-                                            headers: {
-                                                'Content-Type': 'application/json',
-                                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                                                'Accept': 'application/json'
-                                            },
-                                            body: JSON.stringify({ code: couponInput })
-                                        })
-                                        .then(res => res.json())
-                                        .then(data => {
-                                            if (data.success) {
-                                                $store.cartDrawer.cartData = data.cart;
-                                                window.toast(data.message, 'success');
-                                                couponInput = '';
-                                            } else {
-                                                window.toast(data.message, 'error');
-                                            }
-                                        });
-                                    " 
+                                    @click="applyCoupon()" 
                                     class="px-4 py-2.5 bg-zinc-900 hover:bg-black text-white text-xs font-bold uppercase tracking-wider rounded-lg transition-colors">
                                 Apply
                             </button>
                         </div>
                     </template>
 
-                    <template x-if="$store.cartDrawer.cartData.coupon_code">
+                    <template x-if="currentCart.coupon_code">
                         <div class="flex items-center justify-between p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-xs">
                             <div class="flex items-center space-x-2">
                                 <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-                                <span class="font-mono font-bold text-emerald-800" x-text="$store.cartDrawer.cartData.coupon_code"></span>
+                                <span class="font-mono font-bold text-emerald-800" x-text="currentCart.coupon_code"></span>
                                 <span class="text-emerald-700">applied</span>
                             </div>
                             <button type="button" 
-                                    @click="
-                                        fetch('{{ route('cart.coupon.remove') }}', {
-                                            method: 'POST',
-                                            headers: {
-                                                'Content-Type': 'application/json',
-                                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                                                'Accept': 'application/json'
-                                            }
-                                        })
-                                        .then(res => res.json())
-                                        .then(data => {
-                                            $store.cartDrawer.cartData = data.cart;
-                                            window.toast('Coupon removed', 'info');
-                                        });
-                                    " 
+                                    @click="removeCoupon()" 
                                     class="text-xs font-bold text-rose-600 hover:underline">
                                 Remove
                             </button>
@@ -180,22 +222,22 @@
                 <div class="space-y-3 text-xs text-zinc-600 pt-2 border-t border-zinc-100">
                     <div class="flex justify-between">
                         <span>Bag Subtotal</span>
-                        <span class="font-bold text-zinc-900" x-text="'₹' + Number($store.cartDrawer.cartData.subtotal).toLocaleString('en-IN')"></span>
+                        <span class="font-bold text-zinc-900" x-text="'₹' + Number(currentCart.subtotal).toLocaleString('en-IN')"></span>
                     </div>
 
-                    <div class="flex justify-between" x-show="$store.cartDrawer.cartData.discount_amount > 0">
+                    <div class="flex justify-between" x-show="currentCart.discount_amount > 0">
                         <span class="text-emerald-700">Promo Discount</span>
-                        <span class="font-bold text-emerald-700" x-text="'- ₹' + Number($store.cartDrawer.cartData.discount_amount).toLocaleString('en-IN')"></span>
+                        <span class="font-bold text-emerald-700" x-text="'- ₹' + Number(currentCart.discount_amount).toLocaleString('en-IN')"></span>
                     </div>
 
                     <div class="flex justify-between">
                         <span>Express Delivery</span>
-                        <span class="font-medium text-zinc-900" x-text="$store.cartDrawer.cartData.shipping_amount == 0 ? 'Complimentary' : '₹' + $store.cartDrawer.cartData.shipping_amount"></span>
+                        <span class="font-medium text-zinc-900" x-text="currentCart.shipping_amount == 0 ? 'Complimentary' : '₹' + currentCart.shipping_amount"></span>
                     </div>
 
                     <div class="border-t border-zinc-200 pt-3 flex justify-between text-base font-bold text-zinc-950">
                         <span>Grand Total</span>
-                        <span x-text="'₹' + Number($store.cartDrawer.cartData.total).toLocaleString('en-IN')"></span>
+                        <span x-text="'₹' + Number(currentCart.total).toLocaleString('en-IN')"></span>
                     </div>
                 </div>
 
@@ -220,11 +262,11 @@
     </div>
 
     <!-- Myntra-Style Mobile Sticky Bottom Checkout Bar -->
-    <div class="fixed bottom-16 inset-x-0 bg-white border-t border-zinc-200 px-4 py-3 z-30 lg:hidden lg:bottom-0 shadow-[0_-4px_20px_rgba(0,0,0,0.12)] flex items-center justify-between pb-safe"
-         x-show="$store.cartDrawer.cartData.items && $store.cartDrawer.cartData.items.length > 0">
+    <div class="fixed bottom-16 inset-x-0 bg-white border-t border-zinc-200 px-4 py-3 z-30 lg:bottom-0 shadow-[0_-4px_20px_rgba(0,0,0,0.12)] flex items-center justify-between pb-safe"
+         x-show="currentCart.items && currentCart.items.length > 0">
         <div>
             <span class="text-[10px] text-zinc-500 block uppercase tracking-wider font-semibold">Total Amount</span>
-            <span class="text-base font-bold text-zinc-950" x-text="'₹' + Number($store.cartDrawer.cartData.total).toLocaleString('en-IN')"></span>
+            <span class="text-base font-bold text-zinc-950" x-text="'₹' + Number(currentCart.total).toLocaleString('en-IN')"></span>
         </div>
         <a href="{{ route('checkout.index') }}" 
            class="px-6 py-3 bg-[#0B0D10] text-[#DFCAAB] text-xs font-bold uppercase tracking-wider rounded-xl shadow-md flex items-center space-x-1.5 active:scale-95 transition-all">

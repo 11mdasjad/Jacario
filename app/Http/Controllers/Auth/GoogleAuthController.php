@@ -1,0 +1,107 @@
+<?php
+
+namespace App\Http\Controllers\Auth;
+
+use App\Http\Controllers\Controller;
+use App\Models\User;
+use App\Services\CartService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
+use Laravel\Socialite\Facades\Socialite;
+
+class GoogleAuthController extends Controller
+{
+    protected CartService $cartService;
+
+    public function __construct(CartService $cartService)
+    {
+        $this->cartService = $cartService;
+    }
+
+    /**
+     * Redirect user to Google OAuth consent screen.
+     */
+    public function redirectToGoogle(Request $request)
+    {
+        if ($request->filled('redirect')) {
+            session(['oauth_redirect' => $request->input('redirect')]);
+        }
+
+        $redirectUrl = $request->getSchemeAndHttpHost() . '/auth/google/callback';
+
+        return Socialite::driver('google')
+            ->redirectUrl($redirectUrl)
+            ->redirect();
+    }
+
+    /**
+     * Handle Google OAuth callback.
+     */
+    public function handleGoogleCallback(Request $request)
+    {
+        try {
+            $redirectUrl = $request->getSchemeAndHttpHost() . '/auth/google/callback';
+            $googleUser = Socialite::driver('google')
+                ->redirectUrl($redirectUrl)
+                ->user();
+        } catch (\Throwable $e) {
+            Log::error('Google OAuth failed: ' . $e->getMessage());
+            return redirect()->route('login')->with('error', 'Google authentication could not be completed. Please try again.');
+        }
+
+        if (!$googleUser || !$googleUser->getEmail()) {
+            return redirect()->route('login')->with('error', 'Unable to retrieve your email from Google. Please try again.');
+        }
+
+        // Look up by google_id first, then by email
+        $user = User::where('google_id', $googleUser->getId())
+            ->orWhere('email', $googleUser->getEmail())
+            ->first();
+
+        if ($user) {
+            // Update google_id, avatar, and verify email
+            $user->update([
+                'google_id' => $googleUser->getId(),
+                'avatar' => $user->avatar ?: $googleUser->getAvatar(),
+                'email_verified_at' => $user->email_verified_at ?: now(),
+            ]);
+        } else {
+            // Register new customer account
+            $user = User::create([
+                'name' => $googleUser->getName() ?: 'Jacario Client',
+                'email' => $googleUser->getEmail(),
+                'google_id' => $googleUser->getId(),
+                'avatar' => $googleUser->getAvatar(),
+                'role' => 'customer',
+                'is_active' => true,
+                'password' => Hash::make(Str::random(32)),
+                'email_verified_at' => now(),
+            ]);
+        }
+
+        if (!$user->is_active) {
+            return redirect()->route('login')->with('error', 'Your account has been deactivated. Please contact concierge@jacario.com.');
+        }
+
+        Auth::login($user, true);
+        $request->session()->regenerate();
+
+        // Merge and link guest cart to this authenticated user
+        try {
+            $this->cartService->getCart();
+        } catch (\Throwable $e) {
+            Log::warning('Cart linking on Google login failed: ' . $e->getMessage());
+        }
+
+        if ($user->isStaff()) {
+            return redirect()->intended(route('admin.dashboard'));
+        }
+
+        $redirectUrl = session()->pull('oauth_redirect', route('account.dashboard'));
+
+        return redirect()->intended($redirectUrl);
+    }
+}

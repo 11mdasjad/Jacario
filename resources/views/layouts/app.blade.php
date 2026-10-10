@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="h-full scroll-smooth">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="scroll-smooth">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
@@ -53,45 +53,87 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     
+    <style>
+        [x-cloak] { display: none !important; }
+    </style>
+
+    <script>
+        window.initialCartData = @json(app(\App\Services\CartService::class)->getSummary());
+
+        // Early store shim so inline templates / component init methods never encounter ReferenceError
+        window._earlyStores = {
+            cartDrawer: {
+                isOpen: false,
+                isLoading: false,
+                cartData: window.initialCartData || { items: [], item_count: 0 },
+                open() {
+                    if (window.Alpine && window.Alpine.store('cartDrawer')) {
+                        window.Alpine.store('cartDrawer').open();
+                    } else {
+                        this.isOpen = true;
+                    }
+                },
+                close() {
+                    if (window.Alpine && window.Alpine.store('cartDrawer')) {
+                        window.Alpine.store('cartDrawer').close();
+                    } else {
+                        this.isOpen = false;
+                    }
+                },
+                toggle() {
+                    this.isOpen ? this.close() : this.open();
+                },
+                addItem(...args) {
+                    if (window.Alpine && window.Alpine.store('cartDrawer')) {
+                        return window.Alpine.store('cartDrawer').addItem(...args);
+                    }
+                }
+            },
+            wishlist: { count: {{ Auth::check() ? Auth::user()->wishlists()->count() : 0 }} },
+            nav: { mobileMenuOpen: false, searchOpen: false, quickMenuOpen: false }
+        };
+
+        window.$store = new Proxy(window._earlyStores, {
+            get(target, prop) {
+                if (typeof window.Alpine !== 'undefined' && typeof window.Alpine.store === 'function') {
+                    try {
+                        const s = window.Alpine.store(prop);
+                        if (s !== undefined) return s;
+                    } catch (e) {}
+                }
+                return target[prop] || undefined;
+            },
+            set(target, prop, val) {
+                if (typeof window.Alpine !== 'undefined' && typeof window.Alpine.store === 'function') {
+                    try {
+                        window.Alpine.store(prop, val);
+                        return true;
+                    } catch (e) {}
+                }
+                target[prop] = val;
+                return true;
+            }
+        });
+    </script>
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('styles')
 </head>
-<body class="min-h-full flex flex-col bg-[#FAFAFA] text-zinc-900 selection:bg-[#C5A880] selection:text-white">
+<body class="min-h-screen flex flex-col bg-[#FAFAFA] text-zinc-900 selection:bg-[#C5A880] selection:text-white">
 
-    <!-- Top Announcement Bar -->
-    <div class="bg-[#0B0D10] text-[#DFCAAB] text-[11px] sm:text-xs font-medium tracking-widest uppercase py-2 px-4 text-center border-b border-zinc-800"
-         x-data="{
-            announcements: [
-                'Complimentary Express Shipping on Orders Above ₹1,999',
-                'Use Code FIRSTPOLO for ₹300 Off Inaugural Order',
-                '15-Day Hassle-Free Doorstep Exchanges & Returns'
-            ],
-            activeIdx: 0,
-            init() {
-                setInterval(() => {
-                    this.activeIdx = (this.activeIdx + 1) % this.announcements.length;
-                }, 4000);
-            }
-         }">
-        <!-- Desktop Multi-pill Layout -->
-        <div class="max-w-7xl mx-auto hidden md:flex items-center justify-center space-x-3 overflow-hidden whitespace-nowrap">
-            <span class="inline-block w-1.5 h-1.5 rounded-full bg-[#C5A880] animate-pulse"></span>
-            <span>Complimentary Express Shipping on Orders Above ₹1,999</span>
-            <span class="text-zinc-600">•</span>
-            <span>Use Code <strong class="text-white tracking-wider">FIRSTPOLO</strong> for ₹300 Off</span>
-            <span class="text-zinc-600">•</span>
-            <span>15-Day Hassle-Free Doorstep Exchanges</span>
-        </div>
-
-        <!-- Mobile Rotating Single-Line Carousel -->
-        <div class="md:hidden flex items-center justify-center space-x-2">
-            <span class="inline-block w-1.5 h-1.5 rounded-full bg-[#C5A880] animate-pulse shrink-0"></span>
-            <span class="truncate transition-all duration-500" x-text="announcements[activeIdx]"></span>
-        </div>
+    <!-- Fixed Top Site Header (Permanently Visible on Scroll) -->
+    <div id="site-fixed-header" 
+         class="fixed top-0 left-0 right-0 z-40 w-full transition-shadow duration-300"
+         style="position: fixed; top: 0; left: 0; right: 0; width: 100%; z-index: 40;"
+         x-data="{ isScrolled: false }"
+         @scroll.window="isScrolled = (window.pageYOffset > 8)"
+         :class="{ 'shadow-lg': isScrolled, 'shadow-xs': !isScrolled }">
+        <!-- Navigation Header -->
+        @include('components.navbar')
     </div>
 
-    <!-- Navigation Header -->
-    @include('components.navbar')
+    <!-- Header Spacer so page content never goes behind fixed header -->
+    <div id="site-header-spacer" class="h-[105px] sm:h-[121px] lg:h-[80px] shrink-0" aria-hidden="true"></div>
 
     <!-- Toast Notification Container -->
     @include('components.toast')
@@ -141,6 +183,27 @@
     <!-- Luxury Footer -->
     @include('components.footer')
 
+    <script>
+        (function() {
+            function syncHeaderSpacer() {
+                var h = document.getElementById('site-fixed-header');
+                var s = document.getElementById('site-header-spacer');
+                if (h && s) {
+                    s.style.height = h.offsetHeight + 'px';
+                }
+            }
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', syncHeaderSpacer);
+            } else {
+                syncHeaderSpacer();
+            }
+            window.addEventListener('load', syncHeaderSpacer);
+            window.addEventListener('resize', syncHeaderSpacer);
+            document.addEventListener('alpine:initialized', function() {
+                setTimeout(syncHeaderSpacer, 40);
+            });
+        })();
+    </script>
     @stack('scripts')
 </body>
 </html>

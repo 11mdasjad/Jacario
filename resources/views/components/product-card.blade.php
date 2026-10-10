@@ -5,7 +5,9 @@
     $detailImage = $product->images->firstWhere('sort_order', 2) ?: $primaryImage;
     $colors = $product->availableColors();
     $sizes = $product->availableSizes();
-    $firstVariant = $product->activeVariants()->where('stock_quantity', '>', 0)->first();
+    $inStockVariants = $product->activeVariants->where('stock_quantity', '>', 0);
+    $firstVariant = $inStockVariants->first() ?? $product->activeVariants->first();
+    $defaultSizeId = $firstVariant ? $firstVariant->size_id : ($sizes->first() ? $sizes->first()->id : '');
     $isWishlisted = Auth::check() && Auth::user()->wishlists()->where('product_id', $product->id)->exists();
 
     $quickViewData = [
@@ -22,9 +24,14 @@
         'rating' => number_format($product->average_rating, 1),
         'reviews_count' => $product->reviews_count,
         'description' => $product->short_description ?: $product->fabric,
-        'sizes' => $sizes->map(fn($s) => ['id' => $s->id, 'code' => $s->code]),
+        'sizes' => $sizes->map(fn($s) => ['id' => $s->id, 'code' => $s->code, 'name' => $s->name]),
         'colors' => $colors->map(fn($c) => ['id' => $c->id, 'name' => $c->name, 'hex_code' => $c->hex_code]),
-        'variants' => $product->activeVariants->map(fn($v) => ['id' => $v->id, 'size_id' => $v->size_id, 'color_id' => $v->color_id, 'stock' => $v->stock_quantity]),
+        'variants' => $product->activeVariants->map(fn($v) => [
+            'id' => $v->id,
+            'size_id' => $v->size_id,
+            'color_id' => $v->color_id,
+            'stock' => $v->stock_quantity
+        ]),
     ];
 @endphp
 
@@ -32,22 +39,43 @@
      x-data="{ 
         selectedColorImg: '{{ $primaryImage ? $primaryImage->url : asset('images/placeholder-polo.svg') }}',
         quickAddOpen: false,
-        selectedSizeId: '{{ $sizes->first() ? $sizes->first()->id : '' }}',
+        isAdding: false,
+        selectedSizeId: '{{ $defaultSizeId }}',
         variants: @js($product->activeVariants->map(fn($v) => ['id' => $v->id, 'size_id' => $v->size_id, 'color_id' => $v->color_id, 'stock' => $v->stock_quantity])),
-        getSelectedVariantId() {
-            const v = this.variants.find(item => item.size_id == this.selectedSizeId && item.stock > 0);
+        getSelectedVariantId(sizeId = null) {
+            const targetSize = sizeId || this.selectedSizeId;
+            const v = this.variants.find(item => item.size_id == targetSize && item.stock > 0);
             if (v && v.id) return v.id;
             const anyAvailable = this.variants.find(item => item.stock > 0);
             return anyAvailable ? anyAvailable.id : {{ $firstVariant ? $firstVariant->id : 0 }};
         },
-        addToCart() {
-            const varId = this.getSelectedVariantId();
+        async quickAddSize(sizeId) {
+            this.selectedSizeId = sizeId;
+            await this.addToCart(sizeId);
+        },
+        async addToCart(explicitSizeId = null) {
+            const varId = this.getSelectedVariantId(explicitSizeId);
             if (!varId || varId <= 0) {
                 window.toast('This silhouette is currently out of stock.', 'error');
                 return;
             }
-            $store.cartDrawer.addItem(varId, 1);
-            this.quickAddOpen = false;
+            this.isAdding = true;
+            try {
+                const drawer = this.$store?.cartDrawer || (window.Alpine && window.Alpine.store('cartDrawer')) || window.$store?.cartDrawer || window.cartDrawer;
+                if (!drawer) {
+                    window.toast('Cart system initializing, please try again.', 'error');
+                    return;
+                }
+                const success = await drawer.addItem(varId, 1);
+                if (success) {
+                    this.quickAddOpen = false;
+                }
+            } catch (err) {
+                console.error('Error adding to bag:', err);
+                window.toast('Failed to add item to bag. Please try again.', 'error');
+            } finally {
+                this.isAdding = false;
+            }
         },
         openQuickView() {
             window.dispatchEvent(new CustomEvent('open-quick-view', { detail: @js($quickViewData) }));
@@ -143,32 +171,32 @@
                 @endif
             </div>
 
-            <!-- Quick Add Button with Size Dropdown -->
+            <!-- Add to Cart CTA Button with Expandable Size Selector -->
             <div class="mt-2 sm:mt-3" x-show="!quickAddOpen">
                 <button type="button" 
                         @click="quickAddOpen = true" 
-                        class="w-full py-1.5 sm:py-2 bg-zinc-900 hover:bg-black text-[#DFCAAB] text-[10px] sm:text-xs font-bold uppercase tracking-wider rounded-lg transition-colors flex items-center justify-center space-x-1 active:scale-95">
-                    <svg class="w-3 h-3 sm:w-3.5 sm:h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-                    <span>Quick Add</span>
+                        class="w-full py-1.5 sm:py-2 bg-zinc-900 hover:bg-black text-[#DFCAAB] text-[10px] sm:text-xs font-bold uppercase tracking-wider rounded-lg transition-all duration-200 flex items-center justify-center space-x-1.5 active:scale-95 shadow-sm group/btn">
+                    <svg class="w-3 h-3 sm:w-3.5 sm:h-3.5 transition-transform duration-200 group-hover/btn:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                    <span>Add to Cart</span>
                 </button>
             </div>
 
-            <!-- Size Selector when Quick Add Clicked -->
-            <div class="mt-2 p-1.5 sm:p-2 bg-zinc-50 rounded-lg border border-zinc-200" x-show="quickAddOpen" x-transition>
+            <!-- Size Selector when Add to Cart Clicked -->
+            <div class="mt-2 p-1.5 sm:p-2 bg-zinc-50 rounded-xl border border-zinc-200 shadow-inner" x-show="quickAddOpen" x-transition>
                 <div class="flex items-center justify-between mb-1">
-                    <span class="text-[9px] sm:text-[10px] font-bold uppercase tracking-wider text-zinc-500">Select Size:</span>
-                    <button type="button" @click="quickAddOpen = false" class="text-zinc-400 hover:text-black text-xs">✕</button>
+                    <span class="text-[9px] sm:text-[10px] font-bold uppercase tracking-wider text-zinc-600">Select Size:</span>
+                    <button type="button" @click="quickAddOpen = false" class="text-zinc-400 hover:text-black text-xs p-0.5" aria-label="Cancel">✕</button>
                 </div>
                 <div class="grid grid-cols-5 gap-1 mb-1.5">
                     @foreach($sizes as $size)
                         @php
-                            $sizeVariant = $product->activeVariants()->where('size_id', $size->id)->first();
-                            $inStock = $sizeVariant && $sizeVariant->stock_quantity > 0;
+                            $inStock = $product->activeVariants->where('size_id', $size->id)->where('stock_quantity', '>', 0)->isNotEmpty();
                         @endphp
                         <button type="button" 
-                                @click="selectedSizeId = '{{ $size->id }}'"
-                                :class="selectedSizeId == '{{ $size->id }}' ? 'bg-black text-white border-black' : 'bg-white text-zinc-800 border-zinc-200 hover:border-black'"
-                                class="py-1 text-[10px] font-bold rounded border transition-colors {{ !$inStock ? 'opacity-40 cursor-not-allowed line-through' : '' }}"
+                                @click="quickAddSize('{{ $size->id }}')"
+                                :class="selectedSizeId == '{{ $size->id }}' ? 'bg-black text-white border-black ring-1 ring-black' : 'bg-white text-zinc-800 border-zinc-200 hover:border-black hover:bg-zinc-100'"
+                                class="py-1 text-[10px] font-bold rounded-md border transition-all active:scale-90 {{ !$inStock ? 'opacity-30 cursor-not-allowed line-through bg-zinc-100' : 'cursor-pointer hover:shadow-xs' }}"
+                                title="{{ $inStock ? 'Tap to add Size ' . $size->code : 'Out of stock' }}"
                                 {{ !$inStock ? 'disabled' : '' }}>
                             {{ $size->code }}
                         </button>
@@ -176,9 +204,10 @@
                 </div>
                 <button type="button" 
                         @click="addToCart()" 
-                        class="w-full py-1.5 bg-[#0B0D10] text-[#DFCAAB] text-[10px] font-bold uppercase tracking-wider rounded-lg transition-colors hover:bg-black flex items-center justify-center space-x-1 shadow-sm active:scale-95">
+                        :disabled="isAdding"
+                        class="w-full py-1.5 bg-[#0B0D10] text-[#DFCAAB] text-[10px] font-bold uppercase tracking-wider rounded-lg transition-colors hover:bg-black flex items-center justify-center space-x-1 shadow-sm active:scale-95 disabled:opacity-50">
                     <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
-                    <span>Add to Bag</span>
+                    <span x-text="isAdding ? 'Adding to Cart...' : 'Add to Cart'"></span>
                 </button>
             </div>
 

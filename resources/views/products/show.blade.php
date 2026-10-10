@@ -15,8 +15,10 @@
     $primaryImg = $product->primaryImage;
     $colors = $product->availableColors();
     $sizes = $product->availableSizes();
-    $defaultColor = $colors->first();
-    $defaultSize = $sizes->first();
+    $inStockVariants = $product->activeVariants->where('stock_quantity', '>', 0);
+    $firstInStock = $inStockVariants->first() ?? $product->activeVariants->first();
+    $defaultColor = $firstInStock ? $firstInStock->color : $colors->first();
+    $defaultSize = $firstInStock ? $firstInStock->size : $sizes->first();
     $isWishlisted = Auth::check() && Auth::user()->wishlists()->where('product_id', $product->id)->exists();
 @endphp
 
@@ -25,10 +27,11 @@
         activeImg: '{{ $primaryImg ? $primaryImg->url : asset('images/placeholder-polo.svg') }}',
         activeImgIndex: 1,
         selectedColorId: {{ $defaultColor ? $defaultColor->id : 0 }},
-        selectedColorName: '{{ $defaultColor ? $defaultColor->name : '' }}',
+        selectedColorName: '{{ $defaultColor ? addslashes($defaultColor->name) : '' }}',
         selectedSizeId: {{ $defaultSize ? $defaultSize->id : 0 }},
-        selectedSizeName: '{{ $defaultSize ? $defaultSize->name : '' }}',
+        selectedSizeName: '{{ $defaultSize ? addslashes($defaultSize->name) : '' }}',
         quantity: 1,
+        isAdding: false,
         sizeGuideOpen: false,
         pincode: '',
         pincodeResult: null,
@@ -47,12 +50,81 @@
             return this.currentVariant ? this.currentVariant.stock : 0;
         },
 
+        isSizeInStockForColor(sizeId) {
+            const v = this.variants.find(item => item.size_id == sizeId && item.color_id == this.selectedColorId);
+            return v ? v.stock > 0 : false;
+        },
+
         selectColor(color) {
             this.selectedColorId = color.id;
             this.selectedColorName = color.name;
+            // If current selected size is not in stock for this color, auto-switch to an in-stock size if one exists
+            if (!this.isSizeInStockForColor(this.selectedSizeId)) {
+                const inStockVar = this.variants.find(v => v.color_id == color.id && v.stock > 0);
+                if (inStockVar) {
+                    this.selectedSizeId = inStockVar.size_id;
+                    this.selectedSizeName = inStockVar.size_name;
+                }
+            }
+            if (this.stockQuantity > 0 && this.quantity > this.stockQuantity) {
+                this.quantity = 1;
+            }
             // Update active image to this color
             const matchImg = '{{ asset('images/polos') }}/' + color.slug.replace('obsidian-', '').replace('pure-', '').replace('royal-', '').replace('olive-dusk', 'olive').replace('heather-grey', 'grey').replace('burgundy-royale', 'burgundy').replace('desert-sand', 'sand').replace('forest-emerald', 'forest').replace('slate-charcoal', 'charcoal').replace('sapphire-blue', 'royal-blue') + '-polo.svg';
             this.activeImg = matchImg;
+        },
+
+        selectSize(size) {
+            this.selectedSizeId = size.id;
+            this.selectedSizeName = size.name;
+            if (this.stockQuantity > 0 && this.quantity > this.stockQuantity) {
+                this.quantity = 1;
+            }
+        },
+
+        async handleAddToCart() {
+            if (!this.currentVariant || !this.isInStock) {
+                window.toast('Selected size / color is currently out of stock.', 'error');
+                return;
+            }
+            this.isAdding = true;
+            try {
+                const drawer = this.$store?.cartDrawer || (window.Alpine && window.Alpine.store('cartDrawer')) || window.$store?.cartDrawer || window.cartDrawer;
+                if (!drawer) {
+                    window.toast('Cart system initializing, please try again.', 'error');
+                    return;
+                }
+                await drawer.addItem(this.currentVariant.id, this.quantity);
+            } catch (err) {
+                console.error('Error adding to cart:', err);
+                window.toast('Failed to add item to bag. Please try again.', 'error');
+            } finally {
+                this.isAdding = false;
+            }
+        },
+
+        async handleBuyNow() {
+            if (!this.currentVariant || !this.isInStock) {
+                window.toast('Selected size / color is currently out of stock.', 'error');
+                return;
+            }
+            this.isAdding = true;
+            try {
+                const drawer = this.$store?.cartDrawer || (window.Alpine && window.Alpine.store('cartDrawer')) || window.$store?.cartDrawer || window.cartDrawer;
+                if (!drawer) {
+                    window.toast('Cart system initializing, please try again.', 'error');
+                    return;
+                }
+                const success = await drawer.addItem(this.currentVariant.id, this.quantity);
+                if (success) {
+                    window.location.href = '{{ route('checkout.index') }}';
+                }
+            } catch (err) {
+                console.error('Error in buy now:', err);
+                window.toast('Failed to proceed to checkout. Please try again.', 'error');
+            } finally {
+                this.isAdding = false;
+            }
         },
 
         checkPincode() {
@@ -213,8 +285,12 @@
                     <div class="grid grid-cols-5 gap-2">
                         @foreach($sizes as $size)
                             <button type="button" 
-                                    @click="selectedSizeId = {{ $size->id }}; selectedSizeName = '{{ $size->name }}'"
-                                    :class="selectedSizeId == {{ $size->id }} ? 'bg-zinc-950 text-white border-zinc-950 shadow-sm' : 'bg-white text-zinc-800 border-zinc-200 hover:border-black'"
+                                    @click="selectSize(@js($size))"
+                                    :class="{
+                                        'bg-zinc-950 text-white border-zinc-950 shadow-sm': selectedSizeId == {{ $size->id }},
+                                        'bg-white text-zinc-800 border-zinc-200 hover:border-black': selectedSizeId != {{ $size->id }},
+                                        'opacity-40 line-through': !isSizeInStockForColor({{ $size->id }})
+                                    }"
                                     class="py-3 text-xs font-bold rounded-lg border transition-all uppercase focus:outline-none">
                                 {{ $size->name }}
                             </button>
@@ -245,18 +321,18 @@
                         
                         <!-- Quantity Counter -->
                         <div class="flex items-center border border-zinc-200 rounded-lg bg-zinc-50 h-12 px-2">
-                            <button type="button" @click="if (quantity > 1) quantity--" class="w-8 h-full text-zinc-600 hover:text-black font-bold focus:outline-none">-</button>
+                            <button type="button" @click="if (quantity > 1) quantity--" class="w-8 h-full text-zinc-600 hover:text-black font-bold focus:outline-none" :disabled="quantity <= 1">-</button>
                             <span class="w-8 text-center text-xs font-bold text-zinc-900" x-text="quantity"></span>
-                            <button type="button" @click="if (quantity < stockQuantity) quantity++" class="w-8 h-full text-zinc-600 hover:text-black font-bold focus:outline-none">+</button>
+                            <button type="button" @click="if (quantity < stockQuantity) quantity++" class="w-8 h-full text-zinc-600 hover:text-black font-bold focus:outline-none" :disabled="quantity >= stockQuantity">+</button>
                         </div>
 
                         <!-- Add to Bag CTA Button -->
                         <button type="button" 
-                                @click="if (isInStock) $store.cartDrawer.addItem(currentVariant.id, quantity)"
-                                :disabled="!isInStock"
+                                @click="handleAddToCart()"
+                                :disabled="!isInStock || isAdding"
                                 class="flex-1 h-12 bg-[#0B0D10] hover:bg-black text-[#DFCAAB] disabled:bg-zinc-300 disabled:text-zinc-500 text-xs font-bold uppercase tracking-[0.2em] rounded-lg transition-colors shadow-lg flex items-center justify-center space-x-2">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
-                            <span x-text="isInStock ? 'Add to Shopping Bag' : 'Out of Stock'"></span>
+                            <span x-text="isAdding ? 'Adding to Bag...' : (isInStock ? 'Add to Shopping Bag' : 'Out of Stock')"></span>
                         </button>
 
                         <!-- Wishlist Toggle -->
@@ -270,10 +346,10 @@
 
                     <!-- Direct Checkout Button -->
                     <button type="button" 
-                            @click="if (isInStock) { $store.cartDrawer.addItem(currentVariant.id, quantity); setTimeout(() => window.location.href = '{{ route('checkout.index') }}', 400); }"
-                            :disabled="!isInStock"
+                            @click="handleBuyNow()"
+                            :disabled="!isInStock || isAdding"
                             class="w-full py-3.5 bg-[#C5A880] hover:bg-[#DFCAAB] text-zinc-950 disabled:hidden text-xs font-bold uppercase tracking-[0.2em] rounded-lg transition-colors shadow-md">
-                        Buy It Now
+                        <span x-text="isAdding ? 'Processing...' : 'Buy It Now'"></span>
                     </button>
                 </div>
 
@@ -553,11 +629,11 @@
 
         <!-- 2. Add to Bag Button -->
         <button type="button" 
-                @click="if (isInStock && currentVariant) $store.cartDrawer.addItem(currentVariant.id, quantity)"
-                :disabled="!isInStock || !currentVariant"
+                @click="handleAddToCart()"
+                :disabled="!isInStock || isAdding"
                 class="w-2/3 py-3 bg-[#0B0D10] text-[#DFCAAB] disabled:bg-zinc-300 disabled:text-zinc-500 text-xs font-bold uppercase tracking-wider rounded-xl transition-all shadow-md flex items-center justify-center space-x-2 active:scale-95">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
-            <span x-text="isInStock ? 'Add to Bag' : 'Out of Stock'"></span>
+            <span x-text="isAdding ? 'Adding...' : (isInStock ? 'Add to Bag' : 'Out of Stock')"></span>
         </button>
 
     </div>

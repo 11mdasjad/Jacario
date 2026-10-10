@@ -9,8 +9,9 @@
 <nav class="fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur-lg border-t border-zinc-200/90 shadow-[0_-4px_20px_rgba(0,0,0,0.06)] lg:hidden transition-transform duration-300 pb-safe"
      x-data="{ 
         init() {
-            if ($store.wishlist) {
-                $store.wishlist.count = {{ $wishlistInitialCount }};
+            const wishlist = this.$store?.wishlist || window.$store?.wishlist;
+            if (wishlist) {
+                wishlist.count = {{ $wishlistInitialCount }};
             }
         }
      }">

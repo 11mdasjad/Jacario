@@ -1,6 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap');
 @import 'tailwindcss';
 
+[x-cloak] {
+    display: none !important;
+}
+
 @layer base {
     :root {
         --color-obsidian: #0B0D10;
@@ -13,13 +17,17 @@
         --color-chalk: #F8F9FA;
     }
 
+    html {
+        overflow-x: clip;
+    }
+
     body {
         font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
         color: #18181B;
         background-color: #FAFAFA;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
-        overflow-x: hidden;
+        overflow-x: clip;
     }
 
     h1, h2, h3, .font-serif-luxury {

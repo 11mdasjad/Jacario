@@ -35,7 +35,7 @@ class CartController extends Controller
         $quantity = $validated['quantity'] ?? 1;
         $result = $this->cartService->addItem($validated['variant_id'], $quantity);
 
-        if ($request->expectsJson()) {
+        if ($request->expectsJson() || $request->isXmlHttpRequest() || $request->ajax()) {
             return response()->json($result, $result['success'] ? 200 : 422);
         }
 
@@ -55,7 +55,7 @@ class CartController extends Controller
 
         $result = $this->cartService->updateQuantity($validated['item_id'], $validated['quantity']);
 
-        if ($request->expectsJson()) {
+        if ($request->expectsJson() || $request->isXmlHttpRequest() || $request->ajax()) {
             return response()->json($result, $result['success'] ? 200 : 422);
         }
 
@@ -70,7 +70,7 @@ class CartController extends Controller
 
         $result = $this->cartService->removeItem($validated['item_id']);
 
-        if ($request->expectsJson()) {
+        if ($request->expectsJson() || $request->isXmlHttpRequest() || $request->ajax()) {
             return response()->json($result);
         }
 
@@ -85,7 +85,7 @@ class CartController extends Controller
 
         $result = $this->cartService->applyCoupon($validated['code']);
 
-        if ($request->expectsJson()) {
+        if ($request->expectsJson() || $request->isXmlHttpRequest() || $request->ajax()) {
             return response()->json($result, $result['success'] ? 200 : 422);
         }
 
@@ -96,7 +96,7 @@ class CartController extends Controller
     {
         $result = $this->cartService->removeCoupon();
 
-        if ($request->expectsJson()) {
+        if ($request->expectsJson() || $request->isXmlHttpRequest() || $request->ajax()) {
             return response()->json($result);
         }
 

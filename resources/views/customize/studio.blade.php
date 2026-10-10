@@ -1016,11 +1016,15 @@ function jacarioCustomizer(config) {
                         Alpine.store('cartDrawer').cartData = result.cart;
                         Alpine.store('cartDrawer').open();
                     }
-                    if (window.Alpine && Alpine.store('toast')) {
-                        Alpine.store('toast').show(result.message, 'success');
+                    if (window.toast) {
+                        window.toast(result.message, 'success');
                     }
                 } else {
-                    alert(result.message || 'Failed to add custom garment to bag.');
+                    if (window.toast) {
+                        window.toast(result.message || 'Failed to add custom garment to bag.', 'error');
+                    } else {
+                        alert(result.message || 'Failed to add custom garment to bag.');
+                    }
                 }
             } catch (err) {
                 this.isAddingToCart = false;

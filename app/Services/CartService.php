@@ -53,8 +53,8 @@ class CartService
 
     public function addItem(int $variantId, int $quantity = 1): array
     {
-        $variant = ProductVariant::with('product')->find($variantId);
-        if (!$variant || !$variant->is_active || !$variant->product->is_active) {
+        $variant = ProductVariant::with(['product', 'size', 'color'])->find($variantId);
+        if (!$variant || !$variant->is_active || !$variant->product || !$variant->product->is_active) {
             return ['success' => false, 'message' => 'Selected Polo variation is currently unavailable.'];
         }
 
@@ -90,9 +90,14 @@ class CartService
             ]);
         }
 
+        $sizeName = $variant->size ? $variant->size->name : '';
+        $colorName = $variant->color ? $variant->color->name : '';
+        $variantDesc = trim("{$sizeName} / {$colorName}", ' /');
+        $descString = $variantDesc ? " ({$variantDesc})" : '';
+
         return [
             'success' => true,
-            'message' => "Added {$variant->product->name} ({$variant->size->name} / {$variant->color->name}) to your bag.",
+            'message' => "Added {$variant->product->name}{$descString} to your bag.",
             'cart' => $this->getSummary(),
         ];
     }

@@ -42,7 +42,7 @@ Alpine.store('nav', {
 Alpine.store('cartDrawer', {
     isOpen: false,
     isLoading: false,
-    cartData: {
+    cartData: (window.initialCartData && window.initialCartData.items) ? window.initialCartData : {
         items: [],
         item_count: 0,
         subtotal: 0,
@@ -54,7 +54,9 @@ Alpine.store('cartDrawer', {
     },
 
     init() {
-        this.fetchCart();
+        if (!window.initialCartData || !window.initialCartData.items) {
+            this.fetchCart();
+        }
     },
 
     open() {
@@ -78,7 +80,10 @@ Alpine.store('cartDrawer', {
     async fetchCart() {
         try {
             const response = await fetch('/api/cart/summary', {
-                headers: { 'Accept': 'application/json' }
+                headers: { 
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
             });
             if (response.ok) {
                 const data = await response.json();
@@ -94,7 +99,7 @@ Alpine.store('cartDrawer', {
         const parsedId = parseInt(variantId, 10);
         if (!parsedId || isNaN(parsedId) || parsedId <= 0) {
             window.toast('Please select an available size / color before adding to bag.', 'error');
-            return;
+            return false;
         }
 
         this.isLoading = true;
@@ -105,22 +110,38 @@ Alpine.store('cartDrawer', {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
                     'X-CSRF-TOKEN': csrfToken
                 },
                 body: JSON.stringify({ variant_id: parsedId, quantity: Math.max(1, parseInt(quantity, 10) || 1) })
             });
 
-            const result = await response.json();
-            if (result.success) {
+            if (response.status === 419) {
+                window.toast('Session expired. Please refresh the page and try again.', 'error');
+                return false;
+            }
+
+            let result;
+            try {
+                result = await response.json();
+            } catch (e) {
+                result = { success: false, message: 'Server returned an invalid response.' };
+            }
+
+            if (response.ok && result.success) {
                 this.cartData = result.cart;
                 this.open();
                 window.toast(result.message, 'success');
                 window.dispatchEvent(new CustomEvent('cart-updated', { detail: result.cart }));
+                return true;
             } else {
                 window.toast(result.message || 'Could not add to bag.', 'error');
+                return false;
             }
         } catch (err) {
-            window.toast('Unable to add item to bag. Please refresh and try again.', 'error');
+            console.error('Error adding to bag:', err);
+            window.toast('Unable to add item to bag. Please try again.', 'error');
+            return false;
         } finally {
             this.isLoading = false;
         }
@@ -135,20 +156,36 @@ Alpine.store('cartDrawer', {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
                     'X-CSRF-TOKEN': csrfToken
                 },
                 body: JSON.stringify({ item_id: cartItemId, quantity })
             });
 
-            const result = await response.json();
-            if (result.success) {
+            if (response.status === 419) {
+                window.toast('Session expired. Please refresh the page.', 'error');
+                return false;
+            }
+
+            let result;
+            try {
+                result = await response.json();
+            } catch (e) {
+                result = { success: false, message: 'Server returned an invalid response.' };
+            }
+
+            if (response.ok && result.success) {
                 this.cartData = result.cart;
                 window.dispatchEvent(new CustomEvent('cart-updated', { detail: result.cart }));
+                return true;
             } else {
                 window.toast(result.message || 'Unable to update quantity.', 'error');
+                return false;
             }
         } catch (err) {
+            console.error('Error updating quantity:', err);
             window.toast('Error updating quantity.', 'error');
+            return false;
         } finally {
             this.isLoading = false;
         }
@@ -163,24 +200,47 @@ Alpine.store('cartDrawer', {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
                     'X-CSRF-TOKEN': csrfToken
                 },
                 body: JSON.stringify({ item_id: cartItemId })
             });
 
-            const result = await response.json();
-            if (result.success) {
+            if (response.status === 419) {
+                window.toast('Session expired. Please refresh the page.', 'error');
+                return false;
+            }
+
+            let result;
+            try {
+                result = await response.json();
+            } catch (e) {
+                result = { success: false, message: 'Server returned an invalid response.' };
+            }
+
+            if (response.ok && result.success) {
                 this.cartData = result.cart;
                 window.toast(result.message, 'info');
                 window.dispatchEvent(new CustomEvent('cart-updated', { detail: result.cart }));
+                return true;
             } else {
                 window.toast(result.message || 'Error removing item.', 'error');
+                return false;
             }
         } catch (err) {
+            console.error('Error removing item:', err);
             window.toast('Error removing item.', 'error');
+            return false;
         } finally {
             this.isLoading = false;
         }
+    }
+});
+
+// Toast Store Compatibility
+Alpine.store('toast', {
+    show(message, type = 'success') {
+        window.toast(message, type);
     }
 });
 
@@ -223,4 +283,31 @@ Alpine.store('wishlist', {
 });
 
 window.Alpine = Alpine;
+window.cartDrawer = Alpine.store('cartDrawer');
+
+// Ensure window.$store always delegates to Alpine.store
+window.$store = new Proxy({}, {
+    get(target, prop) {
+        if (typeof Alpine !== 'undefined' && typeof Alpine.store === 'function') {
+            try {
+                return Alpine.store(prop);
+            } catch (e) {
+                return undefined;
+            }
+        }
+        return undefined;
+    },
+    set(target, prop, value) {
+        if (typeof Alpine !== 'undefined' && typeof Alpine.store === 'function') {
+            try {
+                Alpine.store(prop, value);
+                return true;
+            } catch (e) {
+                return false;
+            }
+        }
+        return false;
+    }
+});
+
 Alpine.start();

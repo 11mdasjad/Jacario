@@ -123,4 +123,41 @@ class CartAndWishlistTest extends TestCase
             'id' => $wishlistItem->id,
         ]);
     }
+
+    public function test_guest_can_add_variant_to_cart_and_get_summary(): void
+    {
+        $product = Product::with('variants')->first();
+        $variant = $product->variants->where('stock_quantity', '>', 0)->first();
+
+        $sessionId = 'test-guest-session-12345';
+
+        $response = $this->withSession(['_token' => 'dummy'])->postJson(route('cart.add'), [
+            'variant_id' => $variant->id,
+            'quantity' => 1,
+        ]);
+
+        $response->assertStatus(200);
+        $response->assertJson([
+            'success' => true,
+        ]);
+        $this->assertEquals(1, $response->json('cart.item_count'));
+    }
+
+    public function test_adding_exceeding_stock_quantity_returns_error(): void
+    {
+        $product = Product::with('variants')->first();
+        $variant = $product->variants->where('stock_quantity', '<', 20)->first();
+
+        if ($variant) {
+            $response = $this->postJson(route('cart.add'), [
+                'variant_id' => $variant->id,
+                'quantity' => min(20, $variant->stock_quantity + 1),
+            ]);
+
+            $response->assertStatus(422);
+            $response->assertJson([
+                'success' => false,
+            ]);
+        }
+    }
 }
