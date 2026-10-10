@@ -206,15 +206,6 @@
                         <span class="text-[8px] font-black uppercase px-1 py-0.2 rounded bg-[#A4845B] text-white">HOT</span>
                     </a>
 
-                    <a href="{{ route('shop.index', ['collection' => 'bestsellers']) }}" 
-                       class="text-xs uppercase font-bold tracking-[0.16em] transition-all py-2 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 hover:after:w-full after:h-0.5 after:bg-[#A4845B] after:transition-all after:duration-200 {{ request('collection') === 'bestsellers' ? 'text-[#8C6D46] after:w-full' : 'text-zinc-800 hover:text-black' }}">
-                        Best Sellers
-                    </a>
-
-                    <a href="{{ route('about') }}" 
-                       class="text-xs uppercase font-bold tracking-[0.16em] transition-all py-2 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 hover:after:w-full after:h-0.5 after:bg-[#A4845B] after:transition-all after:duration-200 {{ request()->routeIs('about') ? 'text-[#8C6D46] after:w-full' : 'text-zinc-800 hover:text-black' }}">
-                        The Atelier
-                    </a>
                 </nav>
 
             </div>
