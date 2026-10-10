@@ -24,7 +24,7 @@ class ProductSeeder extends Seeder
             $poloCat = Category::firstOrCreate(['slug' => 'mens-polo-t-shirts'], [
                 'name' => "Men's Polo T-Shirts",
                 'description' => 'Tailored luxury polo t-shirts engineered from Supima® cotton, Mulberry silk blends, and stay-flat collars.',
-                'image' => 'https://images.unsplash.com/photo-1586363104862-3a5e2ab60d99?w=800&auto=format&fit=crop&q=80',
+                'image' => '/images/catalog/categories/polo-category-card.jpg',
                 'is_active' => true,
                 'sort_order' => 1
             ]);
@@ -33,28 +33,28 @@ class ProductSeeder extends Seeder
         $sizes = Size::all();
         $colors = Color::all();
 
-        // 50 High-Quality Real Polo T-Shirt Fashion Photography Assets (Unsplash curations)
+        // 50 High-Quality Real Fashion Photography Assets for Jacario.com
         $curatedImages = [
-            'black_1' => 'https://images.unsplash.com/photo-1586363104862-3a5e2ab60d99?w=900&auto=format&fit=crop&q=80',
-            'black_2' => 'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=900&auto=format&fit=crop&q=80',
-            'navy_1' => 'https://images.unsplash.com/photo-1618354691373-d851c5c3a990?w=900&auto=format&fit=crop&q=80',
-            'navy_2' => 'https://images.unsplash.com/photo-1503342394128-c104d54dba01?w=900&auto=format&fit=crop&q=80',
-            'white_1' => 'https://images.unsplash.com/photo-1581655353564-df123a1eb820?w=900&auto=format&fit=crop&q=80',
-            'white_2' => 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=900&auto=format&fit=crop&q=80',
-            'olive_1' => 'https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=900&auto=format&fit=crop&q=80',
-            'olive_2' => 'https://images.unsplash.com/photo-1618354691438-25bc04584c23?w=900&auto=format&fit=crop&q=80',
+            'black_1' => '/images/catalog/roundneck/black-roundneck-product.jpg',
+            'black_2' => '/images/catalog/details/collar-detail-closeup.jpg',
+            'navy_1' => '/images/catalog/polo/navy-polo-product.jpg',
+            'navy_2' => '/images/catalog/details/collar-detail-closeup.jpg',
+            'white_1' => '/images/catalog/roundneck/white-roundneck-product.jpg',
+            'white_2' => '/images/catalog/categories/roundneck-category-card.jpg',
+            'olive_1' => '/images/catalog/polo/olive-polo-product.jpg',
+            'olive_2' => '/images/catalog/details/collar-detail-closeup.jpg',
             'grey_1' => 'https://images.unsplash.com/photo-1562157873-818bc0726f68?w=900&auto=format&fit=crop&q=80',
             'grey_2' => 'https://images.unsplash.com/photo-1625910513413-5fc5d2a67e4e?w=900&auto=format&fit=crop&q=80',
-            'blue_1' => 'https://images.unsplash.com/photo-1598033129183-c4f50c736f10?w=900&auto=format&fit=crop&q=80',
-            'blue_2' => 'https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=900&auto=format&fit=crop&q=80',
-            'burgundy_1' => 'https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=900&auto=format&fit=crop&q=80',
-            'burgundy_2' => 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=900&auto=format&fit=crop&q=80',
-            'sand_1' => 'https://images.unsplash.com/photo-1622445268462-328fb1660d00?w=900&auto=format&fit=crop&q=80',
-            'sand_2' => 'https://images.unsplash.com/photo-1589902860314-e910697dea18?w=900&auto=format&fit=crop&q=80',
-            'green_1' => 'https://images.unsplash.com/photo-1618354691229-88d47f285158?w=900&auto=format&fit=crop&q=80',
-            'green_2' => 'https://images.unsplash.com/photo-1527719327859-c6ce80353573?w=900&auto=format&fit=crop&q=80',
+            'blue_1' => '/images/catalog/polo/navy-polo-product.jpg',
+            'blue_2' => '/images/catalog/lifestyle/polo-riviera-lifestyle.jpg',
+            'burgundy_1' => '/images/catalog/polo/burgundy-polo-product.jpg',
+            'burgundy_2' => '/images/catalog/lifestyle/polo-riviera-lifestyle.jpg',
+            'sand_1' => '/images/catalog/banners/polo-hero-banner.jpg',
+            'sand_2' => '/images/catalog/categories/polo-category-card.jpg',
+            'green_1' => '/images/catalog/polo/olive-polo-product.jpg',
+            'green_2' => '/images/catalog/banners/new-arrivals-banner.jpg',
             'mustard_1' => 'https://images.unsplash.com/photo-1503342452485-86b7f54527ef?w=900&auto=format&fit=crop&q=80',
-            'charcoal_1' => 'https://images.unsplash.com/photo-1578587018452-892bacefd3f2?w=900&auto=format&fit=crop&q=80',
+            'charcoal_1' => '/images/catalog/roundneck/black-roundneck-product.jpg',
         ];
 
         // 50 Definitive Polo T-Shirts Catalog for JACARIO

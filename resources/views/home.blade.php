@@ -349,69 +349,105 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
             
             <!-- Card 1: Men's Supima Polo -->
-            <div class="group relative rounded-3xl overflow-hidden p-6 sm:p-8 bg-gradient-to-br from-amber-500/15 via-amber-600/5 to-zinc-900 border border-amber-500/30 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between min-h-[240px]">
-                <div class="space-y-2 relative z-10">
-                    <span class="inline-block px-2.5 py-0.5 rounded-full bg-amber-500 text-zinc-950 text-[10px] font-black uppercase tracking-wider">
-                        UP TO 20% OFF
-                    </span>
-                    <h3 class="text-xl sm:text-2xl font-serif-luxury font-bold text-zinc-950 group-hover:text-[#8C6D46] transition-colors">
-                        Men's Supima® Polo
-                    </h3>
-                    <p class="text-xs text-zinc-600">240 GSM anti-curl structured collar.</p>
-                    <p class="text-sm font-extrabold text-zinc-900 pt-1">From ₹1,499</p>
+            <div class="group relative rounded-2xl sm:rounded-3xl overflow-hidden bg-gradient-to-br from-[#FFFDF9] via-[#FAF5EC] to-[#F5EEE0] border border-[#E8DDCD] shadow-sm hover:shadow-xl hover:border-amber-400/60 transition-all duration-300 flex items-stretch justify-between"
+                 style="min-height: 240px; height: 250px;">
+                <div class="flex flex-col justify-between p-5 sm:p-6 z-10" style="width: 58%; flex: 0 0 58%; height: 100%;">
+                    <div class="space-y-1 sm:space-y-1.5">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full bg-amber-500 text-zinc-950 text-[10px] font-black uppercase tracking-wider shadow-xs w-fit">
+                            UP TO 20% OFF
+                        </span>
+                        <h3 class="text-lg sm:text-xl font-serif-luxury font-bold text-zinc-950 group-hover:text-[#8C6D46] transition-colors leading-tight">
+                            Men's Supima® Polo
+                        </h3>
+                        <p class="text-[11px] sm:text-xs text-zinc-600 line-clamp-2 leading-relaxed">
+                            240 GSM anti-curl structured collar.
+                        </p>
+                        <p class="text-sm sm:text-base font-extrabold text-zinc-950 pt-0.5">
+                            From ₹1,499
+                        </p>
+                    </div>
+                    <div class="pt-2">
+                        <a href="{{ route('shop.index', ['category' => 'mens-polo-t-shirts']) }}" 
+                           class="inline-flex items-center space-x-1.5 text-xs font-black uppercase tracking-wider text-zinc-950 group-hover:text-[#8C6D46] border-b-2 border-zinc-950 group-hover:border-[#8C6D46] pb-0.5 transition-colors">
+                            <span>Shop Now</span>
+                            <svg class="w-3.5 h-3.5 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                        </a>
+                    </div>
                 </div>
-                <div class="pt-4 relative z-10">
-                    <a href="{{ route('shop.index', ['category' => 'mens-polo-t-shirts']) }}" 
-                       class="inline-flex items-center space-x-1.5 text-xs font-black uppercase tracking-wider text-zinc-950 group-hover:text-[#8C6D46] border-b-2 border-zinc-950 group-hover:border-[#8C6D46] pb-0.5 transition-colors">
-                        <span>Shop Now</span>
-                        <svg class="w-3.5 h-3.5 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-                    </a>
+                <div class="relative overflow-hidden h-full border-l border-[#E8DDCD] bg-white shrink-0" style="width: 42%; flex: 0 0 42%; height: 100%;">
+                    <img src="{{ asset('images/catalog/polo/navy-polo-product.jpg') }}" 
+                         alt="Men's Supima Polo" 
+                         style="width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block;"
+                         class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700">
                 </div>
-                <img src="{{ asset('images/polos/black-polo.svg') }}" alt="Men's Polo" class="absolute -right-6 -bottom-6 w-44 h-44 object-contain opacity-40 group-hover:opacity-60 group-hover:scale-105 transition-all duration-500 pointer-events-none">
             </div>
 
             <!-- Card 2: Round Neck Essentials -->
-            <div class="group relative rounded-3xl overflow-hidden p-6 sm:p-8 bg-gradient-to-br from-blue-500/15 via-blue-600/5 to-zinc-900 border border-blue-500/30 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between min-h-[240px]">
-                <div class="space-y-2 relative z-10">
-                    <span class="inline-block px-2.5 py-0.5 rounded-full bg-blue-600 text-white text-[10px] font-black uppercase tracking-wider">
-                        UP TO 30% OFF
-                    </span>
-                    <h3 class="text-xl sm:text-2xl font-serif-luxury font-bold text-zinc-950 group-hover:text-blue-800 transition-colors">
-                        Round Neck T-Shirts
-                    </h3>
-                    <p class="text-xs text-zinc-600">Silken 220 GSM combed jersey drape.</p>
-                    <p class="text-sm font-extrabold text-zinc-900 pt-1">From ₹899</p>
+            <div class="group relative rounded-2xl sm:rounded-3xl overflow-hidden bg-gradient-to-br from-[#FAFCFF] via-[#F2F6FB] to-[#E8F0F8] border border-[#D5E2F0] shadow-sm hover:shadow-xl hover:border-blue-400/60 transition-all duration-300 flex items-stretch justify-between"
+                 style="min-height: 240px; height: 250px;">
+                <div class="flex flex-col justify-between p-5 sm:p-6 z-10" style="width: 58%; flex: 0 0 58%; height: 100%;">
+                    <div class="space-y-1 sm:space-y-1.5">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full bg-blue-600 text-white text-[10px] font-black uppercase tracking-wider shadow-xs w-fit">
+                            UP TO 30% OFF
+                        </span>
+                        <h3 class="text-lg sm:text-xl font-serif-luxury font-bold text-zinc-950 group-hover:text-blue-800 transition-colors leading-tight">
+                            Round Neck T-Shirts
+                        </h3>
+                        <p class="text-[11px] sm:text-xs text-zinc-600 line-clamp-2 leading-relaxed">
+                            Silken 220 GSM combed jersey drape.
+                        </p>
+                        <p class="text-sm sm:text-base font-extrabold text-zinc-950 pt-0.5">
+                            From ₹899
+                        </p>
+                    </div>
+                    <div class="pt-2">
+                        <a href="{{ route('shop.index', ['category' => 'round-neck-t-shirts']) }}" 
+                           class="inline-flex items-center space-x-1.5 text-xs font-black uppercase tracking-wider text-zinc-950 group-hover:text-blue-800 border-b-2 border-zinc-950 group-hover:border-blue-800 pb-0.5 transition-colors">
+                            <span>Shop Now</span>
+                            <svg class="w-3.5 h-3.5 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                        </a>
+                    </div>
                 </div>
-                <div class="pt-4 relative z-10">
-                    <a href="{{ route('shop.index', ['category' => 'round-neck-t-shirts']) }}" 
-                       class="inline-flex items-center space-x-1.5 text-xs font-black uppercase tracking-wider text-zinc-950 group-hover:text-blue-800 border-b-2 border-zinc-950 group-hover:border-blue-800 pb-0.5 transition-colors">
-                        <span>Shop Now</span>
-                        <svg class="w-3.5 h-3.5 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-                    </a>
+                <div class="relative overflow-hidden h-full border-l border-[#D5E2F0] bg-white shrink-0" style="width: 42%; flex: 0 0 42%; height: 100%;">
+                    <img src="{{ asset('images/catalog/roundneck/black-roundneck-product.jpg') }}" 
+                         alt="Round Neck T-Shirt" 
+                         style="width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block;"
+                         class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700">
                 </div>
-                <img src="{{ asset('images/polos/royal-blue-polo.svg') }}" alt="Round Neck T-Shirt" class="absolute -right-6 -bottom-6 w-44 h-44 object-contain opacity-40 group-hover:opacity-60 group-hover:scale-105 transition-all duration-500 pointer-events-none">
             </div>
 
             <!-- Card 3: Customize Studio -->
-            <div class="group relative rounded-3xl overflow-hidden p-6 sm:p-8 bg-gradient-to-br from-emerald-500/15 via-emerald-600/5 to-zinc-900 border border-emerald-500/30 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between min-h-[240px]">
-                <div class="space-y-2 relative z-10">
-                    <span class="inline-block px-2.5 py-0.5 rounded-full bg-emerald-600 text-white text-[10px] font-black uppercase tracking-wider">
-                        UP TO 35% OFF
-                    </span>
-                    <h3 class="text-xl sm:text-2xl font-serif-luxury font-bold text-zinc-950 group-hover:text-emerald-800 transition-colors">
-                        Customize Studio
-                    </h3>
-                    <p class="text-xs text-zinc-600">Personalized monograms & corporate crests.</p>
-                    <p class="text-sm font-extrabold text-zinc-900 pt-1">From ₹849</p>
+            <div class="group relative rounded-2xl sm:rounded-3xl overflow-hidden bg-gradient-to-br from-[#FAFCFA] via-[#F3F8F4] to-[#E9F3EB] border border-[#D4E6D8] shadow-sm hover:shadow-xl hover:border-emerald-400/60 transition-all duration-300 flex items-stretch justify-between"
+                 style="min-height: 240px; height: 250px;">
+                <div class="flex flex-col justify-between p-5 sm:p-6 z-10" style="width: 58%; flex: 0 0 58%; height: 100%;">
+                    <div class="space-y-1 sm:space-y-1.5">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full bg-emerald-600 text-white text-[10px] font-black uppercase tracking-wider shadow-xs w-fit">
+                            UP TO 35% OFF
+                        </span>
+                        <h3 class="text-lg sm:text-xl font-serif-luxury font-bold text-zinc-950 group-hover:text-emerald-800 transition-colors leading-tight">
+                            Customize Studio
+                        </h3>
+                        <p class="text-[11px] sm:text-xs text-zinc-600 line-clamp-2 leading-relaxed">
+                            Personalized monograms & corporate crests.
+                        </p>
+                        <p class="text-sm sm:text-base font-extrabold text-zinc-950 pt-0.5">
+                            From ₹849
+                        </p>
+                    </div>
+                    <div class="pt-2">
+                        <a href="{{ route('customize.index') }}" 
+                           class="inline-flex items-center space-x-1.5 text-xs font-black uppercase tracking-wider text-zinc-950 group-hover:text-emerald-800 border-b-2 border-zinc-950 group-hover:border-emerald-800 pb-0.5 transition-colors">
+                            <span>Shop Now</span>
+                            <svg class="w-3.5 h-3.5 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                        </a>
+                    </div>
                 </div>
-                <div class="pt-4 relative z-10">
-                    <a href="{{ route('customize.index') }}" 
-                       class="inline-flex items-center space-x-1.5 text-xs font-black uppercase tracking-wider text-zinc-950 group-hover:text-emerald-800 border-b-2 border-zinc-950 group-hover:border-emerald-800 pb-0.5 transition-colors">
-                        <span>Shop Now</span>
-                        <svg class="w-3.5 h-3.5 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-                    </a>
+                <div class="relative overflow-hidden h-full border-l border-[#D4E6D8] bg-white shrink-0" style="width: 42%; flex: 0 0 42%; height: 100%;">
+                    <img src="{{ asset('images/catalog/polo/olive-polo-product.jpg') }}" 
+                         alt="Customize Studio" 
+                         style="width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block;"
+                         class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700">
                 </div>
-                <img src="{{ asset('images/customizer/polo/royal-blue.jpg') }}" alt="Customize Studio" class="absolute -right-6 -bottom-6 w-44 h-44 object-cover rounded-2xl opacity-40 group-hover:opacity-60 group-hover:scale-105 transition-all duration-500 pointer-events-none">
             </div>
 
         </div>
@@ -459,8 +495,8 @@
             <!-- Category 1: Men's Polo T-Shirts -->
             <a href="{{ route('shop.index', ['category' => 'mens-polo-t-shirts']) }}" 
                class="min-w-[190px] sm:min-w-[210px] p-5 rounded-3xl bg-[#FBF6EF] border border-[#EFE5D5] flex flex-col items-center text-center group hover:shadow-lg transition-all duration-200 snap-start shrink-0">
-                <div class="w-24 h-24 rounded-2xl bg-white p-2.5 shadow-xs mb-3 flex items-center justify-center group-hover:scale-105 transition-transform">
-                    <img src="{{ asset('images/polos/black-polo.svg') }}" alt="Men's Polo" class="w-full h-full object-contain">
+                <div class="w-24 h-24 rounded-2xl bg-white p-1 shadow-xs mb-3 flex items-center justify-center group-hover:scale-105 transition-transform overflow-hidden">
+                    <img src="{{ asset('images/catalog/categories/polo-category-card.jpg') }}" alt="Men's Polo" class="w-full h-full object-cover rounded-xl">
                 </div>
                 <h4 class="text-xs sm:text-sm font-bold text-zinc-900 group-hover:text-[#8C6D46] transition-colors">Men's Polo T-Shirts</h4>
                 <p class="text-[11px] text-zinc-500 mt-0.5">25 Designs</p>
@@ -469,8 +505,8 @@
             <!-- Category 2: Round Neck T-Shirts -->
             <a href="{{ route('shop.index', ['category' => 'round-neck-t-shirts']) }}" 
                class="min-w-[190px] sm:min-w-[210px] p-5 rounded-3xl bg-[#EFF4F9] border border-[#DEE7F0] flex flex-col items-center text-center group hover:shadow-lg transition-all duration-200 snap-start shrink-0">
-                <div class="w-24 h-24 rounded-2xl bg-white p-2.5 shadow-xs mb-3 flex items-center justify-center group-hover:scale-105 transition-transform">
-                    <img src="{{ asset('images/polos/royal-blue-polo.svg') }}" alt="Round Neck" class="w-full h-full object-contain">
+                <div class="w-24 h-24 rounded-2xl bg-white p-1 shadow-xs mb-3 flex items-center justify-center group-hover:scale-105 transition-transform overflow-hidden">
+                    <img src="{{ asset('images/catalog/categories/roundneck-category-card.jpg') }}" alt="Round Neck" class="w-full h-full object-cover rounded-xl">
                 </div>
                 <h4 class="text-xs sm:text-sm font-bold text-zinc-900 group-hover:text-[#8C6D46] transition-colors">Round Neck T-Shirts</h4>
                 <p class="text-[11px] text-zinc-500 mt-0.5">12 Designs</p>
@@ -479,8 +515,8 @@
             <!-- Category 3: New Arrival T-Shirts -->
             <a href="{{ route('shop.index', ['category' => 'new-arrival-t-shirts']) }}" 
                class="min-w-[190px] sm:min-w-[210px] p-5 rounded-3xl bg-[#F0F8F3] border border-[#DCEEE3] flex flex-col items-center text-center group hover:shadow-lg transition-all duration-200 snap-start shrink-0">
-                <div class="w-24 h-24 rounded-2xl bg-white p-2.5 shadow-xs mb-3 flex items-center justify-center group-hover:scale-105 transition-transform">
-                    <img src="{{ asset('images/polos/burgundy-polo.svg') }}" alt="New Arrivals" class="w-full h-full object-contain">
+                <div class="w-24 h-24 rounded-2xl bg-white p-1 shadow-xs mb-3 flex items-center justify-center group-hover:scale-105 transition-transform overflow-hidden">
+                    <img src="{{ asset('images/catalog/banners/new-arrivals-banner.jpg') }}" alt="New Arrivals" class="w-full h-full object-cover rounded-xl">
                 </div>
                 <h4 class="text-xs sm:text-sm font-bold text-zinc-900 group-hover:text-[#8C6D46] transition-colors">New Arrival T-Shirts</h4>
                 <p class="text-[11px] text-zinc-500 mt-0.5">13 Designs</p>
@@ -489,8 +525,8 @@
             <!-- Category 4: Mulberry Silk & Supima -->
             <a href="{{ route('shop.index', ['fabric' => 'Silk']) }}" 
                class="min-w-[190px] sm:min-w-[210px] p-5 rounded-3xl bg-[#F7F2FA] border border-[#EAE0F0] flex flex-col items-center text-center group hover:shadow-lg transition-all duration-200 snap-start shrink-0">
-                <div class="w-24 h-24 rounded-2xl bg-white p-2.5 shadow-xs mb-3 flex items-center justify-center group-hover:scale-105 transition-transform">
-                    <img src="{{ asset('images/polos/sand-polo.svg') }}" alt="Mulberry Silk" class="w-full h-full object-contain">
+                <div class="w-24 h-24 rounded-2xl bg-white p-1 shadow-xs mb-3 flex items-center justify-center group-hover:scale-105 transition-transform overflow-hidden">
+                    <img src="{{ asset('images/catalog/polo/olive-polo-product.jpg') }}" alt="Mulberry Silk" class="w-full h-full object-cover rounded-xl">
                 </div>
                 <h4 class="text-xs sm:text-sm font-bold text-zinc-900 group-hover:text-[#8C6D46] transition-colors">Mulberry Silk & Supima®</h4>
                 <p class="text-[11px] text-zinc-500 mt-0.5">8 Luxury Knits</p>
@@ -499,8 +535,8 @@
             <!-- Category 5: Tailored Regular Fit -->
             <a href="{{ route('shop.index', ['fit' => ['Regular Fit']]) }}" 
                class="min-w-[190px] sm:min-w-[210px] p-5 rounded-3xl bg-[#F8F5EE] border border-[#EBE3D3] flex flex-col items-center text-center group hover:shadow-lg transition-all duration-200 snap-start shrink-0">
-                <div class="w-24 h-24 rounded-2xl bg-white p-2.5 shadow-xs mb-3 flex items-center justify-center group-hover:scale-105 transition-transform">
-                    <img src="{{ asset('images/polos/olive-polo-detail.svg') }}" alt="Tailored Regular Fit" class="w-full h-full object-contain">
+                <div class="w-24 h-24 rounded-2xl bg-white p-1 shadow-xs mb-3 flex items-center justify-center group-hover:scale-105 transition-transform overflow-hidden">
+                    <img src="{{ asset('images/catalog/polo/burgundy-polo-product.jpg') }}" alt="Tailored Regular Fit" class="w-full h-full object-cover rounded-xl">
                 </div>
                 <h4 class="text-xs sm:text-sm font-bold text-zinc-900 group-hover:text-[#8C6D46] transition-colors">Tailored Regular Fit</h4>
                 <p class="text-[11px] text-zinc-500 mt-0.5">25 Designs</p>
@@ -509,8 +545,8 @@
             <!-- Category 6: Sartorial Slim Fit -->
             <a href="{{ route('shop.index', ['fit' => ['Slim Fit']]) }}" 
                class="min-w-[190px] sm:min-w-[210px] p-5 rounded-3xl bg-[#F0F5F8] border border-[#DFEBF2] flex flex-col items-center text-center group hover:shadow-lg transition-all duration-200 snap-start shrink-0">
-                <div class="w-24 h-24 rounded-2xl bg-white p-2.5 shadow-xs mb-3 flex items-center justify-center group-hover:scale-105 transition-transform">
-                    <img src="{{ asset('images/polos/navy-polo.svg') }}" alt="Sartorial Slim Fit" class="w-full h-full object-contain">
+                <div class="w-24 h-24 rounded-2xl bg-white p-1 shadow-xs mb-3 flex items-center justify-center group-hover:scale-105 transition-transform overflow-hidden">
+                    <img src="{{ asset('images/catalog/polo/navy-polo-product.jpg') }}" alt="Sartorial Slim Fit" class="w-full h-full object-cover rounded-xl">
                 </div>
                 <h4 class="text-xs sm:text-sm font-bold text-zinc-900 group-hover:text-[#8C6D46] transition-colors">Sartorial Slim Fit</h4>
                 <p class="text-[11px] text-zinc-500 mt-0.5">25 Designs</p>
