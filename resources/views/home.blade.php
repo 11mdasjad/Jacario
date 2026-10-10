@@ -1,14 +1,15 @@
 @extends('layouts.app')
 
-@section('title', 'JACARIO — The Polo, Perfected. | Premium Polo T-Shirts')
-@section('meta_description', 'Discover JACARIO\'s luxury collection of 50 meticulously crafted Polo T-Shirts. Engineered from 100% American Supima® cotton, Mulberry silk blends, and stay-flat collars.')
+@section('title', 'JACARIO — The Polo, Perfected. | Luxury Polo & T-Shirt Store')
+@section('meta_description', 'Discover JACARIO\'s luxury collection of meticulously crafted Polo and Round Neck T-Shirts. Engineered from 100% American Supima® cotton, Mulberry silk blends, and stay-flat collars.')
 
 @section('content')
 
-    <!-- ==========================================
-         1. HERO SECTION — 5 AUTOMATIC BANNERS
-         ========================================== -->
-    <section class="relative bg-zinc-950 text-white overflow-hidden select-none" 
+    <!-- ========================================================
+         1. HERO SECTION — WEBISHOP PROMOTIONAL CAROUSEL
+         ======================================================== -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6">
+        <div class="relative bg-zinc-950 rounded-3xl overflow-hidden shadow-2xl select-none"
              x-data="{
                 currentSlide: 0,
                 totalSlides: {{ count($banners) }},
@@ -73,323 +74,596 @@
              @mouseenter="isPaused = true"
              @mouseleave="isPaused = false"
              @touchstart="handleTouchStart($event)"
-             @touchend="handleTouchEnd($event)"
-             @keydown.window.arrow-left="prevSlide()"
-             @keydown.window.arrow-right="nextSlide()">
+             @touchend="handleTouchEnd($event)">
 
-        <!-- Slides Container -->
-        <div class="relative w-full h-[520px] sm:h-[600px] lg:h-[700px] overflow-hidden">
-            @foreach($banners as $index => $banner)
-                @php
-                    $align = $banner->text_alignment ?? 'left';
-                    $alignClass = match($align) {
-                        'center' => 'items-center justify-center text-center max-w-3xl mx-auto',
-                        'right' => 'items-center justify-end text-right max-w-2xl ml-auto',
-                        default => 'items-center justify-start text-left max-w-2xl mr-auto',
-                    };
-                    $flexBtnClass = match($align) {
-                        'center' => 'justify-center',
-                        'right' => 'justify-end',
-                        default => 'justify-start',
-                    };
-                    $secondaryText = match($banner->cta_text) {
-                        'Explore All 50 Polos', 'Explore Stay-Flat Series' => 'The Atelier Story',
-                        'Explore Haute Knits' => 'Our Fabric Guide',
-                        'Shop Best Sellers' => 'All 50 Polos',
-                        default => 'Explore All 50 Polos',
-                    };
-                    $secondaryUrl = match($banner->cta_text) {
-                        'Explore All 50 Polos', 'Explore Stay-Flat Series' => route('about'),
-                        'Explore Haute Knits' => route('about'),
-                        default => route('shop.index'),
-                    };
-                @endphp
+            <!-- Slides Track -->
+            <div class="relative w-full h-[460px] sm:h-[540px] lg:h-[580px] overflow-hidden">
+                @foreach($banners as $index => $banner)
+                    <div class="absolute inset-0 w-full h-full transition-all duration-700 ease-in-out"
+                         x-show="currentSlide === {{ $index }}"
+                         x-transition:enter="transition ease-out duration-700"
+                         x-transition:enter-start="opacity-0 scale-102"
+                         x-transition:enter-end="opacity-100 scale-100"
+                         x-transition:leave="transition ease-in duration-500"
+                         x-transition:leave-start="opacity-100 scale-100"
+                         x-transition:leave-end="opacity-0 scale-98"
+                         style="{{ $index === 0 ? '' : 'display: none;' }}">
+                        
+                        <!-- Slide Background Image -->
+                        <picture>
+                            <img src="{{ $banner->image_url }}" 
+                                 alt="{{ $banner->title }}" 
+                                 loading="{{ $index === 0 ? 'eager' : 'lazy' }}"
+                                 class="w-full h-full object-cover object-[75%_center] sm:object-center filter brightness-[0.82] contrast-[1.05]">
+                        </picture>
 
-                <div class="absolute inset-0 w-full h-full transition-all duration-1000 ease-in-out"
-                     x-show="currentSlide === {{ $index }}"
-                     x-transition:enter="transition ease-out duration-1000"
-                     x-transition:enter-start="opacity-0 scale-105"
-                     x-transition:enter-end="opacity-100 scale-100"
-                     x-transition:leave="transition ease-in duration-700"
-                     x-transition:leave-start="opacity-100 scale-100"
-                     x-transition:leave-end="opacity-0 scale-95"
-                     style="{{ $index === 0 ? '' : 'display: none;' }}">
-                    
-                    <!-- Background Imagery with High-Resolution Responsive Sources -->
-                    <picture>
-                        @if(!empty($banner->mobile_image_url) && $banner->mobile_image_url !== $banner->image_url)
-                            <source media="(max-width: 640px)" srcset="{{ $banner->mobile_image_url }}">
-                        @endif
-                        <img src="{{ $banner->image_url }}" 
-                             alt="{{ $banner->title }}" 
-                             loading="{{ $index === 0 ? 'eager' : 'lazy' }}"
-                             class="w-full h-full object-cover object-[70%_center] sm:object-[center_25%] transform transition-transform duration-1000 ease-out filter brightness-[0.88] sm:brightness-[0.90] contrast-[1.05]">
-                    </picture>
+                        <!-- Gradient Scrims for Text Readability -->
+                        <div class="absolute inset-0 bg-gradient-to-r from-black/95 via-black/70 to-transparent lg:w-3/4"></div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent sm:hidden"></div>
 
-                    <!-- Rich Luxury Gradient Overlays for High Legibility on Mobile & Desktop -->
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/55 to-black/15 lg:from-transparent pointer-events-none"></div>
-                    <div class="absolute inset-0 bg-gradient-to-l from-black/85 via-black/55 to-transparent w-full lg:w-3/5 ml-auto pointer-events-none hidden lg:block"></div>
-                    <div class="absolute inset-0 bg-radial-vignette opacity-35 pointer-events-none"></div>
-
-                    <!-- Slide Editorial Content -->
-                    <div class="absolute inset-0 flex items-end sm:items-center z-10">
-                        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pb-16 sm:pb-20 pt-4 flex flex-col lg:flex-row items-center justify-between gap-6">
-                            
-                            <!-- Left Floating Atelier Rack Pill (Desktop) -->
-                            <div class="hidden lg:flex flex-col space-y-2.5 max-w-xs self-end mb-6">
-                                <div class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-black/60 backdrop-blur-md border border-white/20 text-white text-[11px] font-semibold tracking-wide shadow-xl">
-                                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                                    <span>Atelier Studio Collection</span>
-                                </div>
-                            </div>
-
-                            <!-- Right Content Panel -->
-                            <div class="max-w-xl ml-auto text-left space-y-2.5 sm:space-y-5 w-full">
+                        <!-- Editorial Overlay Content (Webishop Style) -->
+                        <div class="absolute inset-0 flex items-center z-10">
+                            <div class="px-6 sm:px-12 lg:px-16 max-w-2xl space-y-3 sm:space-y-4">
                                 
-                                @if($banner->badge_text)
-                                    <div class="inline-flex items-center space-x-1.5 px-2.5 sm:px-4 py-0.5 sm:py-1.5 rounded-full bg-black/70 backdrop-blur-md border border-[#DFCAAB]/50 text-[#DFCAAB] text-[9px] sm:text-xs font-bold uppercase tracking-[0.2em] shadow-lg">
-                                        <span class="w-1.5 h-1.5 rounded-full bg-[#DFCAAB] animate-pulse"></span>
-                                        <span>{{ $banner->badge_text }}</span>
-                                    </div>
-                                @endif
+                                <!-- Discount & Badge Pill -->
+                                <div class="flex items-center space-x-2">
+                                    <span class="inline-flex items-center px-3 py-1 rounded-full bg-[#DFCAAB] text-zinc-950 text-[10px] sm:text-xs font-black uppercase tracking-wider shadow-md">
+                                        ⚡ FLAT 20% DISCOUNT
+                                    </span>
+                                    @if($banner->badge_text)
+                                        <span class="hidden sm:inline-flex items-center px-3 py-1 rounded-full bg-white/10 backdrop-blur-md text-[#DFCAAB] text-[10px] sm:text-xs font-bold uppercase tracking-wider border border-white/20">
+                                            {{ $banner->badge_text }}
+                                        </span>
+                                    @endif
+                                </div>
 
-                                <h1 class="text-2xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-serif-luxury font-bold tracking-tight text-white leading-tight drop-shadow-xl">
+                                <!-- Bold Headline -->
+                                <h1 class="text-3xl sm:text-5xl lg:text-6xl font-serif-luxury font-bold text-white tracking-tight leading-[1.1] drop-shadow-lg">
                                     {{ $banner->title }}
                                 </h1>
 
-                                @if($banner->subtitle)
-                                    <p class="text-xs sm:text-base lg:text-lg text-zinc-200 font-light leading-relaxed drop-shadow-md max-w-lg line-clamp-2 sm:line-clamp-none">
-                                        {{ $banner->subtitle }}
-                                    </p>
-                                @endif
+                                <!-- Subtitle Description -->
+                                <p class="text-xs sm:text-base text-zinc-300 font-light leading-relaxed max-w-lg line-clamp-2 sm:line-clamp-none drop-shadow">
+                                    {{ $banner->subtitle }}
+                                </p>
 
-                                <!-- CTA Buttons: Sleek Gold Pill + Secondary -->
-                                <div class="pt-1.5 sm:pt-3 flex items-center gap-3 justify-start">
+                                <!-- Pricing Callout (Webishop Highlight) -->
+                                <div class="flex items-baseline space-x-2 pt-1 text-white">
+                                    <span class="text-xs sm:text-sm font-medium text-zinc-400 uppercase tracking-wider">Starting from</span>
+                                    <span class="text-xl sm:text-3xl font-black font-serif-luxury text-[#DFCAAB]">₹1,499</span>
+                                    <span class="text-xs sm:text-sm text-zinc-500 line-through">₹2,499</span>
+                                </div>
+
+                                <!-- CTA Action Buttons -->
+                                <div class="pt-2 sm:pt-4 flex items-center gap-3">
                                     <a href="{{ $banner->cta_url }}" 
-                                       class="px-6 sm:px-9 py-2.5 sm:py-4 bg-[#DFCAAB] hover:bg-white text-zinc-950 text-xs font-bold uppercase tracking-[0.2em] rounded-full sm:rounded-xl transition-all duration-300 shadow-2xl hover:scale-105 hover:shadow-[#DFCAAB]/25 inline-flex items-center space-x-2 group">
-                                        <span>{{ $banner->cta_text }}</span>
-                                        <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                                       class="px-7 sm:px-9 py-3 sm:py-3.5 bg-[#DFCAAB] hover:bg-white text-zinc-950 text-xs sm:text-sm font-extrabold uppercase tracking-widest rounded-full transition-all duration-200 shadow-xl hover:scale-105 inline-flex items-center space-x-2 group">
+                                        <span>Shop Now</span>
+                                        <svg class="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                                     </a>
-                                    <a href="{{ $secondaryUrl }}" 
-                                       class="hidden sm:inline-flex px-6 sm:px-8 py-3 sm:py-4 bg-white/10 hover:bg-white/20 backdrop-blur-md text-white text-xs font-bold uppercase tracking-[0.2em] rounded-xl transition-all border border-white/25 hover:border-white/50 text-center items-center justify-center">
-                                        {{ $secondaryText }}
+
+                                    <a href="{{ route('customize.index') }}" 
+                                       class="px-5 sm:px-7 py-3 sm:py-3.5 bg-white/10 hover:bg-white/20 text-white text-xs sm:text-sm font-bold uppercase tracking-wider rounded-full backdrop-blur-md border border-white/20 transition-all">
+                                        Custom Studio
                                     </a>
                                 </div>
 
                             </div>
-
                         </div>
-                    </div>
 
+                    </div>
+                @endforeach
+            </div>
+
+            <!-- Carousel Previous & Next Arrow Buttons -->
+            <button type="button" 
+                    @click="prevSlide()" 
+                    class="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-black/40 hover:bg-black/80 backdrop-blur-md border border-white/20 text-white flex items-center justify-center transition-all hover:scale-110 active:scale-95 shadow-xl" 
+                    aria-label="Previous Slide">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/></svg>
+            </button>
+
+            <button type="button" 
+                    @click="nextSlide()" 
+                    class="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-black/40 hover:bg-black/80 backdrop-blur-md border border-white/20 text-white flex items-center justify-center transition-all hover:scale-110 active:scale-95 shadow-xl" 
+                    aria-label="Next Slide">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+            </button>
+
+            <!-- Bottom Indicator Dots -->
+            <div class="absolute bottom-4 inset-x-0 z-20 flex justify-center items-center space-x-2">
+                @foreach($banners as $index => $banner)
+                    <button type="button" 
+                            @click="goToSlide({{ $index }})" 
+                            class="transition-all duration-300 rounded-full !min-h-0 border-0 p-0"
+                            :class="currentSlide === {{ $index }} ? 'w-8 h-2 bg-[#DFCAAB]' : 'w-2 h-2 bg-white/40 hover:bg-white/70'"
+                            aria-label="Go to Slide {{ $index + 1 }}">
+                    </button>
+                @endforeach
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ========================================================
+         2. TRUST & VALUE BADGES BAR (4 CLEAN CARDS)
+         ======================================================== -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+            
+            <!-- 1. Free Shipping -->
+            <div class="p-4 sm:p-5 rounded-2xl bg-white border border-zinc-200/90 shadow-xs flex items-center space-x-3.5 hover:shadow-md transition-shadow">
+                <div class="w-11 h-11 rounded-2xl bg-amber-500/10 text-[#8C6D46] flex items-center justify-center shrink-0">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0"/>
+                    </svg>
                 </div>
+                <div>
+                    <h4 class="text-xs sm:text-sm font-bold text-zinc-950">Free Express Delivery</h4>
+                    <p class="text-[11px] text-zinc-500 mt-0.5">On orders above ₹1,999</p>
+                </div>
+            </div>
+
+            <!-- 2. Genuine Supima Cotton -->
+            <div class="p-4 sm:p-5 rounded-2xl bg-white border border-zinc-200/90 shadow-xs flex items-center space-x-3.5 hover:shadow-md transition-shadow">
+                <div class="w-11 h-11 rounded-2xl bg-emerald-500/10 text-emerald-700 flex items-center justify-center shrink-0">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                    </svg>
+                </div>
+                <div>
+                    <h4 class="text-xs sm:text-sm font-bold text-zinc-950">100% Genuine Supima®</h4>
+                    <p class="text-[11px] text-zinc-500 mt-0.5">American extra-long staple yarn</p>
+                </div>
+            </div>
+
+            <!-- 3. Bespoke Studio Offers -->
+            <div class="p-4 sm:p-5 rounded-2xl bg-white border border-zinc-200/90 shadow-xs flex items-center space-x-3.5 hover:shadow-md transition-shadow">
+                <div class="w-11 h-11 rounded-2xl bg-purple-500/10 text-purple-700 flex items-center justify-center shrink-0">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/>
+                    </svg>
+                </div>
+                <div>
+                    <h4 class="text-xs sm:text-sm font-bold text-zinc-950">Bespoke Studio Offers</h4>
+                    <p class="text-[11px] text-zinc-500 mt-0.5">Live 3D vector canvas preview</p>
+                </div>
+            </div>
+
+            <!-- 4. 15-Day Doorstep Exchanges -->
+            <div class="p-4 sm:p-5 rounded-2xl bg-white border border-zinc-200/90 shadow-xs flex items-center space-x-3.5 hover:shadow-md transition-shadow">
+                <div class="w-11 h-11 rounded-2xl bg-blue-500/10 text-blue-700 flex items-center justify-center shrink-0">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                    </svg>
+                </div>
+                <div>
+                    <h4 class="text-xs sm:text-sm font-bold text-zinc-950">15-Day Easy Exchange</h4>
+                    <p class="text-[11px] text-zinc-500 mt-0.5">Doorstep reverse pickup guarantee</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ========================================================
+         3. TRIO PROMO SPOTLIGHT CARDS (WEBISHOP 3-CARD BANNER)
+         ======================================================== -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+            
+            <!-- Card 1: Men's Supima Polo -->
+            <div class="group relative rounded-3xl overflow-hidden p-6 sm:p-8 bg-gradient-to-br from-amber-500/15 via-amber-600/5 to-zinc-900 border border-amber-500/30 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between min-h-[240px]">
+                <div class="space-y-2 relative z-10">
+                    <span class="inline-block px-2.5 py-0.5 rounded-full bg-amber-500 text-zinc-950 text-[10px] font-black uppercase tracking-wider">
+                        UP TO 20% OFF
+                    </span>
+                    <h3 class="text-xl sm:text-2xl font-serif-luxury font-bold text-zinc-950 group-hover:text-[#8C6D46] transition-colors">
+                        Men's Supima® Polo
+                    </h3>
+                    <p class="text-xs text-zinc-600">240 GSM anti-curl structured collar.</p>
+                    <p class="text-sm font-extrabold text-zinc-900 pt-1">From ₹1,499</p>
+                </div>
+                <div class="pt-4 relative z-10">
+                    <a href="{{ route('shop.index', ['category' => 'mens-polo-t-shirts']) }}" 
+                       class="inline-flex items-center space-x-1.5 text-xs font-black uppercase tracking-wider text-zinc-950 group-hover:text-[#8C6D46] border-b-2 border-zinc-950 group-hover:border-[#8C6D46] pb-0.5 transition-colors">
+                        <span>Shop Now</span>
+                        <svg class="w-3.5 h-3.5 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                    </a>
+                </div>
+                <img src="{{ asset('images/polos/black-polo.svg') }}" alt="Men's Polo" class="absolute -right-6 -bottom-6 w-44 h-44 object-contain opacity-40 group-hover:opacity-60 group-hover:scale-105 transition-all duration-500 pointer-events-none">
+            </div>
+
+            <!-- Card 2: Round Neck Essentials -->
+            <div class="group relative rounded-3xl overflow-hidden p-6 sm:p-8 bg-gradient-to-br from-blue-500/15 via-blue-600/5 to-zinc-900 border border-blue-500/30 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between min-h-[240px]">
+                <div class="space-y-2 relative z-10">
+                    <span class="inline-block px-2.5 py-0.5 rounded-full bg-blue-600 text-white text-[10px] font-black uppercase tracking-wider">
+                        UP TO 30% OFF
+                    </span>
+                    <h3 class="text-xl sm:text-2xl font-serif-luxury font-bold text-zinc-950 group-hover:text-blue-800 transition-colors">
+                        Round Neck T-Shirts
+                    </h3>
+                    <p class="text-xs text-zinc-600">Silken 220 GSM combed jersey drape.</p>
+                    <p class="text-sm font-extrabold text-zinc-900 pt-1">From ₹899</p>
+                </div>
+                <div class="pt-4 relative z-10">
+                    <a href="{{ route('shop.index', ['category' => 'round-neck-t-shirts']) }}" 
+                       class="inline-flex items-center space-x-1.5 text-xs font-black uppercase tracking-wider text-zinc-950 group-hover:text-blue-800 border-b-2 border-zinc-950 group-hover:border-blue-800 pb-0.5 transition-colors">
+                        <span>Shop Now</span>
+                        <svg class="w-3.5 h-3.5 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                    </a>
+                </div>
+                <img src="{{ asset('images/polos/royal-blue-polo.svg') }}" alt="Round Neck T-Shirt" class="absolute -right-6 -bottom-6 w-44 h-44 object-contain opacity-40 group-hover:opacity-60 group-hover:scale-105 transition-all duration-500 pointer-events-none">
+            </div>
+
+            <!-- Card 3: Customize Studio -->
+            <div class="group relative rounded-3xl overflow-hidden p-6 sm:p-8 bg-gradient-to-br from-emerald-500/15 via-emerald-600/5 to-zinc-900 border border-emerald-500/30 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between min-h-[240px]">
+                <div class="space-y-2 relative z-10">
+                    <span class="inline-block px-2.5 py-0.5 rounded-full bg-emerald-600 text-white text-[10px] font-black uppercase tracking-wider">
+                        UP TO 35% OFF
+                    </span>
+                    <h3 class="text-xl sm:text-2xl font-serif-luxury font-bold text-zinc-950 group-hover:text-emerald-800 transition-colors">
+                        Customize Studio
+                    </h3>
+                    <p class="text-xs text-zinc-600">Personalized monograms & corporate crests.</p>
+                    <p class="text-sm font-extrabold text-zinc-900 pt-1">From ₹849</p>
+                </div>
+                <div class="pt-4 relative z-10">
+                    <a href="{{ route('customize.index') }}" 
+                       class="inline-flex items-center space-x-1.5 text-xs font-black uppercase tracking-wider text-zinc-950 group-hover:text-emerald-800 border-b-2 border-zinc-950 group-hover:border-emerald-800 pb-0.5 transition-colors">
+                        <span>Shop Now</span>
+                        <svg class="w-3.5 h-3.5 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                    </a>
+                </div>
+                <img src="{{ asset('images/customizer/polo/royal-blue.jpg') }}" alt="Customize Studio" class="absolute -right-6 -bottom-6 w-44 h-44 object-cover rounded-2xl opacity-40 group-hover:opacity-60 group-hover:scale-105 transition-all duration-500 pointer-events-none">
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ========================================================
+         4. "SHOP BY CATEGORY" (SLIDER STRIP WITH PASTEL CARDS)
+         ======================================================== -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12"
+             x-data="{
+                scrollLeft() {
+                    this.$refs.catTrack.scrollBy({ left: -280, behavior: 'smooth' });
+                },
+                scrollRight() {
+                    this.$refs.catTrack.scrollBy({ left: 280, behavior: 'smooth' });
+                }
+             }">
+        
+        <div class="flex items-center justify-between mb-6">
+            <div>
+                <p class="text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] text-[#8C6D46] mb-1">Catalog Explorer</p>
+                <h2 class="text-2xl sm:text-3xl font-serif-luxury font-bold text-zinc-950 tracking-tight">Shop By Category</h2>
+            </div>
+            
+            <!-- Navigation Slider Arrows -->
+            <div class="flex items-center space-x-2">
+                <button @click="scrollLeft()" 
+                        type="button" 
+                        class="w-9 h-9 rounded-full bg-white border border-zinc-300 hover:border-zinc-500 text-zinc-800 flex items-center justify-center transition-all shadow-xs hover:bg-zinc-50" 
+                        aria-label="Previous Categories">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                </button>
+                <button @click="scrollRight()" 
+                        type="button" 
+                        class="w-9 h-9 rounded-full bg-white border border-zinc-300 hover:border-zinc-500 text-zinc-800 flex items-center justify-center transition-all shadow-xs hover:bg-zinc-50" 
+                        aria-label="Next Categories">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Horizontal Scrollable Track -->
+        <div x-ref="catTrack" class="flex items-center space-x-4 overflow-x-auto no-scrollbar pb-3 snap-x">
+            
+            <!-- Category 1: Men's Polo T-Shirts -->
+            <a href="{{ route('shop.index', ['category' => 'mens-polo-t-shirts']) }}" 
+               class="min-w-[190px] sm:min-w-[210px] p-5 rounded-3xl bg-[#FBF6EF] border border-[#EFE5D5] flex flex-col items-center text-center group hover:shadow-lg transition-all duration-200 snap-start shrink-0">
+                <div class="w-24 h-24 rounded-2xl bg-white p-2.5 shadow-xs mb-3 flex items-center justify-center group-hover:scale-105 transition-transform">
+                    <img src="{{ asset('images/polos/black-polo.svg') }}" alt="Men's Polo" class="w-full h-full object-contain">
+                </div>
+                <h4 class="text-xs sm:text-sm font-bold text-zinc-900 group-hover:text-[#8C6D46] transition-colors">Men's Polo T-Shirts</h4>
+                <p class="text-[11px] text-zinc-500 mt-0.5">25 Designs</p>
+            </a>
+
+            <!-- Category 2: Round Neck T-Shirts -->
+            <a href="{{ route('shop.index', ['category' => 'round-neck-t-shirts']) }}" 
+               class="min-w-[190px] sm:min-w-[210px] p-5 rounded-3xl bg-[#EFF4F9] border border-[#DEE7F0] flex flex-col items-center text-center group hover:shadow-lg transition-all duration-200 snap-start shrink-0">
+                <div class="w-24 h-24 rounded-2xl bg-white p-2.5 shadow-xs mb-3 flex items-center justify-center group-hover:scale-105 transition-transform">
+                    <img src="{{ asset('images/polos/royal-blue-polo.svg') }}" alt="Round Neck" class="w-full h-full object-contain">
+                </div>
+                <h4 class="text-xs sm:text-sm font-bold text-zinc-900 group-hover:text-[#8C6D46] transition-colors">Round Neck T-Shirts</h4>
+                <p class="text-[11px] text-zinc-500 mt-0.5">12 Designs</p>
+            </a>
+
+            <!-- Category 3: New Arrival T-Shirts -->
+            <a href="{{ route('shop.index', ['category' => 'new-arrival-t-shirts']) }}" 
+               class="min-w-[190px] sm:min-w-[210px] p-5 rounded-3xl bg-[#F0F8F3] border border-[#DCEEE3] flex flex-col items-center text-center group hover:shadow-lg transition-all duration-200 snap-start shrink-0">
+                <div class="w-24 h-24 rounded-2xl bg-white p-2.5 shadow-xs mb-3 flex items-center justify-center group-hover:scale-105 transition-transform">
+                    <img src="{{ asset('images/polos/burgundy-polo.svg') }}" alt="New Arrivals" class="w-full h-full object-contain">
+                </div>
+                <h4 class="text-xs sm:text-sm font-bold text-zinc-900 group-hover:text-[#8C6D46] transition-colors">New Arrival T-Shirts</h4>
+                <p class="text-[11px] text-zinc-500 mt-0.5">13 Designs</p>
+            </a>
+
+            <!-- Category 4: Mulberry Silk & Supima -->
+            <a href="{{ route('shop.index', ['fabric' => 'Silk']) }}" 
+               class="min-w-[190px] sm:min-w-[210px] p-5 rounded-3xl bg-[#F7F2FA] border border-[#EAE0F0] flex flex-col items-center text-center group hover:shadow-lg transition-all duration-200 snap-start shrink-0">
+                <div class="w-24 h-24 rounded-2xl bg-white p-2.5 shadow-xs mb-3 flex items-center justify-center group-hover:scale-105 transition-transform">
+                    <img src="{{ asset('images/polos/sand-polo.svg') }}" alt="Mulberry Silk" class="w-full h-full object-contain">
+                </div>
+                <h4 class="text-xs sm:text-sm font-bold text-zinc-900 group-hover:text-[#8C6D46] transition-colors">Mulberry Silk & Supima®</h4>
+                <p class="text-[11px] text-zinc-500 mt-0.5">8 Luxury Knits</p>
+            </a>
+
+            <!-- Category 5: Tailored Regular Fit -->
+            <a href="{{ route('shop.index', ['fit' => ['Regular Fit']]) }}" 
+               class="min-w-[190px] sm:min-w-[210px] p-5 rounded-3xl bg-[#F8F5EE] border border-[#EBE3D3] flex flex-col items-center text-center group hover:shadow-lg transition-all duration-200 snap-start shrink-0">
+                <div class="w-24 h-24 rounded-2xl bg-white p-2.5 shadow-xs mb-3 flex items-center justify-center group-hover:scale-105 transition-transform">
+                    <img src="{{ asset('images/polos/olive-polo-detail.svg') }}" alt="Tailored Regular Fit" class="w-full h-full object-contain">
+                </div>
+                <h4 class="text-xs sm:text-sm font-bold text-zinc-900 group-hover:text-[#8C6D46] transition-colors">Tailored Regular Fit</h4>
+                <p class="text-[11px] text-zinc-500 mt-0.5">25 Designs</p>
+            </a>
+
+            <!-- Category 6: Sartorial Slim Fit -->
+            <a href="{{ route('shop.index', ['fit' => ['Slim Fit']]) }}" 
+               class="min-w-[190px] sm:min-w-[210px] p-5 rounded-3xl bg-[#F0F5F8] border border-[#DFEBF2] flex flex-col items-center text-center group hover:shadow-lg transition-all duration-200 snap-start shrink-0">
+                <div class="w-24 h-24 rounded-2xl bg-white p-2.5 shadow-xs mb-3 flex items-center justify-center group-hover:scale-105 transition-transform">
+                    <img src="{{ asset('images/polos/navy-polo.svg') }}" alt="Sartorial Slim Fit" class="w-full h-full object-contain">
+                </div>
+                <h4 class="text-xs sm:text-sm font-bold text-zinc-900 group-hover:text-[#8C6D46] transition-colors">Sartorial Slim Fit</h4>
+                <p class="text-[11px] text-zinc-500 mt-0.5">25 Designs</p>
+            </a>
+
+            <!-- Category 7: Jacario Customize Studio -->
+            <a href="{{ route('customize.index') }}" 
+               class="min-w-[190px] sm:min-w-[210px] p-5 rounded-3xl bg-[#FDF5E6] border border-[#F4E3C4] flex flex-col items-center text-center group hover:shadow-lg transition-all duration-200 snap-start shrink-0">
+                <div class="w-24 h-24 rounded-2xl bg-zinc-950 p-2.5 shadow-xs mb-3 flex items-center justify-center group-hover:scale-105 transition-transform">
+                    <svg class="w-10 h-10 text-[#DFCAAB]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+                    </svg>
+                </div>
+                <h4 class="text-xs sm:text-sm font-bold text-zinc-900 group-hover:text-[#8C6D46] transition-colors">Customize Studio</h4>
+                <p class="text-[11px] font-bold text-amber-700 mt-0.5">Bespoke Design</p>
+            </a>
+
+        </div>
+    </section>
+
+    <!-- ========================================================
+         5. "POPULAR PRODUCTS" SHOWCASE (TABBED FILTER GRID)
+         ======================================================== -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12"
+             x-data="{ activeTab: 'all' }">
+        
+        <!-- Header with Filter Tabs -->
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+            <div>
+                <p class="text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] text-[#8C6D46] mb-1">Curated Favorites</p>
+                <h2 class="text-2xl sm:text-4xl font-serif-luxury font-bold text-zinc-950 tracking-tight">Popular Products</h2>
+            </div>
+
+            <!-- Tab Pills -->
+            <div class="flex items-center space-x-1.5 sm:space-x-2 bg-zinc-100 p-1.5 rounded-full overflow-x-auto no-scrollbar">
+                <button type="button" 
+                        @click="activeTab = 'all'" 
+                        :class="activeTab === 'all' ? 'bg-zinc-950 text-white shadow-xs' : 'text-zinc-700 hover:text-black'"
+                        class="px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all !min-h-0 border-0 shrink-0">
+                    All Products
+                </button>
+
+                <button type="button" 
+                        @click="activeTab = 'polo'" 
+                        :class="activeTab === 'polo' ? 'bg-zinc-950 text-white shadow-xs' : 'text-zinc-700 hover:text-black'"
+                        class="px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all !min-h-0 border-0 shrink-0">
+                    Men's Polo
+                </button>
+
+                <button type="button" 
+                        @click="activeTab = 'round'" 
+                        :class="activeTab === 'round' ? 'bg-zinc-950 text-white shadow-xs' : 'text-zinc-700 hover:text-black'"
+                        class="px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all !min-h-0 border-0 shrink-0">
+                    Round Neck
+                </button>
+
+                <button type="button" 
+                        @click="activeTab = 'new'" 
+                        :class="activeTab === 'new' ? 'bg-zinc-950 text-white shadow-xs' : 'text-zinc-700 hover:text-black'"
+                        class="px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all !min-h-0 border-0 shrink-0">
+                    New Arrivals
+                </button>
+            </div>
+        </div>
+
+        <!-- Tab 1: All Popular Products (Bestsellers) -->
+        <div x-show="activeTab === 'all'" x-cloak class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
+            @foreach($bestsellers as $product)
+                <x-product-card :product="$product" />
             @endforeach
         </div>
 
-        <!-- Previous / Next Navigation Arrows (Desktop) -->
-        <button type="button" 
-                @click="prevSlide()" 
-                class="hidden md:flex absolute left-6 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-black/40 hover:bg-black/80 backdrop-blur-lg border border-white/25 text-white items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 shadow-xl hover:border-[#DFCAAB]" 
-                aria-label="Previous Slide">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
-        </button>
+        <!-- Tab 2: Men's Polo T-Shirts -->
+        <div x-show="activeTab === 'polo'" x-cloak class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6" style="display: none;">
+            @php
+                $poloSubset = \App\Models\Product::with(['category', 'images', 'activeVariants.color', 'activeVariants.size'])
+                    ->active()
+                    ->where('category_id', 1)
+                    ->take(8)
+                    ->get();
+            @endphp
+            @foreach($poloSubset as $product)
+                <x-product-card :product="$product" />
+            @endforeach
+        </div>
 
-        <button type="button" 
-                @click="nextSlide()" 
-                class="hidden md:flex absolute right-6 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-black/40 hover:bg-black/80 backdrop-blur-lg border border-white/25 text-white items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 shadow-xl hover:border-[#DFCAAB]" 
-                aria-label="Next Slide">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-        </button>
+        <!-- Tab 3: Round Neck T-Shirts -->
+        <div x-show="activeTab === 'round'" x-cloak class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6" style="display: none;">
+            @php
+                $roundSubset = \App\Models\Product::with(['category', 'images', 'activeVariants.color', 'activeVariants.size'])
+                    ->active()
+                    ->where('category_id', 2)
+                    ->take(8)
+                    ->get();
+            @endphp
+            @foreach($roundSubset as $product)
+                <x-product-card :product="$product" />
+            @endforeach
+        </div>
 
-        <!-- Bottom Luxury Progress Bar & Slide Controller (Visible on Mobile & Desktop) -->
-        <div class="absolute bottom-2.5 sm:bottom-6 inset-x-0 z-20">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex items-center justify-between bg-black/75 backdrop-blur-xl border border-white/20 px-3.5 sm:px-5 py-1.5 sm:py-2.5 rounded-full max-w-[270px] sm:max-w-xl mx-auto shadow-2xl">
-                    
-                    <!-- Slide Counter -->
-                    <div class="flex items-center space-x-1 text-[10px] sm:text-xs font-serif-luxury tracking-widest text-[#DFCAAB] shrink-0">
-                        <span class="font-bold text-xs" x-text="String(currentSlide + 1).padStart(2, '0')">01</span>
-                        <span class="text-zinc-500">/</span>
-                        <span class="text-zinc-400" x-text="String(totalSlides).padStart(2, '0')">05</span>
-                    </div>
-
-                    <!-- Interactive Progress Indicators -->
-                    <div class="flex items-center space-x-1.5 sm:space-x-3 flex-1 mx-2.5 sm:mx-6">
-                        @foreach($banners as $index => $banner)
-                            <button type="button" 
-                                    @click="goToSlide({{ $index }})" 
-                                    class="relative !min-h-0 h-1 sm:h-2 flex-1 rounded-full bg-white/25 overflow-hidden group cursor-pointer transition-all p-0 border-0"
-                                    aria-label="Go to Slide {{ $index + 1 }}: {{ $banner->title }}">
-                                <!-- Filled Bar on active, full on past, zero on future -->
-                                <div class="absolute inset-y-0 left-0 bg-[#DFCAAB] rounded-full transition-all"
-                                     :style="currentSlide === {{ $index }} 
-                                                ? `width: ${progress}%; transition: width 50ms linear;` 
-                                                : (currentSlide > {{ $index }} ? 'width: 100%;' : 'width: 0%;')">
-                                </div>
-                            </button>
-                        @endforeach
-                    </div>
-
-                    <!-- Pause / Resume Controls -->
-                    <div class="flex items-center space-x-1 shrink-0">
-                        <button type="button" 
-                                @click="togglePause()" 
-                                class="!min-h-0 p-1 sm:p-1.5 rounded-full text-zinc-300 hover:text-white hover:bg-white/10 transition-colors border-0 flex items-center justify-center"
-                                :title="isPaused ? 'Resume Autoplay' : 'Pause Autoplay'">
-                            <template x-if="!isPaused">
-                                <svg class="w-3 h-3 sm:w-3.5 sm:h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
-                            </template>
-                            <template x-if="isPaused">
-                                <svg class="w-3 h-3 sm:w-3.5 sm:h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                            </template>
-                        </button>
-                    </div>
-
-                </div>
-            </div>
+        <!-- Tab 4: New Arrivals -->
+        <div x-show="activeTab === 'new'" x-cloak class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6" style="display: none;">
+            @foreach($newArrivals as $product)
+                <x-product-card :product="$product" />
+            @endforeach
         </div>
 
     </section>
 
-    <!-- ==========================================
-         2. TRUST & VALUE PILLARS STRIP
-         ========================================== -->
-    <section class="bg-white border-b border-zinc-200/80 py-4 sm:py-6">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center divide-x-0 md:divide-x divide-zinc-200">
-                <div class="flex items-center justify-center space-x-2.5 py-1">
-                    <svg class="w-5 h-5 text-[#8C6D46] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M5 13l4 4L19 7"/></svg>
-                    <span class="text-xs font-bold text-zinc-900 tracking-tight">100% Supima® & Silk</span>
-                </div>
-                <div class="flex items-center justify-center space-x-2.5 py-1">
-                    <svg class="w-5 h-5 text-[#8C6D46] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
-                    <span class="text-xs font-bold text-zinc-900 tracking-tight">Anti-Curl Collar Guarantee</span>
-                </div>
-                <div class="flex items-center justify-center space-x-2.5 py-1">
-                    <svg class="w-5 h-5 text-[#8C6D46] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
-                    <span class="text-xs font-bold text-zinc-900 tracking-tight">15-Day Doorstep Exchanges</span>
-                </div>
-                <div class="flex items-center justify-center space-x-2.5 py-1">
-                    <svg class="w-5 h-5 text-[#8C6D46] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
-                    <span class="text-xs font-bold text-zinc-900 tracking-tight">Free Shipping Above ₹1,999</span>
-                </div>
+    <!-- ========================================================
+         6. SECTION: NEW ARRIVALS (8 PRODUCTS)
+         ======================================================== -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+        <div class="flex items-end justify-between mb-6">
+            <div>
+                <p class="text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] text-[#8C6D46] mb-1">New Season Drops</p>
+                <h2 class="text-2xl sm:text-3xl font-serif-luxury font-bold text-zinc-950 tracking-tight">New Arrivals</h2>
             </div>
+            <a href="{{ route('shop.index', ['category' => 'new-arrival-t-shirts']) }}" class="text-xs font-bold uppercase tracking-wider text-zinc-900 hover:text-[#8C6D46] transition-colors flex items-center space-x-1">
+                <span>Explore ({{ $newArrivals->count() }})</span>
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+            </a>
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
+            @foreach($newArrivals as $product)
+                <x-product-card :product="$product" />
+            @endforeach
         </div>
     </section>
 
-    <!-- ==========================================
-         3. SECTION 1: NEW ARRIVALS (8 PRODUCTS)
-         ========================================== -->
-    <section class="py-10 sm:py-16 bg-[#FAF8F5]">
-        <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
-            
-            <div class="flex items-end justify-between mb-6 sm:mb-10">
-                <div>
-                    <p class="text-[10px] sm:text-xs font-bold uppercase tracking-[0.25em] text-[#8C6D46] mb-1">New Season Drops</p>
-                    <h2 class="text-xl sm:text-3xl font-serif-luxury font-bold text-zinc-950 tracking-tight">New Arrivals</h2>
-                </div>
-                <a href="{{ route('shop.index', ['collection' => 'new-arrivals']) }}" class="text-xs font-bold uppercase tracking-wider text-zinc-900 hover:text-[#8C6D46] transition-colors flex items-center space-x-1">
-                    <span>Explore ({{ $newArrivals->count() }})</span>
-                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-                </a>
+    <!-- ========================================================
+         7. SECTION: BEST SELLERS (8 PRODUCTS)
+         ======================================================== -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 bg-white rounded-3xl border border-zinc-200/80 my-6">
+        <div class="flex items-end justify-between mb-6">
+            <div>
+                <p class="text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] text-[#8C6D46] mb-1">Loved. Worn. Repeated.</p>
+                <h2 class="text-2xl sm:text-3xl font-serif-luxury font-bold text-zinc-950 tracking-tight">Best Sellers</h2>
             </div>
-
-            <!-- 2-Col Mobile / 4-Col Desktop Product Grid -->
-            <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-6">
-                @foreach($newArrivals as $product)
-                    <x-product-card :product="$product" />
-                @endforeach
-            </div>
-
+            <a href="{{ route('shop.index', ['collection' => 'bestsellers']) }}" class="text-xs font-bold uppercase tracking-wider text-zinc-900 hover:text-[#8C6D46] transition-colors flex items-center space-x-1">
+                <span>View All ({{ $bestsellers->count() }})</span>
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+            </a>
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
+            @foreach($bestsellers as $product)
+                <x-product-card :product="$product" />
+            @endforeach
         </div>
     </section>
 
-    <!-- ==========================================
-         4. FIT & SILHOUETTES EXPLORER
-         ========================================== -->
-    <section class="py-12 sm:py-16 bg-white border-y border-zinc-200/80">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            
-            <div class="text-center max-w-2xl mx-auto mb-8 sm:mb-12">
-                <p class="text-xs font-bold uppercase tracking-[0.25em] text-[#8C6D46] mb-1.5">Fit & Fabric Perfection</p>
-                <h2 class="text-2xl sm:text-4xl font-serif-luxury font-bold text-zinc-950">Curated Silhouettes</h2>
+    <!-- ========================================================
+         8. SECTION: TRENDING POLOS (8 PRODUCTS)
+         ======================================================== -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+        <div class="flex items-end justify-between mb-6">
+            <div>
+                <p class="text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] text-[#8C6D46] mb-1">Seasonal Trending</p>
+                <h2 class="text-2xl sm:text-3xl font-serif-luxury font-bold text-zinc-950 tracking-tight">Trending Polos</h2>
             </div>
-
-            <div class="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-6">
-                <!-- 1. Tailored Regular Fit -->
-                <a href="{{ route('shop.index', ['fit' => ['Regular Fit']]) }}" class="group relative rounded-2xl sm:rounded-3xl bg-zinc-900 overflow-hidden aspect-[3/4] sm:aspect-[4/5] border border-zinc-200 shadow-md">
-                    <img src="https://images.unsplash.com/photo-1578932750294-f5075e85f44a?w=900&auto=format&fit=crop&q=80" alt="Regular Fit Polo" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-80 group-hover:opacity-90">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent"></div>
-                    <div class="absolute bottom-4 sm:bottom-6 left-4 sm:left-6 right-4 sm:right-6 space-y-1 sm:space-y-1.5">
-                        <span class="text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-[#DFCAAB]">Classic Silhouette</span>
-                        <h3 class="text-sm sm:text-xl font-serif-luxury font-bold text-white group-hover:text-[#DFCAAB] transition-colors">Tailored Regular Fit</h3>
-                        <p class="text-[10px] sm:text-xs text-zinc-300 font-light hidden sm:block">Engineered for timeless proportions with balanced chest drape.</p>
-                    </div>
-                </a>
-
-                <!-- 2. Sartorial Slim Fit -->
-                <a href="{{ route('shop.index', ['fit' => ['Slim Fit']]) }}" class="group relative rounded-2xl sm:rounded-3xl bg-zinc-900 overflow-hidden aspect-[3/4] sm:aspect-[4/5] border border-zinc-200 shadow-md">
-                    <img src="https://images.unsplash.com/photo-1516257984-b1b4d707412e?w=900&auto=format&fit=crop&q=80" alt="Slim Fit Polo" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-80 group-hover:opacity-90">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent"></div>
-                    <div class="absolute bottom-4 sm:bottom-6 left-4 sm:left-6 right-4 sm:right-6 space-y-1 sm:space-y-1.5">
-                        <span class="text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-[#DFCAAB]">Sculpted Cut</span>
-                        <h3 class="text-sm sm:text-xl font-serif-luxury font-bold text-white group-hover:text-[#DFCAAB] transition-colors">Sartorial Slim Fit</h3>
-                        <p class="text-[10px] sm:text-xs text-zinc-300 font-light hidden sm:block">Tapered waist and contoured sleeves designed for athletic builds.</p>
-                    </div>
-                </a>
-
-                <!-- 3. Mulberry Silk & Supima -->
-                <a href="{{ route('shop.index', ['fabric' => 'Silk']) }}" class="group relative rounded-2xl sm:rounded-3xl bg-zinc-900 overflow-hidden aspect-[3/4] sm:aspect-[4/5] border border-zinc-200 shadow-md col-span-2 md:col-span-1">
-                    <img src="https://images.unsplash.com/photo-1520975954732-35dd22299614?w=900&auto=format&fit=crop&q=80" alt="Silk Blend Polo" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-80 group-hover:opacity-90">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent"></div>
-                    <div class="absolute bottom-4 sm:bottom-6 left-4 sm:left-6 right-4 sm:right-6 space-y-1 sm:space-y-1.5">
-                        <span class="text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-[#DFCAAB]">Haute Yarns</span>
-                        <h3 class="text-sm sm:text-xl font-serif-luxury font-bold text-white group-hover:text-[#DFCAAB] transition-colors">Mulberry Silk & Supima®</h3>
-                        <p class="text-[10px] sm:text-xs text-zinc-300 font-light hidden sm:block">Ultra-fine gauge knit offering silken luster and thermal airflow.</p>
-                    </div>
-                </a>
-            </div>
-
+            <a href="{{ route('shop.index') }}" class="text-xs font-bold uppercase tracking-wider text-zinc-900 hover:text-[#8C6D46] transition-colors flex items-center space-x-1">
+                <span>View All</span>
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+            </a>
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
+            @foreach($trendingPolos as $product)
+                <x-product-card :product="$product" />
+            @endforeach
         </div>
     </section>
 
-    <!-- ==========================================
-         5. SECTION 2: BEST SELLERS (8 PRODUCTS)
-         ========================================== -->
-    <section class="py-10 sm:py-16 bg-[#FAF8F5]">
-        <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
-            
-            <div class="flex items-end justify-between mb-6 sm:mb-10">
-                <div>
-                    <p class="text-[10px] sm:text-xs font-bold uppercase tracking-[0.25em] text-[#8C6D46] mb-1">Loved. Worn. Repeated.</p>
-                    <h2 class="text-xl sm:text-3xl font-serif-luxury font-bold text-zinc-950 tracking-tight">Best Sellers</h2>
-                </div>
-                <a href="{{ route('shop.index', ['collection' => 'bestsellers']) }}" class="text-xs font-bold uppercase tracking-wider text-zinc-900 hover:text-[#8C6D46] transition-colors flex items-center space-x-1">
-                    <span>View All ({{ $bestsellers->count() }})</span>
-                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-                </a>
+    <!-- ========================================================
+         9. SECTION: PREMIUM COLLECTION (MULBERRY SILK & SUPIMA)
+         ======================================================== -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 bg-[#FAF8F5] rounded-3xl border border-zinc-200/80 my-6">
+        <div class="flex items-end justify-between mb-6">
+            <div>
+                <p class="text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] text-[#8C6D46] mb-1">Mulberry Silk & Supima®</p>
+                <h2 class="text-2xl sm:text-3xl font-serif-luxury font-bold text-zinc-950 tracking-tight">Premium Collection</h2>
             </div>
-
-            <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-6">
-                @foreach($bestsellers as $product)
-                    <x-product-card :product="$product" />
-                @endforeach
-            </div>
-
+            <a href="{{ route('shop.index', ['fabric' => 'Silk']) }}" class="text-xs font-bold uppercase tracking-wider text-zinc-900 hover:text-[#8C6D46] transition-colors flex items-center space-x-1">
+                <span>Explore Haute Knits</span>
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+            </a>
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
+            @foreach($premiumCollection as $product)
+                <x-product-card :product="$product" />
+            @endforeach
         </div>
     </section>
 
-    <!-- ==========================================
-         5.5 JACARIO BESPOKE CUSTOMIZATION STUDIO SHOWCASE
-         ========================================== -->
-    <section class="py-12 sm:py-20 bg-gradient-to-br from-[#0B0D10] via-zinc-950 to-[#121418] text-white relative overflow-hidden border-y border-zinc-800">
-        <!-- Subtle Ambient Lighting -->
-        <div class="absolute top-0 right-1/4 w-96 h-96 bg-[#A4845B]/15 rounded-full blur-3xl pointer-events-none"></div>
-        <div class="absolute bottom-0 left-10 w-80 h-80 bg-amber-600/10 rounded-full blur-3xl pointer-events-none"></div>
+    <!-- ========================================================
+         10. SECTION: EVERYDAY ESSENTIALS (8 PRODUCTS)
+         ======================================================== -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+        <div class="flex items-end justify-between mb-6">
+            <div>
+                <p class="text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] text-[#8C6D46] mb-1">Daily Wardrobe Rotation</p>
+                <h2 class="text-2xl sm:text-3xl font-serif-luxury font-bold text-zinc-950 tracking-tight">Everyday Essentials</h2>
+            </div>
+            <a href="{{ route('shop.index', ['max_price' => '1299']) }}" class="text-xs font-bold uppercase tracking-wider text-zinc-900 hover:text-[#8C6D46] transition-colors flex items-center space-x-1">
+                <span>Under ₹1,299</span>
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+            </a>
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
+            @foreach($everydayEssentials as $product)
+                <x-product-card :product="$product" />
+            @endforeach
+        </div>
+    </section>
 
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-                
-                <div class="lg:col-span-6 space-y-4 sm:space-y-6">
+    <!-- ========================================================
+         11. SECTION: ALL POLO T-SHIRTS ARCHIVE (PREVIEW)
+         ======================================================== -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 text-center space-y-8">
+        <div class="max-w-2xl mx-auto">
+            <p class="text-[10px] sm:text-xs font-bold uppercase tracking-[0.25em] text-[#8C6D46] mb-1.5">Complete Archive</p>
+            <h2 class="text-2xl sm:text-4xl font-serif-luxury font-bold text-zinc-950">All Polo T-Shirts ({{ $totalProductsCount }} Designs)</h2>
+            <p class="text-xs sm:text-sm text-zinc-500 mt-2 font-light">Explore the complete bespoke Polo and Round Neck catalog across 14 luxury colors and tailored fits.</p>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4 text-left">
+            @foreach($allPolosPreview as $product)
+                <x-product-card :product="$product" />
+            @endforeach
+        </div>
+
+        <div class="pt-4">
+            <a href="{{ route('shop.index') }}" class="inline-flex items-center space-x-3 px-10 py-4 bg-zinc-950 hover:bg-black text-[#DFCAAB] text-xs font-bold uppercase tracking-[0.2em] rounded-full transition-all shadow-xl hover:scale-105">
+                <span>View All {{ $totalProductsCount }} Products</span>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+            </a>
+        </div>
+    </section>
+
+    <!-- ========================================================
+         12. BESPOKE CUSTOMIZE STUDIO REAL-TIME SHOWCASE
+         ======================================================== -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
+        <div class="relative rounded-3xl bg-gradient-to-br from-[#0B0D10] via-zinc-950 to-[#121418] text-white p-8 sm:p-14 overflow-hidden border border-zinc-800 shadow-2xl">
+            <!-- Background Glow -->
+            <div class="absolute top-0 right-1/4 w-96 h-96 bg-[#A4845B]/15 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute bottom-0 left-10 w-80 h-80 bg-amber-600/10 rounded-full blur-3xl pointer-events-none"></div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center relative z-10">
+                <div class="lg:col-span-7 space-y-4 sm:space-y-6">
                     <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-[#18181B] border border-[#A4845B]/40 text-[#DFCAAB] text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em]">
                         <span class="w-2 h-2 rounded-full bg-[#A4845B] animate-ping"></span>
                         <span>JACARIO BESPOKE STUDIO</span>
@@ -399,8 +673,8 @@
                         Customize Your Polo & T-Shirt in Real Time.
                     </h2>
 
-                    <p class="text-xs sm:text-sm text-zinc-300 font-normal leading-relaxed">
-                        Design personalized luxury apparel with your company logo, team emblem, or signature typography. Zero minimum order, live 3D vector canvas preview, and high-definition precision printing.
+                    <p class="text-xs sm:text-sm text-zinc-300 font-normal leading-relaxed max-w-xl">
+                        Design personalized luxury apparel with your company crest, club emblem, or signature typography. Zero minimum order quantity, live 3D vector canvas preview, and high-definition precision printing.
                     </p>
 
                     <div class="flex flex-wrap items-center gap-3 pt-2">
@@ -415,73 +689,35 @@
                             Customize T-Shirt
                         </a>
                     </div>
-
-                    <div class="grid grid-cols-3 gap-3 pt-4 border-t border-zinc-800 text-center">
-                        <div class="p-3 bg-white/5 rounded-xl border border-white/10">
-                            <span class="text-lg font-bold font-serif-luxury text-[#DFCAAB]">0 Min</span>
-                            <p class="text-[9px] text-zinc-400 uppercase tracking-wider mt-0.5">Zero Minimums</p>
-                        </div>
-                        <div class="p-3 bg-white/5 rounded-xl border border-white/10">
-                            <span class="text-lg font-bold font-serif-luxury text-[#DFCAAB]">10+</span>
-                            <p class="text-[9px] text-zinc-400 uppercase tracking-wider mt-0.5">Luxury Colors</p>
-                        </div>
-                        <div class="p-3 bg-white/5 rounded-xl border border-white/10">
-                            <span class="text-lg font-bold font-serif-luxury text-[#DFCAAB]">35% Off</span>
-                            <p class="text-[9px] text-zinc-400 uppercase tracking-wider mt-0.5">Bulk Discounts</p>
-                        </div>
-                    </div>
                 </div>
 
-                <!-- Right Visual Teaser Cards -->
-                <div class="lg:col-span-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <!-- Polo Card -->
-                    <div class="group p-5 rounded-2xl bg-zinc-900/90 border border-zinc-800 hover:border-[#A4845B]/60 transition-all flex flex-col justify-between">
-                        <div class="aspect-[4/3] bg-zinc-950 rounded-xl p-3 flex items-center justify-center relative overflow-hidden mb-3">
-                            <img src="{{ asset('images/customizer/polo/black.jpg') }}" alt="Customize Polo" class="w-full h-full object-contain filter drop-shadow group-hover:scale-105 transition-transform duration-300">
-                            <span class="absolute top-2 left-2 text-[9px] font-extrabold uppercase px-2 py-0.5 rounded bg-amber-400 text-zinc-950">POLO</span>
+                <!-- Right Visual Teasers -->
+                <div class="lg:col-span-5 grid grid-cols-2 gap-4">
+                    <div class="p-4 rounded-2xl bg-zinc-900/90 border border-zinc-800 text-center">
+                        <div class="aspect-square bg-zinc-950 rounded-xl p-2 mb-3 flex items-center justify-center">
+                            <img src="{{ asset('images/customizer/polo/black.jpg') }}" alt="Polo Preview" class="w-full h-full object-contain">
                         </div>
-                        <div>
-                            <h3 class="text-sm font-bold text-white font-serif-luxury">Customize Polo T-Shirt</h3>
-                            <p class="text-[11px] text-zinc-400 mt-1 line-clamp-2">240 GSM Supima® double-pique cotton with anti-curl collar.</p>
-                            <div class="flex items-center justify-between mt-3 pt-3 border-t border-zinc-800">
-                                <span class="text-xs font-bold text-[#DFCAAB]">From ₹1,299</span>
-                                <a href="{{ route('customize.studio', 'polo-t-shirt') }}" class="text-[10px] font-bold uppercase tracking-wider text-white hover:text-[#DFCAAB] flex items-center space-x-1">
-                                    <span>Customize</span>
-                                    <span>→</span>
-                                </a>
-                            </div>
-                        </div>
+                        <h4 class="text-xs font-bold text-white">Custom Polo</h4>
+                        <p class="text-[10px] text-[#DFCAAB] mt-1 font-semibold">From ₹1,299</p>
                     </div>
 
-                    <!-- T-Shirt Card -->
-                    <div class="group p-5 rounded-2xl bg-zinc-900/90 border border-zinc-800 hover:border-[#A4845B]/60 transition-all flex flex-col justify-between">
-                        <div class="aspect-[4/3] bg-zinc-950 rounded-xl p-3 flex items-center justify-center relative overflow-hidden mb-3">
-                            <img src="{{ asset('images/customizer/tshirt/black.jpg') }}" alt="Customize T-Shirt" class="w-full h-full object-contain filter drop-shadow group-hover:scale-105 transition-transform duration-300">
-                            <span class="absolute top-2 left-2 text-[9px] font-extrabold uppercase px-2 py-0.5 rounded bg-blue-400 text-zinc-950">CREWNECK</span>
+                    <div class="p-4 rounded-2xl bg-zinc-900/90 border border-zinc-800 text-center">
+                        <div class="aspect-square bg-zinc-950 rounded-xl p-2 mb-3 flex items-center justify-center">
+                            <img src="{{ asset('images/customizer/tshirt/black.jpg') }}" alt="T-Shirt Preview" class="w-full h-full object-contain">
                         </div>
-                        <div>
-                            <h3 class="text-sm font-bold text-white font-serif-luxury">Customize T-Shirt</h3>
-                            <p class="text-[11px] text-zinc-400 mt-1 line-clamp-2">220 GSM combed Supima® jersey with modern tailored fit.</p>
-                            <div class="flex items-center justify-between mt-3 pt-3 border-t border-zinc-800">
-                                <span class="text-xs font-bold text-[#DFCAAB]">From ₹849</span>
-                                <a href="{{ route('customize.studio', 't-shirt') }}" class="text-[10px] font-bold uppercase tracking-wider text-white hover:text-[#DFCAAB] flex items-center space-x-1">
-                                    <span>Customize</span>
-                                    <span>→</span>
-                                </a>
-                            </div>
-                        </div>
+                        <h4 class="text-xs font-bold text-white">Custom Crewneck</h4>
+                        <p class="text-[10px] text-[#DFCAAB] mt-1 font-semibold">From ₹849</p>
                     </div>
                 </div>
-
             </div>
         </div>
     </section>
 
-    <!-- ==========================================
-         6. EDITORIAL PROMOTIONAL HIGHLIGHT
-         ========================================== -->
-    <section class="py-16 sm:py-20 bg-zinc-950 text-white relative overflow-hidden">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <!-- ========================================================
+         13. ATELIER CRAFTSMANSHIP & COLLAR ENGINEERING
+         ======================================================== -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
+        <div class="rounded-3xl bg-zinc-950 text-white p-8 sm:p-14 border border-zinc-800 shadow-xl">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
                 <div class="lg:col-span-7 space-y-4 sm:space-y-6">
                     <span class="inline-block px-3 py-1 rounded-full bg-[#DFCAAB]/20 text-[#DFCAAB] text-[10px] sm:text-xs font-bold uppercase tracking-widest border border-[#DFCAAB]/30">
@@ -501,19 +737,19 @@
                 </div>
 
                 <div class="lg:col-span-5 grid grid-cols-2 gap-4">
-                    <div class="p-6 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md text-center space-y-1">
+                    <div class="p-5 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md text-center space-y-1">
                         <span class="text-3xl font-serif-luxury font-bold text-[#DFCAAB]">240</span>
                         <p class="text-[10px] text-zinc-400 uppercase tracking-widest">GSM Weight</p>
                     </div>
-                    <div class="p-6 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md text-center space-y-1">
+                    <div class="p-5 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md text-center space-y-1">
                         <span class="text-3xl font-serif-luxury font-bold text-[#DFCAAB]">100%</span>
                         <p class="text-[10px] text-zinc-400 uppercase tracking-widest">Mother of Pearl</p>
                     </div>
-                    <div class="p-6 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md text-center space-y-1">
+                    <div class="p-5 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md text-center space-y-1">
                         <span class="text-3xl font-serif-luxury font-bold text-[#DFCAAB]">50+</span>
                         <p class="text-[10px] text-zinc-400 uppercase tracking-widest">Wash Endurance</p>
                     </div>
-                    <div class="p-6 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md text-center space-y-1">
+                    <div class="p-5 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md text-center space-y-1">
                         <span class="text-3xl font-serif-luxury font-bold text-[#DFCAAB]">Zero</span>
                         <p class="text-[10px] text-zinc-400 uppercase tracking-widest">Shrink Rate</p>
                     </div>
@@ -522,232 +758,45 @@
         </div>
     </section>
 
-    <!-- ==========================================
-         7. SECTION 3: TRENDING POLOS (8 PRODUCTS)
-         ========================================== -->
-    <section class="py-10 sm:py-16 bg-white">
-        <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
-            
-            <div class="flex items-end justify-between mb-6 sm:mb-10">
-                <div>
-                    <p class="text-[10px] sm:text-xs font-bold uppercase tracking-[0.25em] text-[#8C6D46] mb-1">Seasonal Trending</p>
-                    <h2 class="text-xl sm:text-3xl font-serif-luxury font-bold text-zinc-950 tracking-tight">Trending Polos</h2>
-                </div>
-                <a href="{{ route('shop.index') }}" class="text-xs font-bold uppercase tracking-wider text-zinc-900 hover:text-[#8C6D46] transition-colors flex items-center space-x-1">
-                    <span>View All</span>
-                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-                </a>
-            </div>
-
-            <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-6">
-                @foreach($trendingPolos as $product)
-                    <x-product-card :product="$product" />
-                @endforeach
-            </div>
-
+    <!-- ========================================================
+         14. VERIFIED REVIEWS
+         ======================================================== -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
+        <div class="text-center max-w-2xl mx-auto mb-10">
+            <p class="text-xs font-bold uppercase tracking-[0.25em] text-[#8C6D46] mb-1.5">Verified Testimonials</p>
+            <h2 class="text-2xl sm:text-3xl font-serif-luxury font-bold text-zinc-950">What Our Clients Say</h2>
         </div>
-    </section>
 
-    <!-- ==========================================
-         8. SECTION 4: PREMIUM COLLECTION (8 PRODUCTS)
-         ========================================== -->
-    <section class="py-10 sm:py-16 bg-[#FAF8F5] border-t border-zinc-200/80">
-        <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
-            
-            <div class="flex items-end justify-between mb-6 sm:mb-10">
-                <div>
-                    <p class="text-[10px] sm:text-xs font-bold uppercase tracking-[0.25em] text-[#8C6D46] mb-1">Mulberry Silk & Supima®</p>
-                    <h2 class="text-xl sm:text-3xl font-serif-luxury font-bold text-zinc-950 tracking-tight">Premium Collection</h2>
-                </div>
-                <a href="{{ route('shop.index', ['fabric' => 'Silk']) }}" class="text-xs font-bold uppercase tracking-wider text-zinc-900 hover:text-[#8C6D46] transition-colors flex items-center space-x-1">
-                    <span>Explore Haute Knits</span>
-                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-                </a>
-            </div>
-
-            <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-6">
-                @foreach($premiumCollection as $product)
-                    <x-product-card :product="$product" />
-                @endforeach
-            </div>
-
-        </div>
-    </section>
-
-    <!-- ==========================================
-         MID-PAGE LUXURY PROMOTIONAL BANNER
-         ========================================== -->
-    <section class="py-10 sm:py-16 bg-zinc-950 text-white relative overflow-hidden border-y border-zinc-800">
-        <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 relative z-10">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center bg-gradient-to-br from-zinc-900/90 via-black/80 to-zinc-900/90 p-6 sm:p-12 rounded-3xl border border-white/10 shadow-2xl backdrop-blur-md">
-                <div class="lg:col-span-7 space-y-4 sm:space-y-5">
-                    <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-[#DFCAAB]/15 border border-[#DFCAAB]/30 text-[#DFCAAB] text-[10px] sm:text-xs font-bold uppercase tracking-widest">
-                        <span class="w-1.5 h-1.5 rounded-full bg-[#DFCAAB] animate-pulse"></span>
-                        <span>Tactile Mastery</span>
-                    </div>
-                    <h2 class="text-2xl sm:text-4xl font-serif-luxury font-bold text-white leading-tight">
-                        The Luxury of Weightless Warmth & Silken Drape.
-                    </h2>
-                    <p class="text-xs sm:text-sm text-zinc-300 font-light leading-relaxed max-w-xl">
-                        Spun with Grade-6A Mulberry Silk and 100% Extra-Long Staple American Supima®, our knit polos deliver an unmistakably opulent texture with all-day microclimate airflow.
-                    </p>
-                    <div class="pt-2 flex flex-wrap items-center gap-3 sm:gap-4">
-                        <a href="{{ route('shop.index', ['fabric' => 'Silk']) }}" class="px-7 py-3.5 bg-[#DFCAAB] hover:bg-white text-zinc-950 text-xs font-bold uppercase tracking-[0.2em] rounded-xl transition-all shadow-xl hover:scale-105">
-                            Shop Silk-Knit Series
-                        </a>
-                        <a href="{{ route('shop.index', ['collection' => 'bestsellers']) }}" class="px-6 py-3.5 bg-white/10 hover:bg-white/20 text-white text-xs font-bold uppercase tracking-[0.2em] rounded-xl border border-white/20 transition-all">
-                            View Customer Favorites
-                        </a>
-                    </div>
-                </div>
-                <div class="lg:col-span-5 relative aspect-[4/3] sm:aspect-[16/10] rounded-2xl overflow-hidden shadow-2xl border border-white/15 group">
-                    <img src="https://images.unsplash.com/photo-1598033129183-c4f50c736f10?w=1000&auto=format&fit=crop&q=85" alt="Mulberry Silk Craftsmanship" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
-                    <div class="absolute bottom-4 left-4 right-4 flex items-center justify-between text-white text-xs">
-                        <span class="font-serif-luxury font-bold text-[#DFCAAB]">Grade-6A Silk Blend</span>
-                        <span class="text-[11px] text-zinc-300 font-light">24-Gauge Micro-Piqué</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ==========================================
-         9. SECTION 5: EVERYDAY ESSENTIALS (8 PRODUCTS)
-         ========================================== -->
-    <section class="py-10 sm:py-16 bg-white border-t border-zinc-200/80">
-        <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
-            
-            <div class="flex items-end justify-between mb-6 sm:mb-10">
-                <div>
-                    <p class="text-[10px] sm:text-xs font-bold uppercase tracking-[0.25em] text-[#8C6D46] mb-1">Daily Wardrobe Rotation</p>
-                    <h2 class="text-xl sm:text-3xl font-serif-luxury font-bold text-zinc-950 tracking-tight">Everyday Essentials</h2>
-                </div>
-                <a href="{{ route('shop.index', ['max_price' => '1299']) }}" class="text-xs font-bold uppercase tracking-wider text-zinc-900 hover:text-[#8C6D46] transition-colors flex items-center space-x-1">
-                    <span>Under ₹1,299</span>
-                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-                </a>
-            </div>
-
-            <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-6">
-                @foreach($everydayEssentials as $product)
-                    <x-product-card :product="$product" />
-                @endforeach
-            </div>
-
-        </div>
-    </section>
-
-    <!-- ==========================================
-         10. SECTION 6: COMPLETE 50-PRODUCT CATALOG PREVIEW
-         ========================================== -->
-    <section class="py-12 sm:py-20 bg-[#FAF8F5] border-t border-zinc-200/80">
-        <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 text-center space-y-8">
-            
-            <div class="max-w-2xl mx-auto">
-                <p class="text-[10px] sm:text-xs font-bold uppercase tracking-[0.25em] text-[#8C6D46] mb-1.5">Complete Archive</p>
-                <h2 class="text-2xl sm:text-4xl font-serif-luxury font-bold text-zinc-950">All Polo T-Shirts ({{ $totalProductsCount }} Designs)</h2>
-                <p class="text-xs sm:text-sm text-zinc-500 mt-2 font-light">Explore the complete 50-piece bespoke Polo catalog across 14 luxury colors and tailored fits.</p>
-            </div>
-
-            <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-5 gap-2.5 sm:gap-4 text-left">
-                @foreach($allPolosPreview as $product)
-                    <x-product-card :product="$product" />
-                @endforeach
-            </div>
-
-            <!-- View All CTA -->
-            <div class="pt-6">
-                <a href="{{ route('shop.index') }}" class="inline-flex items-center space-x-3 px-10 py-4 bg-zinc-950 hover:bg-black text-[#DFCAAB] text-xs font-bold uppercase tracking-[0.2em] rounded-2xl transition-all shadow-xl hover:scale-105">
-                    <span>View All {{ $totalProductsCount }} Products</span>
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-                </a>
-            </div>
-
-        </div>
-    </section>
-
-    <!-- ==========================================
-         11. BRAND PHILOSOPHY
-         ========================================== -->
-    <section class="py-16 sm:py-24 bg-[#F7F4EE] border-t border-[#E8E1D5]">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-                <div class="lg:col-span-6 space-y-5">
-                    <p class="text-xs font-bold uppercase tracking-[0.25em] text-[#8C6D46]">The JACARIO Philosophy</p>
-                    <h2 class="text-2xl sm:text-4xl font-serif-luxury font-bold text-zinc-950 leading-tight">
-                        Obsessed with <br> One Single Garment.
-                    </h2>
-                    <p class="text-xs sm:text-sm text-zinc-700 leading-relaxed font-light">
-                        We refused to build twenty mediocre clothing categories. We chose to master the single most versatile silhouette in menswear: <strong class="text-zinc-950 font-semibold">The Polo T-Shirt</strong>.
-                    </p>
-                    <div>
-                        <a href="{{ route('about') }}" class="inline-flex items-center space-x-2 text-xs font-bold uppercase tracking-widest text-zinc-950 hover:text-[#8C6D46] transition-colors border-b-2 border-zinc-950 pb-1">
-                            <span>Read Our Full Story</span>
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-                        </a>
-                    </div>
-                </div>
-
-                <div class="lg:col-span-6 rounded-3xl bg-white p-8 sm:p-10 shadow-lg border border-zinc-200 space-y-6">
-                    <div class="flex items-center space-x-4 pb-4 border-b border-zinc-100">
-                        <span class="text-3xl font-serif-luxury font-bold text-zinc-950">50</span>
-                        <p class="text-xs text-zinc-600 uppercase tracking-wider">Unique bespoke polo silhouettes in active seasonal rotation</p>
-                    </div>
-                    <div class="flex items-center space-x-4 pb-4 border-b border-zinc-100">
-                        <span class="text-3xl font-serif-luxury font-bold text-[#8C6D46]">100%</span>
-                        <p class="text-xs text-zinc-600 uppercase tracking-wider">Natural mother-of-pearl hardware ethically harvested from certified fisheries</p>
-                    </div>
-                    <div class="flex items-center space-x-4">
-                        <span class="text-3xl font-serif-luxury font-bold text-zinc-950">14</span>
-                        <p class="text-xs text-zinc-600 uppercase tracking-wider">Signature colorways dyed with eco-friendly reactive pigments</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ==========================================
-         12. VERIFIED REVIEWS
-         ========================================== -->
-    <section class="py-16 sm:py-20 bg-white border-t border-zinc-200">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-2xl mx-auto mb-10">
-                <p class="text-xs font-bold uppercase tracking-[0.25em] text-[#8C6D46] mb-1.5">Verified Testimonials</p>
-                <h2 class="text-2xl sm:text-3xl font-serif-luxury font-bold text-zinc-950">What Our Clients Say</h2>
-            </div>
-
-            <div class="flex overflow-x-auto no-scrollbar gap-4 pb-2 md:grid md:grid-cols-3 md:overflow-visible md:pb-0 -mx-4 px-4 md:mx-0 md:px-0">
-                @foreach($featuredReviews->take(3) as $review)
-                    <div class="min-w-[280px] sm:min-w-0 p-5 sm:p-8 rounded-2xl sm:rounded-3xl bg-[#FAF8F5] border border-zinc-200 flex flex-col justify-between space-y-3 sm:space-y-4 shrink-0 md:shrink">
-                        <div class="space-y-2.5">
-                            <div class="flex items-center space-x-1 text-amber-500">
-                                @for($i = 0; $i < $review->rating; $i++)
-                                    <svg class="w-4 h-4 fill-amber-400" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                                @endfor
-                            </div>
-                            <h4 class="text-sm font-bold text-zinc-950 font-serif-luxury">"{{ $review->title }}"</h4>
-                            <p class="text-xs text-zinc-600 font-light leading-relaxed">{{ $review->comment }}</p>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            @foreach($featuredReviews->take(3) as $review)
+                <div class="p-6 sm:p-8 rounded-3xl bg-white border border-zinc-200/90 flex flex-col justify-between space-y-4 shadow-xs">
+                    <div class="space-y-2.5">
+                        <div class="flex items-center space-x-1 text-amber-500">
+                            @for($i = 0; $i < $review->rating; $i++)
+                                <svg class="w-4 h-4 fill-amber-400" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                            @endfor
                         </div>
-                        <div class="pt-3 border-t border-zinc-200 flex items-center justify-between text-[11px]">
-                            <span class="font-bold text-zinc-900">{{ $review->user ? $review->user->name : 'JACARIO Member' }}</span>
-                            <span class="text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded">✓ Verified Purchase</span>
-                        </div>
+                        <h4 class="text-sm font-bold text-zinc-950 font-serif-luxury">"{{ $review->title }}"</h4>
+                        <p class="text-xs text-zinc-600 font-light leading-relaxed">{{ $review->comment }}</p>
                     </div>
-                @endforeach
-            </div>
+                    <div class="pt-3 border-t border-zinc-100 flex items-center justify-between text-[11px]">
+                        <span class="font-bold text-zinc-900">{{ $review->user ? $review->user->name : 'JACARIO Member' }}</span>
+                        <span class="text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded">✓ Verified Purchase</span>
+                    </div>
+                </div>
+            @endforeach
         </div>
     </section>
 
-    <!-- ==========================================
-         13. VIP SOCIETY NEWSLETTER
-         ========================================== -->
-    <section class="py-16 bg-[#FAF8F5] border-t border-zinc-200">
-        <div class="max-w-4xl mx-auto px-4 text-center space-y-4 sm:space-y-5 bg-gradient-to-br from-[#F5EFEB] via-[#EFE7DE] to-[#E8DDD1] p-6 sm:p-14 rounded-2xl sm:rounded-3xl border border-[#DDCFBF]">
+    <!-- ========================================================
+         15. VIP SOCIETY NEWSLETTER
+         ======================================================== -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+        <div class="rounded-3xl bg-gradient-to-br from-[#F5EFEB] via-[#EFE7DE] to-[#E8DDD1] p-8 sm:p-14 border border-[#DDCFBF] text-center space-y-4 max-w-4xl mx-auto">
             <p class="text-xs font-bold uppercase tracking-[0.25em] text-[#8C6D46]">Private Archive</p>
             <h2 class="text-2xl sm:text-4xl font-serif-luxury font-bold text-zinc-950">Join the JACARIO Society</h2>
             <p class="text-xs sm:text-sm text-zinc-600 max-w-md mx-auto font-light">
-                Receive private release notifications and an exclusive ₹300 welcome code on your inaugural order.
+                Receive private release notifications and an exclusive ₹300 welcome gift code on your inaugural order.
             </p>
 
             <form action="{{ route('newsletter.subscribe') }}" method="POST" class="max-w-md mx-auto flex flex-col sm:flex-row gap-2 pt-2"
@@ -772,8 +821,8 @@
                     .catch(() => { loading = false; });
                   ">
                 @csrf
-                <input type="email" x-model="email" required placeholder="Enter your email address..." class="flex-1 px-4 py-3 rounded-xl bg-white border border-zinc-300 text-zinc-900 text-xs focus:outline-none focus:border-[#8C6D46]">
-                <button type="submit" class="px-6 py-3 bg-zinc-950 hover:bg-black text-[#DFCAAB] text-xs font-bold uppercase tracking-widest rounded-xl transition-all shrink-0">
+                <input type="email" x-model="email" required placeholder="Enter your email address..." class="flex-1 px-4 py-3 rounded-full bg-white border border-zinc-300 text-zinc-900 text-xs focus:outline-none focus:border-[#8C6D46] shadow-xs">
+                <button type="submit" class="px-7 py-3 bg-zinc-950 hover:bg-black text-[#DFCAAB] text-xs font-bold uppercase tracking-widest rounded-full transition-all shrink-0 shadow-sm">
                     <span x-text="loading ? 'Joining...' : 'Subscribe'"></span>
                 </button>
             </form>

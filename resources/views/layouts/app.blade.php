@@ -133,7 +133,35 @@
     </div>
 
     <!-- Header Spacer so page content never goes behind fixed header -->
-    <div id="site-header-spacer" class="h-[105px] sm:h-[121px] lg:h-[80px] shrink-0" aria-hidden="true"></div>
+    <div id="site-header-spacer" class="h-[120px] sm:h-[135px] lg:h-[130px] shrink-0 transition-all duration-150" aria-hidden="true"></div>
+    <script>
+        (function() {
+            function syncHeaderSpacer() {
+                var header = document.getElementById('site-fixed-header');
+                var spacer = document.getElementById('site-header-spacer');
+                if (header && spacer) {
+                    var h = header.offsetHeight;
+                    if (h > 0) {
+                        spacer.style.height = h + 'px';
+                    }
+                }
+            }
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', syncHeaderSpacer);
+            } else {
+                syncHeaderSpacer();
+            }
+            window.addEventListener('load', syncHeaderSpacer);
+            window.addEventListener('resize', syncHeaderSpacer);
+            if (window.ResizeObserver) {
+                var ro = new ResizeObserver(function() {
+                    syncHeaderSpacer();
+                });
+                var hEl = document.getElementById('site-fixed-header');
+                if (hEl) ro.observe(hEl);
+            }
+        })();
+    </script>
 
     <!-- Toast Notification Container -->
     @include('components.toast')

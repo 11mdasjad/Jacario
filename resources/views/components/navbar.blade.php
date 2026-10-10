@@ -1,107 +1,84 @@
-<header class="w-full bg-white/95 backdrop-blur-md border-b border-zinc-200/80">
+<header class="w-full bg-white border-b border-zinc-200/90" x-data="{ categoryMenuOpen: false }">
+    <!-- ========================================================
+         TIER 1: MAIN HEADER (LOGO, SEARCH, HELPLINE, ACCOUNT, CART)
+         ======================================================== -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between h-16 sm:h-20">
+        <div class="flex items-center justify-between h-16 sm:h-20 gap-3 lg:gap-6">
             
-            <!-- Left on Mobile: Hamburger Menu Button -->
-            <div class="flex items-center space-x-1 lg:hidden">
-                <button @click="$store.nav.toggleMobile()" type="button" class="p-2 rounded-xl text-zinc-800 hover:bg-zinc-100 hover:text-black focus:outline-none transition-colors" aria-label="Open Navigation Menu">
+            <!-- Left on Mobile: Hamburger Menu Button & Logo -->
+            <div class="flex items-center space-x-2 sm:space-x-3 shrink-0">
+                <button @click="$store.nav.toggleMobile()" type="button" class="p-2 -ml-2 rounded-xl text-zinc-800 hover:bg-zinc-100 focus:outline-none transition-colors lg:hidden" aria-label="Open Navigation Menu">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
                     </svg>
                 </button>
-            </div>
 
-            <!-- Brand Logo -->
-            <div class="flex-shrink-0 flex items-center py-1">
-                <a href="{{ route('home') }}" class="group flex items-center focus:outline-none" aria-label="JACARIO Home">
-                    <img src="{{ asset('images/logo-horizontal.png') }}" alt="JACARIO" class="h-8 sm:h-9 md:h-10 w-auto object-contain transition-transform duration-200 group-hover:scale-105">
+                <!-- Brand Logo -->
+                <a href="{{ route('home') }}" class="group flex items-center focus:outline-none shrink-0" aria-label="JACARIO Home">
+                    <img src="{{ asset('images/logo-horizontal.png') }}" alt="JACARIO" class="h-8 sm:h-9 md:h-10 w-auto object-contain transition-transform duration-200 group-hover:scale-102">
                 </a>
             </div>
 
-            <!-- Desktop Navigation Links (Strictly 3 Header Categories) -->
-            <nav class="hidden lg:flex items-center space-x-6 xl:space-x-8 2xl:space-x-10">
+            <!-- Center on Desktop: Prominent Search Bar (Webishop Theme Style) -->
+            <div class="hidden lg:flex flex-1 max-w-2xl mx-2">
+                <form action="{{ route('shop.index') }}" method="GET" class="relative w-full flex items-center">
+                    <div class="relative w-full">
+                        <input type="text" 
+                               name="search" 
+                               value="{{ request('search') }}"
+                               placeholder="Search for polo t-shirts, round neck, silk knit, colors..." 
+                               class="w-full pl-5 pr-28 py-2.5 sm:py-3 text-xs sm:text-sm bg-zinc-50 hover:bg-white focus:bg-white text-zinc-900 placeholder-zinc-400 rounded-full border border-zinc-300 focus:border-[#A4845B] focus:ring-2 focus:ring-[#A4845B]/20 transition-all outline-none shadow-xs">
+                        
+                        <button type="submit" 
+                                class="absolute right-1.5 top-1/2 -translate-y-1/2 px-4 py-1.5 sm:py-2 bg-[#0B0D10] hover:bg-[#A4845B] text-white text-xs font-bold uppercase tracking-wider rounded-full transition-all duration-200 flex items-center space-x-1.5 shadow-sm">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                            </svg>
+                            <span class="hidden xl:inline">Search</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Right Actions: Help Line, Account, Wishlist, Cart -->
+            <div class="flex items-center space-x-2 sm:space-x-4 shrink-0 text-zinc-800">
                 
-                <!-- 1. Men's Polo T-Shirt -->
-                <a href="{{ route('shop.index', ['category' => 'mens-polo-t-shirts']) }}" 
-                   class="text-xs uppercase font-bold tracking-[0.16em] xl:tracking-[0.2em] transition-all py-2 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 hover:after:w-full after:h-0.5 after:bg-[#A4845B] after:transition-all after:duration-200 {{ request('category') === 'mens-polo-t-shirts' ? 'text-[#A4845B] after:w-full' : 'text-zinc-800 hover:text-black' }}">
-                    Men's Polo T-Shirt
-                </a>
-
-                <!-- 2. Round Neck T-Shirt -->
-                <a href="{{ route('shop.index', ['category' => 'round-neck-t-shirts']) }}" 
-                   class="text-xs uppercase font-bold tracking-[0.16em] xl:tracking-[0.2em] transition-all py-2 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 hover:after:w-full after:h-0.5 after:bg-[#A4845B] after:transition-all after:duration-200 {{ request('category') === 'round-neck-t-shirts' ? 'text-[#A4845B] after:w-full' : 'text-zinc-800 hover:text-black' }}">
-                    Round Neck T-Shirt
-                </a>
-
-                <!-- 3. New Arrival T-Shirt -->
-                <a href="{{ route('shop.index', ['category' => 'new-arrival-t-shirts']) }}" 
-                   class="text-xs uppercase font-bold tracking-[0.16em] xl:tracking-[0.2em] transition-all py-2 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 hover:after:w-full after:h-0.5 after:bg-[#A4845B] after:transition-all after:duration-200 {{ request('category') === 'new-arrival-t-shirts' || request('collection') === 'new-arrivals' ? 'text-[#A4845B] after:w-full' : 'text-zinc-800 hover:text-black' }}">
-                    New Arrival T-Shirt
-                </a>
-
-                <!-- 4. Jacario Dedicated Customize Studio -->
-                <a href="{{ route('customize.index') }}" 
-                   class="group inline-flex items-center space-x-2 px-3 py-1.5 rounded-full text-xs uppercase font-extrabold tracking-[0.16em] xl:tracking-[0.18em] transition-all duration-300 {{ request()->routeIs('customize.*') ? 'bg-[#0B0D10] text-[#DFCAAB] shadow-md border border-[#A4845B]/60' : 'bg-gradient-to-r from-amber-500/10 via-amber-600/10 to-amber-500/10 text-zinc-900 hover:bg-[#0B0D10] hover:text-[#DFCAAB] border border-amber-600/30 shadow-xs' }}">
-                    <span class="w-5 h-5 rounded-full bg-[#A4845B] text-white flex items-center justify-center shadow-xs transition-transform duration-300 group-hover:scale-110 group-hover:rotate-12">
-                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+                <!-- Concierge Helpline (Desktop Only) -->
+                <a href="tel:{{ preg_replace('/[^0-9+]/', '', \App\Models\Setting::get('contact_phone', '+91 22 8900 1200')) }}" 
+                   class="hidden xl:flex items-center space-x-2.5 p-1.5 rounded-xl hover:bg-zinc-100 transition-colors group">
+                    <div class="w-9 h-9 rounded-full bg-amber-500/10 text-[#8C6D46] flex items-center justify-center shrink-0 group-hover:bg-[#8C6D46] group-hover:text-white transition-colors">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
                         </svg>
-                    </span>
-                    <span>Customize</span>
-                    <span class="text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded-sm bg-[#A4845B] text-white transition-colors group-hover:bg-[#DFCAAB] group-hover:text-zinc-950">STUDIO</span>
+                    </div>
+                    <div class="text-left leading-tight">
+                        <span class="block text-[10px] uppercase font-bold tracking-wider text-zinc-400">Call For Concierge</span>
+                        <span class="block text-xs font-bold text-zinc-900">{{ \App\Models\Setting::get('contact_phone', '+91 22 8900 1200') }}</span>
+                    </div>
                 </a>
 
-            </nav>
-
-            <!-- Actions (Search, Wishlist, Cart Drawer) -->
-            <div class="flex items-center space-x-1 sm:space-x-2.5 text-zinc-800">
-                
-                <!-- Search Button -->
-                <button @click="$store.nav.searchOpen = true" type="button" class="p-2 sm:p-2.5 rounded-xl text-zinc-700 hover:text-black hover:bg-zinc-100 transition-colors focus:outline-none" aria-label="Search Collection">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-                </button>
-
-                <!-- Wishlist Icon (Mobile & Desktop with dynamic Alpine count badge) -->
-                <a href="{{ route('wishlist.index') }}" class="relative p-2 sm:p-2.5 rounded-xl text-zinc-800 hover:bg-zinc-100 hover:text-black transition-colors" aria-label="Wishlist">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
-                    <span x-cloak
-                          x-show="$store.wishlist && $store.wishlist.count > 0" 
-                          x-text="$store.wishlist.count" 
-                          class="absolute top-1 right-1 bg-rose-600 text-white text-[10px] font-black w-4 h-4 rounded-full flex items-center justify-center shadow-xs"
-                          style="{{ (Auth::check() && Auth::user()->wishlists()->count() > 0) ? '' : 'display: none;' }}">
-                        {{ Auth::check() ? Auth::user()->wishlists()->count() : '' }}
-                    </span>
-                </a>
-
-                <!-- Shopping Bag Link (Opens /cart Page) -->
-                @php
-                    $cartInitialCount = app(\App\Services\CartService::class)->getSummary()['item_count'] ?? 0;
-                @endphp
-                <a href="{{ route('cart.index') }}" class="relative p-2 sm:p-2.5 rounded-xl text-zinc-800 hover:bg-zinc-100 hover:text-black transition-colors focus:outline-none" aria-label="Shopping Bag">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
-                    <span x-cloak
-                          x-show="$store.cartDrawer && $store.cartDrawer.cartData && $store.cartDrawer.cartData.item_count > 0" 
-                          x-text="$store.cartDrawer.cartData.item_count" 
-                          class="absolute top-1 right-1 bg-[#A4845B] text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center shadow-xs"
-                          style="{{ $cartInitialCount > 0 ? '' : 'display: none !important;' }}">
-                        {{ $cartInitialCount > 0 ? $cartInitialCount : '' }}
-                    </span>
-                </a>
-
-                <!-- Desktop Customer Account Dropdown -->
-                <div class="relative hidden lg:block" x-data="{ userMenuOpen: false }">
+                <!-- Account / Sign In Dropdown -->
+                <div class="relative" x-data="{ userMenuOpen: false }">
                     @auth
-                        <button @click="userMenuOpen = !userMenuOpen" @click.away="userMenuOpen = false" type="button" class="flex items-center space-x-1.5 p-2 rounded-xl text-zinc-800 hover:bg-zinc-100 hover:text-black focus:outline-none">
-                            <div class="w-7 h-7 rounded-full bg-zinc-900 text-[#DFCAAB] flex items-center justify-center text-xs font-bold">
+                        <button @click="userMenuOpen = !userMenuOpen" @click.away="userMenuOpen = false" type="button" class="flex items-center space-x-2 p-1.5 sm:p-2 rounded-xl text-zinc-800 hover:bg-zinc-100 hover:text-black focus:outline-none transition-colors">
+                            <div class="w-8 h-8 rounded-full bg-zinc-950 text-[#DFCAAB] flex items-center justify-center text-xs font-bold shadow-xs">
                                 {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
                             </div>
-                            <span class="text-xs font-bold tracking-wider text-zinc-900">{{ Str::words(Auth::user()->name, 1, '') }}</span>
-                            <svg class="w-3.5 h-3.5 text-zinc-500 transition-transform duration-200" :class="{ 'rotate-180': userMenuOpen }" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                            <div class="hidden sm:block text-left leading-tight">
+                                <span class="block text-[10px] text-zinc-400 font-bold uppercase tracking-wider">Account</span>
+                                <span class="block text-xs font-bold text-zinc-900 truncate max-w-[90px]">{{ Str::words(Auth::user()->name, 1, '') }}</span>
+                            </div>
+                            <svg class="w-3.5 h-3.5 text-zinc-500 transition-transform duration-200 hidden sm:block" :class="{ 'rotate-180': userMenuOpen }" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                         </button>
 
-                        <div x-show="userMenuOpen" x-transition class="absolute right-0 mt-2 w-56 rounded-2xl shadow-2xl bg-white border border-zinc-200 p-2 z-50 text-zinc-900">
+                        <div x-show="userMenuOpen" 
+                             x-cloak
+                             x-transition:enter="transition ease-out duration-150"
+                             x-transition:enter-start="opacity-0 scale-95"
+                             x-transition:enter-end="opacity-100 scale-100"
+                             class="absolute right-0 mt-2 w-56 rounded-2xl shadow-2xl bg-white border border-zinc-200 p-2 z-50 text-zinc-900">
                             <div class="px-3 py-2 border-b border-zinc-100">
-                                <p class="text-[11px] text-zinc-500 font-medium">Signed in as</p>
+                                <p class="text-[10px] text-zinc-400 font-bold uppercase tracking-wider">Signed in as</p>
                                 <p class="text-xs font-bold text-zinc-900 truncate">{{ Auth::user()->name }}</p>
                             </div>
 
@@ -135,61 +112,254 @@
                             </form>
                         </div>
                     @else
-                        <a href="{{ route('login') }}" class="p-2 rounded-xl text-zinc-800 hover:bg-zinc-100 hover:text-black transition-colors focus:outline-none flex items-center space-x-1.5" aria-label="Sign In">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
-                            <span class="text-xs font-bold tracking-wider text-zinc-900">Sign In</span>
+                        <a href="{{ route('login') }}" class="flex items-center space-x-2 p-1.5 sm:p-2 rounded-xl text-zinc-800 hover:bg-zinc-100 hover:text-black transition-colors focus:outline-none" aria-label="Sign In">
+                            <div class="w-8 h-8 rounded-full bg-zinc-100 flex items-center justify-center text-zinc-700">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                            </div>
+                            <div class="hidden sm:block text-left leading-tight">
+                                <span class="block text-[10px] text-zinc-400 font-bold uppercase tracking-wider">Account</span>
+                                <span class="block text-xs font-bold text-zinc-900">Sign In</span>
+                            </div>
                         </a>
                     @endauth
+                </div>
+
+                <!-- Wishlist Icon with live Alpine Badge -->
+                <a href="{{ route('wishlist.index') }}" class="relative p-2 sm:p-2.5 rounded-xl text-zinc-800 hover:bg-zinc-100 hover:text-black transition-colors" aria-label="Wishlist">
+                    <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+                    <span x-cloak
+                          x-show="$store.wishlist && $store.wishlist.count > 0" 
+                          x-text="$store.wishlist.count" 
+                          class="absolute top-1 right-1 bg-rose-600 text-white text-[10px] font-black w-4 h-4 rounded-full flex items-center justify-center shadow-xs"
+                          style="{{ (Auth::check() && Auth::user()->wishlists()->count() > 0) ? '' : 'display: none;' }}">
+                        {{ Auth::check() ? Auth::user()->wishlists()->count() : '' }}
+                    </span>
+                </a>
+
+                <!-- Shopping Cart Pill Button (Webishop Style with count & total) -->
+                @php
+                    $cartInitial = app(\App\Services\CartService::class)->getSummary();
+                    $cartInitialCount = $cartInitial['item_count'] ?? 0;
+                    $cartInitialSubtotal = $cartInitial['subtotal'] ?? 0;
+                @endphp
+                <a href="{{ route('cart.index') }}" 
+                   class="flex items-center space-x-2 pl-2 sm:pl-3 pr-2.5 sm:pr-3.5 py-1.5 sm:py-2 rounded-full bg-zinc-900 hover:bg-black text-white transition-all duration-200 shadow-sm group focus:outline-none" 
+                   aria-label="Shopping Cart">
+                    <div class="relative flex items-center justify-center">
+                        <svg class="w-4 h-4 sm:w-5 sm:h-5 text-[#DFCAAB]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+                        </svg>
+                        <span x-cloak
+                              x-show="$store.cartDrawer && $store.cartDrawer.cartData && $store.cartDrawer.cartData.item_count > 0" 
+                              x-text="$store.cartDrawer.cartData.item_count" 
+                              class="absolute -top-1.5 -right-2 bg-[#A4845B] text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center ring-2 ring-zinc-900"
+                              style="{{ $cartInitialCount > 0 ? '' : 'display: none !important;' }}">
+                            {{ $cartInitialCount > 0 ? $cartInitialCount : '' }}
+                        </span>
+                    </div>
+                    <div class="hidden sm:flex flex-col text-left leading-none pl-1">
+                        <span class="text-[9px] uppercase font-bold tracking-wider text-zinc-400">Cart</span>
+                        <span class="text-xs font-bold text-[#DFCAAB]">
+                            ₹<span x-text="($store.cartDrawer && $store.cartDrawer.cartData && $store.cartDrawer.cartData.subtotal !== undefined) ? Number($store.cartDrawer.cartData.subtotal).toLocaleString('en-IN') : '{{ number_format($cartInitialSubtotal) }}'">{{ number_format($cartInitialSubtotal) }}</span>
+                        </span>
+                    </div>
+                </a>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================
+         TIER 2: SECONDARY NAVIGATION BAR (DESKTOP)
+         ======================================================== -->
+    <div class="hidden lg:block bg-[#FAF8F5] border-t border-zinc-200/80">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-12">
+                
+                <!-- Left: "Shop By Categories" Dropdown Menu Button -->
+                <div class="relative" @click.away="categoryMenuOpen = false">
+                    <button @click="categoryMenuOpen = !categoryMenuOpen" 
+                            type="button" 
+                            class="flex items-center space-x-2.5 px-4 py-2 rounded-xl bg-zinc-950 hover:bg-black text-[#DFCAAB] text-xs font-extrabold uppercase tracking-wider shadow-sm transition-all">
+                        <svg class="w-4 h-4 text-[#DFCAAB]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                        <span>Shop By Categories</span>
+                        <svg class="w-3.5 h-3.5 text-zinc-400 transition-transform duration-200" :class="{ 'rotate-180': categoryMenuOpen }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+
+                    <!-- Dropdown Content -->
+                    <div x-show="categoryMenuOpen" 
+                         x-cloak
+                         x-transition:enter="transition ease-out duration-150"
+                         x-transition:enter-start="opacity-0 translate-y-1"
+                         x-transition:enter-end="opacity-100 translate-y-0"
+                         class="absolute left-0 mt-2 w-64 rounded-2xl bg-white border border-zinc-200 shadow-2xl p-2 z-50 text-zinc-900 divide-y divide-zinc-100">
+                        
+                        <div class="py-1">
+                            <a href="{{ route('shop.index', ['category' => 'mens-polo-t-shirts']) }}" 
+                               class="flex items-center justify-between px-3 py-2.5 text-xs font-bold text-zinc-800 hover:text-black hover:bg-zinc-50 rounded-xl transition-colors">
+                                <div class="flex items-center space-x-2.5">
+                                    <span class="w-2 h-2 rounded-full bg-[#A4845B]"></span>
+                                    <span>Men's Polo T-Shirts</span>
+                                </div>
+                                <span class="text-[10px] text-zinc-400 font-semibold">28</span>
+                            </a>
+                            <a href="{{ route('shop.index', ['category' => 'round-neck-t-shirts']) }}" 
+                               class="flex items-center justify-between px-3 py-2.5 text-xs font-bold text-zinc-800 hover:text-black hover:bg-zinc-50 rounded-xl transition-colors">
+                                <div class="flex items-center space-x-2.5">
+                                    <span class="w-2 h-2 rounded-full bg-zinc-800"></span>
+                                    <span>Round Neck T-Shirts</span>
+                                </div>
+                                <span class="text-[10px] text-zinc-400 font-semibold">14</span>
+                            </a>
+                            <a href="{{ route('shop.index', ['category' => 'new-arrival-t-shirts']) }}" 
+                               class="flex items-center justify-between px-3 py-2.5 text-xs font-bold text-zinc-800 hover:text-black hover:bg-zinc-50 rounded-xl transition-colors">
+                                <div class="flex items-center space-x-2.5">
+                                    <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                                    <span>New Arrival T-Shirts</span>
+                                </div>
+                                <span class="text-[9px] font-black uppercase tracking-wider px-1.5 py-0.2 rounded bg-emerald-100 text-emerald-800">NEW</span>
+                            </a>
+                        </div>
+
+                        <div class="py-1">
+                            <a href="{{ route('customize.index') }}" 
+                               class="flex items-center justify-between px-3 py-2.5 text-xs font-extrabold text-amber-900 bg-amber-50/70 hover:bg-amber-100 rounded-xl transition-colors">
+                                <div class="flex items-center space-x-2.5">
+                                    <svg class="w-3.5 h-3.5 text-[#8C6D46]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+                                    </svg>
+                                    <span>Customize Studio</span>
+                                </div>
+                                <span class="text-[9px] font-black uppercase tracking-wider px-1.5 py-0.2 rounded bg-amber-400 text-zinc-950">HOT</span>
+                            </a>
+                            <a href="{{ route('shop.index', ['fabric' => 'Silk']) }}" 
+                               class="flex items-center justify-between px-3 py-2.5 text-xs font-bold text-zinc-800 hover:text-black hover:bg-zinc-50 rounded-xl transition-colors">
+                                <div class="flex items-center space-x-2.5">
+                                    <span class="w-2 h-2 rounded-full bg-purple-500"></span>
+                                    <span>Mulberry Silk & Supima®</span>
+                                </div>
+                                <span class="text-[9px] font-bold text-purple-700 bg-purple-50 px-1.5 py-0.2 rounded">LUXE</span>
+                            </a>
+                            <a href="{{ route('shop.index', ['collection' => 'bestsellers']) }}" 
+                               class="flex items-center justify-between px-3 py-2.5 text-xs font-bold text-zinc-800 hover:text-black hover:bg-zinc-50 rounded-xl transition-colors">
+                                <div class="flex items-center space-x-2.5">
+                                    <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+                                    <span>Best Sellers</span>
+                                </div>
+                                <span class="text-[10px] text-zinc-400">★ 4.9</span>
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Center: Primary Navigation Links -->
+                <nav class="flex items-center space-x-6 xl:space-x-8">
+                    <a href="{{ route('home') }}" 
+                       class="text-xs uppercase font-bold tracking-[0.15em] transition-colors py-2 {{ request()->routeIs('home') ? 'text-[#8C6D46] font-extrabold' : 'text-zinc-800 hover:text-black' }}">
+                        Home
+                    </a>
+
+                    <a href="{{ route('shop.index', ['category' => 'mens-polo-t-shirts']) }}" 
+                       class="text-xs uppercase font-bold tracking-[0.15em] transition-colors py-2 {{ request('category') === 'mens-polo-t-shirts' ? 'text-[#8C6D46] font-extrabold' : 'text-zinc-800 hover:text-black' }}">
+                        Men's Polo
+                    </a>
+
+                    <a href="{{ route('shop.index', ['category' => 'round-neck-t-shirts']) }}" 
+                       class="text-xs uppercase font-bold tracking-[0.15em] transition-colors py-2 {{ request('category') === 'round-neck-t-shirts' ? 'text-[#8C6D46] font-extrabold' : 'text-zinc-800 hover:text-black' }}">
+                        Round Neck
+                    </a>
+
+                    <a href="{{ route('shop.index', ['category' => 'new-arrival-t-shirts']) }}" 
+                       class="text-xs uppercase font-bold tracking-[0.15em] transition-colors py-2 {{ request('category') === 'new-arrival-t-shirts' || request('collection') === 'new-arrivals' ? 'text-[#8C6D46] font-extrabold' : 'text-zinc-800 hover:text-black' }}">
+                        New Arrivals
+                    </a>
+
+                    <!-- Jacario Dedicated Customize Studio -->
+                    <a href="{{ route('customize.index') }}" 
+                       class="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full text-xs uppercase font-extrabold tracking-wider transition-all {{ request()->routeIs('customize.*') ? 'bg-zinc-950 text-[#DFCAAB] shadow-xs' : 'bg-amber-500/10 text-zinc-900 hover:bg-zinc-950 hover:text-[#DFCAAB] border border-amber-600/30' }}">
+                        <span class="w-1.5 h-1.5 rounded-full bg-[#A4845B]"></span>
+                        <span>Customize Studio</span>
+                        <span class="text-[8px] font-black uppercase px-1 py-0.2 rounded bg-[#A4845B] text-white">HOT</span>
+                    </a>
+
+                    <a href="{{ route('shop.index', ['collection' => 'bestsellers']) }}" 
+                       class="text-xs uppercase font-bold tracking-[0.15em] transition-colors py-2 {{ request('collection') === 'bestsellers' ? 'text-[#8C6D46] font-extrabold' : 'text-zinc-800 hover:text-black' }}">
+                        Best Sellers
+                    </a>
+
+                    <a href="{{ route('about') }}" 
+                       class="text-xs uppercase font-bold tracking-[0.15em] transition-colors py-2 {{ request()->routeIs('about') ? 'text-[#8C6D46] font-extrabold' : 'text-zinc-800 hover:text-black' }}">
+                        The Atelier
+                    </a>
+                </nav>
+
+                <!-- Right: Promotional Callout -->
+                <div class="hidden xl:flex items-center space-x-2 text-xs font-bold text-zinc-700">
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-900 text-[10px] uppercase font-black tracking-wider">
+                        FLAT 20% OFF
+                    </span>
+                    <span class="text-zinc-500 font-medium">Free Shipping Above ₹1,999</span>
                 </div>
 
             </div>
         </div>
     </div>
 
-    <!-- Mobile Horizontal Category / Navigation Strip -->
-    <div class="lg:hidden bg-[#FAF8F5] border-t border-zinc-200/80 px-3 py-2 overflow-x-auto no-scrollbar">
-        <div class="flex items-center space-x-2 min-w-max">
+    <!-- ========================================================
+         MOBILE SEARCH & HORIZONTAL SCROLL STRIP
+         ======================================================== -->
+    <div class="lg:hidden bg-[#FAF8F5] border-t border-zinc-200/90 px-3 py-2 space-y-2">
+        <!-- Mobile Search Input -->
+        <form action="{{ route('shop.index') }}" method="GET" class="relative">
+            <input type="text" 
+                   name="search" 
+                   value="{{ request('search') }}"
+                   placeholder="Search luxury polos, round neck..." 
+                   class="w-full pl-9 pr-4 py-2 text-xs bg-white text-zinc-900 rounded-xl border border-zinc-300 focus:border-[#A4845B] outline-none shadow-xs">
+            <svg class="w-4 h-4 text-zinc-400 absolute left-3 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+            </svg>
+        </form>
+
+        <!-- Horizontal Scroll Category Badges -->
+        <div class="flex items-center space-x-1.5 overflow-x-auto no-scrollbar pb-0.5">
             <a href="{{ route('shop.index') }}" 
-               class="px-3.5 py-1.5 rounded-full text-xs font-bold tracking-tight transition-colors {{ !request('collection') && !request('category') && !request('fit') && !request('fabric') ? 'bg-zinc-950 text-white shadow-xs' : 'bg-white text-zinc-700 border border-zinc-200 hover:border-zinc-400' }}">
+               class="px-3 py-1 rounded-full text-xs font-bold tracking-tight shrink-0 transition-colors {{ !request('collection') && !request('category') ? 'bg-zinc-950 text-white shadow-xs' : 'bg-white text-zinc-700 border border-zinc-200' }}">
                 All Polos
             </a>
             <a href="{{ route('shop.index', ['category' => 'mens-polo-t-shirts']) }}" 
-               class="px-3.5 py-1.5 rounded-full text-xs font-bold tracking-tight transition-colors {{ request('category') === 'mens-polo-t-shirts' ? 'bg-[#0B0D10] text-[#DFCAAB] shadow-xs' : 'bg-white text-zinc-700 border border-zinc-200 hover:border-zinc-400' }}">
+               class="px-3 py-1 rounded-full text-xs font-bold tracking-tight shrink-0 transition-colors {{ request('category') === 'mens-polo-t-shirts' ? 'bg-[#0B0D10] text-[#DFCAAB]' : 'bg-white text-zinc-700 border border-zinc-200' }}">
                 Men's Polo
             </a>
             <a href="{{ route('shop.index', ['category' => 'round-neck-t-shirts']) }}" 
-               class="px-3.5 py-1.5 rounded-full text-xs font-bold tracking-tight transition-colors {{ request('category') === 'round-neck-t-shirts' ? 'bg-[#0B0D10] text-[#DFCAAB] shadow-xs' : 'bg-white text-zinc-700 border border-zinc-200 hover:border-zinc-400' }}">
+               class="px-3 py-1 rounded-full text-xs font-bold tracking-tight shrink-0 transition-colors {{ request('category') === 'round-neck-t-shirts' ? 'bg-[#0B0D10] text-[#DFCAAB]' : 'bg-white text-zinc-700 border border-zinc-200' }}">
                 Round Neck
             </a>
-            <a href="{{ route('shop.index', ['collection' => 'new-arrivals']) }}" 
-               class="px-3.5 py-1.5 rounded-full text-xs font-bold tracking-tight transition-colors {{ request('collection') === 'new-arrivals' || request('category') === 'new-arrival-t-shirts' ? 'bg-[#0B0D10] text-[#DFCAAB] shadow-xs' : 'bg-white text-zinc-700 border border-zinc-200 hover:border-zinc-400' }}">
+            <a href="{{ route('shop.index', ['category' => 'new-arrival-t-shirts']) }}" 
+               class="px-3 py-1 rounded-full text-xs font-bold tracking-tight shrink-0 transition-colors {{ request('category') === 'new-arrival-t-shirts' ? 'bg-[#0B0D10] text-[#DFCAAB]' : 'bg-white text-zinc-700 border border-zinc-200' }}">
                 ✨ New Arrivals
             </a>
+            <a href="{{ route('customize.index') }}" 
+               class="px-3 py-1 rounded-full text-xs font-bold tracking-tight shrink-0 transition-colors bg-gradient-to-r from-amber-500/20 to-amber-600/20 text-amber-950 border border-amber-500/40">
+                🎨 Customize Studio
+            </a>
             <a href="{{ route('shop.index', ['collection' => 'bestsellers']) }}" 
-               class="px-3.5 py-1.5 rounded-full text-xs font-bold tracking-tight transition-colors {{ request('collection') === 'bestsellers' ? 'bg-[#0B0D10] text-[#DFCAAB] shadow-xs' : 'bg-white text-zinc-700 border border-zinc-200 hover:border-zinc-400' }}">
+               class="px-3 py-1 rounded-full text-xs font-bold tracking-tight shrink-0 transition-colors {{ request('collection') === 'bestsellers' ? 'bg-[#0B0D10] text-[#DFCAAB]' : 'bg-white text-zinc-700 border border-zinc-200' }}">
                 🔥 Best Sellers
-            </a>
-            <a href="{{ route('shop.index', ['fit' => ['Regular Fit']]) }}" 
-               class="px-3.5 py-1.5 rounded-full text-xs font-bold tracking-tight transition-colors {{ in_array('Regular Fit', (array)request('fit', [])) ? 'bg-[#0B0D10] text-[#DFCAAB] shadow-xs' : 'bg-white text-zinc-700 border border-zinc-200 hover:border-zinc-400' }}">
-                Classic Fit
-            </a>
-            <a href="{{ route('shop.index', ['fit' => ['Slim Fit']]) }}" 
-               class="px-3.5 py-1.5 rounded-full text-xs font-bold tracking-tight transition-colors {{ in_array('Slim Fit', (array)request('fit', [])) ? 'bg-[#0B0D10] text-[#DFCAAB] shadow-xs' : 'bg-white text-zinc-700 border border-zinc-200 hover:border-zinc-400' }}">
-                Slim Fit
-            </a>
-            <a href="{{ route('shop.index', ['fabric' => 'Supima']) }}" 
-               class="px-3.5 py-1.5 rounded-full text-xs font-bold tracking-tight transition-colors {{ request('fabric') === 'Supima' ? 'bg-[#0B0D10] text-[#DFCAAB] shadow-xs' : 'bg-white text-zinc-700 border border-zinc-200 hover:border-zinc-400' }}">
-                Supima®
-            </a>
-            <a href="{{ route('shop.index', ['fabric' => 'Silk']) }}" 
-               class="px-3.5 py-1.5 rounded-full text-xs font-bold tracking-tight transition-colors {{ request('fabric') === 'Silk' ? 'bg-[#0B0D10] text-[#DFCAAB] shadow-xs' : 'bg-white text-zinc-700 border border-zinc-200 hover:border-zinc-400' }}">
-                Mulberry Silk
             </a>
         </div>
     </div>
 
-    <!-- Mobile Fullscreen Slide-Out Drawer (Myntra-Style Category Explorer) -->
+    <!-- ========================================================
+         MOBILE FULLSCREEN SLIDE-OUT DRAWER
+         ======================================================== -->
     <div x-show="$store.nav.mobileMenuOpen" 
+         x-cloak
          x-transition:enter="transition ease-out duration-300"
          x-transition:enter-start="opacity-0"
          x-transition:enter-end="opacity-100"
@@ -213,7 +383,7 @@
              class="relative max-w-xs w-full bg-white text-zinc-900 h-full shadow-2xl flex flex-col justify-between z-10 overflow-y-auto border-r border-zinc-200">
             
             <div>
-                <!-- Myntra-Style User Header Card in Drawer -->
+                <!-- User Header Card in Drawer -->
                 <div class="bg-gradient-to-br from-zinc-950 via-zinc-900 to-zinc-950 text-white p-5">
                     <div class="flex items-center justify-between pb-3">
                         <img src="{{ asset('images/logo-horizontal-white.png') }}" alt="JACARIO" class="h-7 sm:h-8 w-auto object-contain opacity-95">
@@ -256,7 +426,7 @@
 
                 <!-- Primary Category Navigation List -->
                 <div class="p-4 space-y-1">
-                    <!-- Featured Jacario Customize Studio Option -->
+                    <!-- Featured Customize Studio Option -->
                     <div class="mb-3 p-1 rounded-2xl bg-gradient-to-r from-amber-500/20 via-amber-600/10 to-amber-700/20 border border-[#A4845B]/40">
                         <a href="{{ route('customize.index') }}" @click="$store.nav.closeMobile()" class="flex items-center justify-between p-3 bg-zinc-950 text-white rounded-xl shadow-md group">
                             <div class="flex items-center space-x-3">

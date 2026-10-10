@@ -16,8 +16,8 @@ class ShopController extends Controller
             ->active();
 
         // 1. Search Query (Name, SKU, Fabric, Fit, Pattern)
-        if ($request->filled('q')) {
-            $search = trim($request->input('q'));
+        $search = trim($request->input('q') ?? $request->input('search') ?? '');
+        if (!empty($search)) {
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
                   ->orWhere('sku', 'like', "%{$search}%")
