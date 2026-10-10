@@ -94,12 +94,6 @@
                         Sign In with Password
                     </button>
                 </form>
-
-                <!-- Demo Credentials for Staff Review -->
-                <div class="mt-4 p-3 bg-zinc-50 rounded-xl border border-zinc-200 text-[11px] text-zinc-500 text-left space-y-1">
-                    <p class="font-bold text-zinc-800 uppercase tracking-wider text-[10px]">Staff Admin Access:</p>
-                    <p>• Super Admin: <span class="font-mono text-zinc-900">admin@jacario.com</span> / <span class="font-mono text-zinc-900">Password123!</span></p>
-                </div>
             </div>
         </div>
 
