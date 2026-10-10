@@ -76,8 +76,8 @@
              @touchstart="handleTouchStart($event)"
              @touchend="handleTouchEnd($event)">
 
-            <!-- Slides Track (Full Width Responsive Height) -->
-            <div class="relative w-full h-[300px] sm:h-[420px] md:h-[480px] lg:h-[560px] xl:h-[620px] overflow-hidden">
+            <!-- Slides Track (Full Width Responsive Height with Proper Proportions) -->
+            <div class="relative w-full h-[380px] sm:h-[440px] md:h-[500px] lg:h-[560px] xl:h-[620px] overflow-hidden bg-[#EFEAE1]">
                 @foreach($banners as $index => $banner)
                     <div class="absolute inset-0 w-full h-full transition-all duration-700 ease-in-out"
                          x-show="currentSlide === {{ $index }}"
@@ -89,19 +89,110 @@
                          x-transition:leave-end="opacity-0 scale-98"
                          style="{{ $index === 0 ? '' : 'display: none;' }}">
                         
-                        @if(str_contains($banner->image_path, 'banner-polos-define-you'))
-                            <!-- Full-Screen Pre-composed Graphic Banner (Exact Match to User Reference) -->
-                            <a href="{{ $banner->cta_url }}" class="block w-full h-full relative group cursor-pointer focus:outline-none">
-                                <picture>
-                                    <img src="{{ $banner->image_url }}" 
-                                         alt="{{ $banner->title }}" 
-                                         loading="{{ $index === 0 ? 'eager' : 'lazy' }}"
-                                         class="w-full h-full object-cover object-center">
-                                </picture>
-                                <span class="sr-only">{{ $banner->title }}</span>
-                            </a>
+                        @php
+                            $isPoloSlide = str_contains($banner->image_path, 'hero-polos-define-you') || str_contains($banner->image_path, 'banner-polos-define-you');
+                            $isRoundNeckSlide = str_contains($banner->image_path, 'hero-roundneck-essentials');
+                            $isLightCustomSlide = $isPoloSlide || $isRoundNeckSlide;
+                        @endphp
+
+                        @if($isLightCustomSlide)
+                            <!-- High-Res Custom Photographic Background -->
+                            <picture>
+                                <img src="{{ $banner->image_url }}" 
+                                     alt="{{ $banner->title }}" 
+                                     loading="{{ $index === 0 ? 'eager' : 'lazy' }}"
+                                     class="w-full h-full object-cover object-[78%_center] sm:object-center select-none">
+                            </picture>
+
+                            <!-- Subtle Mobile Scrim for Text Readability without altering Desktop look -->
+                            <div class="absolute inset-0 bg-gradient-to-r from-[#F5F1EB]/95 via-[#F5F1EB]/75 to-transparent sm:bg-none pointer-events-none"></div>
+
+                            <!-- Editorial Overlay Content (Left-Aligned, Exactly Matching Reference) -->
+                            <div class="absolute inset-0 z-10 flex items-center pointer-events-none">
+                                <div class="w-full max-w-7xl mx-auto px-6 sm:px-12 lg:px-16">
+                                    <div class="max-w-xl lg:max-w-2xl space-y-2.5 sm:space-y-3.5 lg:space-y-4 pointer-events-auto">
+                                        
+                                        <!-- Top Badge / Category Tagline -->
+                                        <div class="text-[10px] sm:text-xs font-bold uppercase tracking-[0.25em] text-zinc-600">
+                                            {{ $banner->badge_text ?: ($isPoloSlide ? 'PREMIUM ESSENTIALS' : 'SUMMER COLLECTION') }}
+                                        </div>
+
+                                        <!-- Huge Bold Sans-Serif Headline -->
+                                        @if($isPoloSlide)
+                                            <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-[54px] xl:text-[60px] font-black text-zinc-950 uppercase tracking-tight leading-[1.04]">
+                                                POLOS THAT<br>DEFINE YOU
+                                            </h1>
+                                            <span class="sr-only">{{ $banner->title }}</span>
+                                        @elseif($isRoundNeckSlide)
+                                            <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-[54px] xl:text-[60px] font-black text-zinc-950 uppercase tracking-tight leading-[1.04]">
+                                                ROUND NECK<br>ESSENTIALS
+                                            </h1>
+                                            <span class="sr-only">{{ $banner->title }}</span>
+                                        @else
+                                            <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-[54px] xl:text-[60px] font-black text-zinc-950 uppercase tracking-tight leading-[1.04]">
+                                                {{ $banner->title }}
+                                            </h1>
+                                        @endif
+
+                                        <!-- Subtitle Description -->
+                                        <p class="text-xs sm:text-sm md:text-base text-zinc-600 font-medium max-w-md leading-relaxed">
+                                            {{ $banner->subtitle }}
+                                        </p>
+
+                                        <!-- CTA Button (Black Pill with Arrow) -->
+                                        <div class="pt-1 sm:pt-2">
+                                            <a href="{{ $banner->cta_url }}" 
+                                               class="inline-flex items-center space-x-2.5 px-6 sm:px-8 py-2.5 sm:py-3.5 bg-zinc-950 hover:bg-black text-white text-xs sm:text-sm font-bold uppercase tracking-wider rounded-md transition-all duration-200 shadow-md hover:shadow-xl hover:-translate-y-0.5 group">
+                                                <span>{{ $banner->cta_text ?: ($isPoloSlide ? "Shop Men's Polo" : "Shop Round Neck") }}</span>
+                                                <svg class="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                                            </a>
+                                        </div>
+
+                                        <!-- Bottom Trust Badges Bar (Inside Banner as per Reference) -->
+                                        <div class="pt-3 sm:pt-5 lg:pt-6 flex flex-wrap items-center gap-3 sm:gap-6 lg:gap-7 border-t border-zinc-300/60 mt-3 sm:mt-5">
+                                            <!-- Free Shipping -->
+                                            <div class="flex items-center space-x-2.5">
+                                                <svg class="w-4 h-4 sm:w-5 sm:h-5 text-zinc-800 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0"/>
+                                                </svg>
+                                                <div>
+                                                    <div class="text-[11px] sm:text-xs font-bold text-zinc-900 leading-tight">Free Shipping</div>
+                                                    <div class="text-[9px] sm:text-[10px] text-zinc-600 font-medium">On orders above ₹999</div>
+                                                </div>
+                                            </div>
+
+                                            <div class="hidden sm:block w-px h-6 bg-zinc-300/80"></div>
+
+                                            <!-- Easy Returns -->
+                                            <div class="flex items-center space-x-2.5">
+                                                <svg class="w-4 h-4 sm:w-5 sm:h-5 text-zinc-800 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+                                                </svg>
+                                                <div>
+                                                    <div class="text-[11px] sm:text-xs font-bold text-zinc-900 leading-tight">Easy Returns</div>
+                                                    <div class="text-[9px] sm:text-[10px] text-zinc-600 font-medium">7 days hassle free</div>
+                                                </div>
+                                            </div>
+
+                                            <div class="hidden sm:block w-px h-6 bg-zinc-300/80"></div>
+
+                                            <!-- Secure Payments -->
+                                            <div class="flex items-center space-x-2.5">
+                                                <svg class="w-4 h-4 sm:w-5 sm:h-5 text-zinc-800 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                                                </svg>
+                                                <div>
+                                                    <div class="text-[11px] sm:text-xs font-bold text-zinc-900 leading-tight">Secure Payments</div>
+                                                    <div class="text-[9px] sm:text-[10px] text-zinc-600 font-medium">100% safe & secure</div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
                         @else
-                            <!-- High-Res Background Image with Luxury Editorial Layout -->
+                            <!-- Dark / Studio Luxury Editorial Layout -->
                             <picture>
                                 <img src="{{ $banner->image_url }}" 
                                      alt="{{ $banner->title }}" 
