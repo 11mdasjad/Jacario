@@ -6,10 +6,10 @@
 @section('content')
 
     <!-- ========================================================
-         1. HERO SECTION — WEBISHOP PROMOTIONAL CAROUSEL
+         1. HERO SECTION — FULL SCREEN IMMERSIVE CAROUSEL
          ======================================================== -->
-    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6">
-        <div class="relative bg-zinc-950 rounded-3xl overflow-hidden shadow-2xl select-none"
+    <section class="w-full relative overflow-hidden select-none bg-[#F7F4EE]">
+        <div class="relative w-full overflow-hidden select-none"
              x-data="{
                 currentSlide: 0,
                 totalSlides: {{ count($banners) }},
@@ -76,8 +76,8 @@
              @touchstart="handleTouchStart($event)"
              @touchend="handleTouchEnd($event)">
 
-            <!-- Slides Track -->
-            <div class="relative w-full h-[460px] sm:h-[540px] lg:h-[580px] overflow-hidden">
+            <!-- Slides Track (Full Width Responsive Height) -->
+            <div class="relative w-full h-[300px] sm:h-[420px] md:h-[480px] lg:h-[560px] xl:h-[620px] overflow-hidden">
                 @foreach($banners as $index => $banner)
                     <div class="absolute inset-0 w-full h-full transition-all duration-700 ease-in-out"
                          x-show="currentSlide === {{ $index }}"
@@ -89,94 +89,99 @@
                          x-transition:leave-end="opacity-0 scale-98"
                          style="{{ $index === 0 ? '' : 'display: none;' }}">
                         
-                        <!-- Slide Background Image -->
-                        <picture>
-                            <img src="{{ $banner->image_url }}" 
-                                 alt="{{ $banner->title }}" 
-                                 loading="{{ $index === 0 ? 'eager' : 'lazy' }}"
-                                 class="w-full h-full object-cover object-[75%_center] sm:object-center filter brightness-[0.82] contrast-[1.05]">
-                        </picture>
+                        @if(str_contains($banner->image_path, 'banner-polos-define-you'))
+                            <!-- Full-Screen Pre-composed Graphic Banner (Exact Match to User Reference) -->
+                            <a href="{{ $banner->cta_url }}" class="block w-full h-full relative group cursor-pointer focus:outline-none">
+                                <picture>
+                                    <img src="{{ $banner->image_url }}" 
+                                         alt="{{ $banner->title }}" 
+                                         loading="{{ $index === 0 ? 'eager' : 'lazy' }}"
+                                         class="w-full h-full object-cover object-center">
+                                </picture>
+                                <span class="sr-only">{{ $banner->title }}</span>
+                            </a>
+                        @else
+                            <!-- High-Res Background Image with Luxury Editorial Layout -->
+                            <picture>
+                                <img src="{{ $banner->image_url }}" 
+                                     alt="{{ $banner->title }}" 
+                                     loading="{{ $index === 0 ? 'eager' : 'lazy' }}"
+                                     class="w-full h-full object-cover object-[75%_center] sm:object-center filter brightness-[0.85] contrast-[1.05]">
+                            </picture>
 
-                        <!-- Gradient Scrims for Text Readability -->
-                        <div class="absolute inset-0 bg-gradient-to-r from-black/95 via-black/70 to-transparent lg:w-3/4"></div>
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent sm:hidden"></div>
+                            <!-- Gradient Scrims for Text Readability -->
+                            <div class="absolute inset-0 bg-gradient-to-r from-black/90 via-black/60 to-transparent lg:w-3/4 pointer-events-none"></div>
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent sm:hidden pointer-events-none"></div>
 
-                        <!-- Editorial Overlay Content (Webishop Style) -->
-                        <div class="absolute inset-0 flex items-center z-10">
-                            <div class="px-6 sm:px-12 lg:px-16 max-w-2xl space-y-3 sm:space-y-4">
-                                
-                                <!-- Discount & Badge Pill -->
-                                <div class="flex items-center space-x-2">
-                                    <span class="inline-flex items-center px-3 py-1 rounded-full bg-[#DFCAAB] text-zinc-950 text-[10px] sm:text-xs font-black uppercase tracking-wider shadow-md">
-                                        ⚡ FLAT 20% DISCOUNT
-                                    </span>
-                                    @if($banner->badge_text)
-                                        <span class="hidden sm:inline-flex items-center px-3 py-1 rounded-full bg-white/10 backdrop-blur-md text-[#DFCAAB] text-[10px] sm:text-xs font-bold uppercase tracking-wider border border-white/20">
-                                            {{ $banner->badge_text }}
-                                        </span>
-                                    @endif
+                            <!-- Editorial Overlay Content -->
+                            <div class="absolute inset-0 flex items-center z-10 pointer-events-none">
+                                <div class="max-w-7xl mx-auto px-6 sm:px-12 lg:px-16 w-full">
+                                    <div class="max-w-2xl space-y-3 sm:space-y-4 pointer-events-auto">
+                                        
+                                        <!-- Badge Pill -->
+                                        @if($banner->badge_text)
+                                            <div class="inline-flex items-center space-x-2">
+                                                <span class="inline-flex items-center px-3 py-1 rounded-full bg-[#DFCAAB] text-zinc-950 text-[10px] sm:text-xs font-black uppercase tracking-wider shadow-md">
+                                                    {{ $banner->badge_text }}
+                                                </span>
+                                            </div>
+                                        @endif
+
+                                        <!-- Bold Headline -->
+                                        <h1 class="text-3xl sm:text-5xl lg:text-6xl font-serif-luxury font-bold text-white tracking-tight leading-[1.1] drop-shadow-lg">
+                                            {{ $banner->title }}
+                                        </h1>
+
+                                        <!-- Subtitle Description -->
+                                        <p class="text-xs sm:text-base text-zinc-300 font-light leading-relaxed max-w-lg line-clamp-2 sm:line-clamp-none drop-shadow">
+                                            {{ $banner->subtitle }}
+                                        </p>
+
+                                        <!-- CTA Action Buttons -->
+                                        <div class="pt-2 sm:pt-4 flex items-center gap-3">
+                                            <a href="{{ $banner->cta_url }}" 
+                                               class="px-7 sm:px-9 py-3 sm:py-3.5 bg-[#0B0D10] hover:bg-black text-[#DFCAAB] border border-zinc-700 text-xs sm:text-sm font-extrabold uppercase tracking-widest rounded-full transition-all duration-200 shadow-xl hover:scale-105 inline-flex items-center space-x-2 group">
+                                                <span>{{ $banner->cta_text ?: 'Shop Now' }}</span>
+                                                <svg class="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                                            </a>
+
+                                            <a href="{{ route('customize.index') }}" 
+                                               class="px-5 sm:px-7 py-3 sm:py-3.5 bg-white/10 hover:bg-white/20 text-white text-xs sm:text-sm font-bold uppercase tracking-wider rounded-full backdrop-blur-md border border-white/20 transition-all">
+                                                Custom Studio
+                                            </a>
+                                        </div>
+
+                                    </div>
                                 </div>
-
-                                <!-- Bold Headline -->
-                                <h1 class="text-3xl sm:text-5xl lg:text-6xl font-serif-luxury font-bold text-white tracking-tight leading-[1.1] drop-shadow-lg">
-                                    {{ $banner->title }}
-                                </h1>
-
-                                <!-- Subtitle Description -->
-                                <p class="text-xs sm:text-base text-zinc-300 font-light leading-relaxed max-w-lg line-clamp-2 sm:line-clamp-none drop-shadow">
-                                    {{ $banner->subtitle }}
-                                </p>
-
-                                <!-- Pricing Callout (Webishop Highlight) -->
-                                <div class="flex items-baseline space-x-2 pt-1 text-white">
-                                    <span class="text-xs sm:text-sm font-medium text-zinc-400 uppercase tracking-wider">Starting from</span>
-                                    <span class="text-xl sm:text-3xl font-black font-serif-luxury text-[#DFCAAB]">₹1,499</span>
-                                    <span class="text-xs sm:text-sm text-zinc-500 line-through">₹2,499</span>
-                                </div>
-
-                                <!-- CTA Action Buttons -->
-                                <div class="pt-2 sm:pt-4 flex items-center gap-3">
-                                    <a href="{{ $banner->cta_url }}" 
-                                       class="px-7 sm:px-9 py-3 sm:py-3.5 bg-[#DFCAAB] hover:bg-white text-zinc-950 text-xs sm:text-sm font-extrabold uppercase tracking-widest rounded-full transition-all duration-200 shadow-xl hover:scale-105 inline-flex items-center space-x-2 group">
-                                        <span>Shop Now</span>
-                                        <svg class="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-                                    </a>
-
-                                    <a href="{{ route('customize.index') }}" 
-                                       class="px-5 sm:px-7 py-3 sm:py-3.5 bg-white/10 hover:bg-white/20 text-white text-xs sm:text-sm font-bold uppercase tracking-wider rounded-full backdrop-blur-md border border-white/20 transition-all">
-                                        Custom Studio
-                                    </a>
-                                </div>
-
                             </div>
-                        </div>
+                        @endif
 
                     </div>
                 @endforeach
             </div>
 
-            <!-- Carousel Previous & Next Arrow Buttons -->
+            <!-- Carousel Previous & Next Arrow Buttons (White circular pills as shown in user screenshot) -->
             <button type="button" 
                     @click="prevSlide()" 
-                    class="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-black/40 hover:bg-black/80 backdrop-blur-md border border-white/20 text-white flex items-center justify-center transition-all hover:scale-110 active:scale-95 shadow-xl" 
+                    class="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 z-20 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-white/95 hover:bg-white text-zinc-900 flex items-center justify-center transition-all hover:scale-105 active:scale-95 shadow-xl border border-zinc-200/60 focus:outline-none" 
                     aria-label="Previous Slide">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/></svg>
+                <svg class="w-4 h-4 sm:w-5 sm:h-5 text-zinc-900" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/></svg>
             </button>
 
             <button type="button" 
                     @click="nextSlide()" 
-                    class="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-black/40 hover:bg-black/80 backdrop-blur-md border border-white/20 text-white flex items-center justify-center transition-all hover:scale-110 active:scale-95 shadow-xl" 
+                    class="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 z-20 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-white/95 hover:bg-white text-zinc-900 flex items-center justify-center transition-all hover:scale-105 active:scale-95 shadow-xl border border-zinc-200/60 focus:outline-none" 
                     aria-label="Next Slide">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+                <svg class="w-4 h-4 sm:w-5 sm:h-5 text-zinc-900" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
             </button>
 
-            <!-- Bottom Indicator Dots -->
-            <div class="absolute bottom-4 inset-x-0 z-20 flex justify-center items-center space-x-2">
+            <!-- Bottom Indicator Dots (Matching screenshot: active solid black dot, inactive white dots) -->
+            <div class="absolute bottom-3 sm:bottom-5 inset-x-0 z-20 flex justify-center items-center space-x-2.5">
                 @foreach($banners as $index => $banner)
                     <button type="button" 
                             @click="goToSlide({{ $index }})" 
-                            class="transition-all duration-300 rounded-full !min-h-0 border-0 p-0"
-                            :class="currentSlide === {{ $index }} ? 'w-8 h-2 bg-[#DFCAAB]' : 'w-2 h-2 bg-white/40 hover:bg-white/70'"
+                            class="transition-all duration-300 rounded-full !min-h-0 border-0 p-0 focus:outline-none"
+                            :class="currentSlide === {{ $index }} ? 'w-2.5 h-2.5 sm:w-3 sm:h-3 bg-zinc-950 ring-2 ring-black/20' : 'w-2 h-2 sm:w-2.5 sm:h-2.5 bg-white/90 hover:bg-white border border-zinc-300/80 shadow-xs'"
                             aria-label="Go to Slide {{ $index + 1 }}">
                     </button>
                 @endforeach

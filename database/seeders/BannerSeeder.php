@@ -13,12 +13,12 @@ class BannerSeeder extends Seeder
             // 5 Homepage Hero Promotional Banners
             [
                 'title' => 'The Polo, Perfected.',
-                'subtitle' => 'Meticulously tailored from 100% long-staple American Supima® cotton with our stay-flat collar guarantee.',
-                'badge_text' => '✦ The Haute Collection',
-                'cta_text' => 'Shop Now',
-                'cta_url' => '/shop?fabric=Supima',
-                'image_path' => '/images/banners/banner-studio-haute.jpg',
-                'text_alignment' => 'right',
+                'subtitle' => 'Polos That Define You. Timeless style, everyday comfort.',
+                'badge_text' => 'PREMIUM ESSENTIALS',
+                'cta_text' => 'Shop Men\'s Polo',
+                'cta_url' => '/shop?category=mens-polo-t-shirts',
+                'image_path' => '/images/banners/banner-polos-define-you.png',
+                'text_alignment' => 'left',
                 'position' => 'hero',
                 'sort_order' => 1,
                 'is_active' => true,
