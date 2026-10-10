@@ -117,14 +117,14 @@
                                             {{ $banner->badge_text ?: ($isPoloSlide ? 'PREMIUM ESSENTIALS' : 'SUMMER COLLECTION') }}
                                         </div>
 
-                                        <!-- Huge Bold Sans-Serif Headline -->
+                                        <!-- Headline -->
                                         @if($isPoloSlide)
                                             <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-[54px] xl:text-[60px] font-black text-zinc-950 uppercase tracking-tight leading-[1.04]">
                                                 POLOS THAT<br>DEFINE YOU
                                             </h1>
                                             <span class="sr-only">{{ $banner->title }}</span>
                                         @elseif($isRoundNeckSlide)
-                                            <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-[54px] xl:text-[60px] font-black text-zinc-950 uppercase tracking-tight leading-[1.04]">
+                                            <h1 class="text-3xl sm:text-5xl md:text-6xl lg:text-[66px] xl:text-[74px] font-serif font-black text-zinc-950 uppercase tracking-tight leading-[0.98]">
                                                 ROUND NECK<br>ESSENTIALS
                                             </h1>
                                             <span class="sr-only">{{ $banner->title }}</span>
@@ -135,21 +135,21 @@
                                         @endif
 
                                         <!-- Subtitle Description -->
-                                        <p class="text-xs sm:text-sm md:text-base text-zinc-600 font-medium max-w-md leading-relaxed">
+                                        <p class="text-xs sm:text-sm md:text-base lg:text-lg text-zinc-700 font-medium max-w-md leading-relaxed">
                                             {{ $banner->subtitle }}
                                         </p>
 
-                                        <!-- CTA Button (Black Pill with Arrow) -->
+                                        <!-- CTA Button (Black with Arrow) -->
                                         <div class="pt-1 sm:pt-2">
                                             <a href="{{ $banner->cta_url }}" 
-                                               class="inline-flex items-center space-x-2.5 px-6 sm:px-8 py-2.5 sm:py-3.5 bg-zinc-950 hover:bg-black text-white text-xs sm:text-sm font-bold uppercase tracking-wider rounded-md transition-all duration-200 shadow-md hover:shadow-xl hover:-translate-y-0.5 group">
+                                               class="inline-flex items-center space-x-2.5 px-6 sm:px-8 py-3 sm:py-3.5 bg-zinc-950 hover:bg-black text-white text-xs sm:text-sm font-bold uppercase tracking-wider rounded-lg transition-all duration-200 shadow-md hover:shadow-xl hover:-translate-y-0.5 group">
                                                 <span>{{ $banner->cta_text ?: ($isPoloSlide ? "Shop Men's Polo" : "Shop Round Neck") }}</span>
                                                 <svg class="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                                             </a>
                                         </div>
 
-                                        <!-- Bottom Trust Badges Bar (Inside Banner as per Reference) -->
-                                        <div class="pt-3 sm:pt-5 lg:pt-6 flex flex-wrap items-center gap-3 sm:gap-6 lg:gap-7 border-t border-zinc-300/60 mt-3 sm:mt-5">
+                                        <!-- Bottom Trust Badges Bar (Inside Banner with Divider) -->
+                                        <div class="pt-3 sm:pt-5 lg:pt-6 flex flex-wrap items-center gap-3 sm:gap-6 lg:gap-7 border-t border-zinc-400/50 mt-3 sm:mt-5">
                                             <!-- Free Shipping -->
                                             <div class="flex items-center space-x-2.5">
                                                 <svg class="w-4 h-4 sm:w-5 sm:h-5 text-zinc-800 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -161,7 +161,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="hidden sm:block w-px h-6 bg-zinc-300/80"></div>
+                                            <div class="hidden sm:block w-px h-6 bg-zinc-400/60"></div>
 
                                             <!-- Easy Returns -->
                                             <div class="flex items-center space-x-2.5">
@@ -174,7 +174,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="hidden sm:block w-px h-6 bg-zinc-300/80"></div>
+                                            <div class="hidden sm:block w-px h-6 bg-zinc-400/60"></div>
 
                                             <!-- Secure Payments -->
                                             <div class="flex items-center space-x-2.5">
@@ -296,7 +296,7 @@
                 </div>
                 <div>
                     <h4 class="text-xs sm:text-sm font-bold text-zinc-950">Free Express Delivery</h4>
-                    <p class="text-[11px] text-zinc-500 mt-0.5">On orders above ₹1,999</p>
+                    <p class="text-[11px] text-zinc-500 mt-0.5">On orders above ₹999</p>
                 </div>
             </div>
 

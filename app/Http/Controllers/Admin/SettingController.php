@@ -17,7 +17,7 @@ class SettingController extends Controller
             'contact_phone' => Setting::get('contact_phone', '+91 (0) 22 8900 1200'),
             'support_hours' => Setting::get('support_hours', 'Mon – Sat: 9:00 AM – 8:00 PM IST'),
             'store_address' => Setting::get('store_address', 'JACARIO Flagship Atelier, Bandra West, Mumbai, MH 400050'),
-            'free_shipping_threshold' => Setting::get('free_shipping_threshold', '1999'),
+            'free_shipping_threshold' => Setting::get('free_shipping_threshold', '999'),
             'standard_shipping_rate' => Setting::get('standard_shipping_rate', '150'),
             'instagram_url' => Setting::get('instagram_url', 'https://instagram.com/jacario.official'),
             'twitter_url' => Setting::get('twitter_url', 'https://twitter.com/jacario_brand'),

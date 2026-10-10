@@ -162,7 +162,7 @@ class OrderDemoSeeder extends Seeder
                 );
             }
 
-            $shipping = $subtotal >= 1999 ? 0 : 150;
+            $shipping = $subtotal >= 999 ? 0 : 150;
             $total = $subtotal + $shipping;
 
             $order->update([

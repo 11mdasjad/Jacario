@@ -661,7 +661,7 @@
                             <div class="p-5 rounded-2xl bg-zinc-50 border border-zinc-100 space-y-2">
                                 <h4 class="text-xs font-bold uppercase tracking-wider text-zinc-900">Complimentary Courier Dispatch</h4>
                                 <p class="text-xs text-zinc-600 leading-relaxed">
-                                    All orders over ₹1,999 ship complimentary across India. Metro cities receive delivery in 24–48 hours, while other locations typically arrive in 3–5 business days.
+                                    All orders over ₹999 ship complimentary across India. Metro cities receive delivery in 24–48 hours, while other locations typically arrive in 3–5 business days.
                                 </p>
                             </div>
                             <div class="p-5 rounded-2xl bg-zinc-50 border border-zinc-100 space-y-2">

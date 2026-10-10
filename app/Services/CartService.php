@@ -320,7 +320,7 @@ class CartService
     public function getSummary(): array
     {
         $cart = $this->getCart();
-        $freeShippingThreshold = (float) Setting::get('free_shipping_threshold', 1999);
+        $freeShippingThreshold = (float) Setting::get('free_shipping_threshold', 999);
         $remainingForFreeShipping = max(0, $freeShippingThreshold - $cart->subtotal);
         $freeShippingProgress = $freeShippingThreshold > 0 ? min(100, round(($cart->subtotal / $freeShippingThreshold) * 100)) : 100;
 

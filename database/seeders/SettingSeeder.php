@@ -16,7 +16,7 @@ class SettingSeeder extends Seeder
             'contact_phone' => '+91 (0) 22 8900 1200',
             'support_hours' => 'Mon – Sat: 9:00 AM – 8:00 PM IST',
             'store_address' => 'JACARIO Flagship Atelier, 42 Heritage Boulevard, Bandra West, Mumbai, MH 400050, India',
-            'free_shipping_threshold' => '1999',
+            'free_shipping_threshold' => '999',
             'standard_shipping_rate' => '150',
             'tax_rate' => '0', // All inclusive pricing
             'currency_symbol' => '₹',

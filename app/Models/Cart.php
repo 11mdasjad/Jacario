@@ -53,7 +53,7 @@ class Cart extends Model
 
     public function getShippingAmountAttribute(): float
     {
-        $freeShippingThreshold = (float) Setting::get('free_shipping_threshold', 1999);
+        $freeShippingThreshold = (float) Setting::get('free_shipping_threshold', 999);
         $standardShippingRate = (float) Setting::get('standard_shipping_rate', 150);
 
         if ($this->subtotal <= 0) {
