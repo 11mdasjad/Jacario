@@ -1,4 +1,4 @@
-<header class="w-full bg-white border-b border-zinc-200/90" x-data="{ categoryMenuOpen: false }">
+<header class="w-full bg-white border-b border-zinc-200/90">
     <!-- ========================================================
          TIER 1: MAIN HEADER (LOGO, SEARCH, HELPLINE, ACCOUNT, CART)
          ======================================================== -->
@@ -170,141 +170,52 @@
     </div>
 
     <!-- ========================================================
-         TIER 2: SECONDARY NAVIGATION BAR (DESKTOP)
+         TIER 2: SECONDARY NAVIGATION BAR (DESKTOP - CLEAN & CENTERED)
          ======================================================== -->
     <div class="hidden lg:block bg-[#FAF8F5] border-t border-zinc-200/80">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-12">
+            <div class="flex items-center justify-center h-12">
                 
-                <!-- Left: "Shop By Categories" Dropdown Menu Button -->
-                <div class="relative" @click.away="categoryMenuOpen = false">
-                    <button @click="categoryMenuOpen = !categoryMenuOpen" 
-                            type="button" 
-                            class="flex items-center space-x-2.5 px-4 py-2 rounded-xl bg-zinc-950 hover:bg-black text-[#DFCAAB] text-xs font-extrabold uppercase tracking-wider shadow-sm transition-all">
-                        <svg class="w-4 h-4 text-[#DFCAAB]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M4 6h16M4 12h16M4 18h16"/>
-                        </svg>
-                        <span>Shop By Categories</span>
-                        <svg class="w-3.5 h-3.5 text-zinc-400 transition-transform duration-200" :class="{ 'rotate-180': categoryMenuOpen }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                        </svg>
-                    </button>
-
-                    <!-- Dropdown Content -->
-                    <div x-show="categoryMenuOpen" 
-                         x-cloak
-                         x-transition:enter="transition ease-out duration-150"
-                         x-transition:enter-start="opacity-0 translate-y-1"
-                         x-transition:enter-end="opacity-100 translate-y-0"
-                         class="absolute left-0 mt-2 w-64 rounded-2xl bg-white border border-zinc-200 shadow-2xl p-2 z-50 text-zinc-900 divide-y divide-zinc-100">
-                        
-                        <div class="py-1">
-                            <a href="{{ route('shop.index', ['category' => 'mens-polo-t-shirts']) }}" 
-                               class="flex items-center justify-between px-3 py-2.5 text-xs font-bold text-zinc-800 hover:text-black hover:bg-zinc-50 rounded-xl transition-colors">
-                                <div class="flex items-center space-x-2.5">
-                                    <span class="w-2 h-2 rounded-full bg-[#A4845B]"></span>
-                                    <span>Men's Polo T-Shirts</span>
-                                </div>
-                                <span class="text-[10px] text-zinc-400 font-semibold">28</span>
-                            </a>
-                            <a href="{{ route('shop.index', ['category' => 'round-neck-t-shirts']) }}" 
-                               class="flex items-center justify-between px-3 py-2.5 text-xs font-bold text-zinc-800 hover:text-black hover:bg-zinc-50 rounded-xl transition-colors">
-                                <div class="flex items-center space-x-2.5">
-                                    <span class="w-2 h-2 rounded-full bg-zinc-800"></span>
-                                    <span>Round Neck T-Shirts</span>
-                                </div>
-                                <span class="text-[10px] text-zinc-400 font-semibold">14</span>
-                            </a>
-                            <a href="{{ route('shop.index', ['category' => 'new-arrival-t-shirts']) }}" 
-                               class="flex items-center justify-between px-3 py-2.5 text-xs font-bold text-zinc-800 hover:text-black hover:bg-zinc-50 rounded-xl transition-colors">
-                                <div class="flex items-center space-x-2.5">
-                                    <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-                                    <span>New Arrival T-Shirts</span>
-                                </div>
-                                <span class="text-[9px] font-black uppercase tracking-wider px-1.5 py-0.2 rounded bg-emerald-100 text-emerald-800">NEW</span>
-                            </a>
-                        </div>
-
-                        <div class="py-1">
-                            <a href="{{ route('customize.index') }}" 
-                               class="flex items-center justify-between px-3 py-2.5 text-xs font-extrabold text-amber-900 bg-amber-50/70 hover:bg-amber-100 rounded-xl transition-colors">
-                                <div class="flex items-center space-x-2.5">
-                                    <svg class="w-3.5 h-3.5 text-[#8C6D46]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
-                                    </svg>
-                                    <span>Customize Studio</span>
-                                </div>
-                                <span class="text-[9px] font-black uppercase tracking-wider px-1.5 py-0.2 rounded bg-amber-400 text-zinc-950">HOT</span>
-                            </a>
-                            <a href="{{ route('shop.index', ['fabric' => 'Silk']) }}" 
-                               class="flex items-center justify-between px-3 py-2.5 text-xs font-bold text-zinc-800 hover:text-black hover:bg-zinc-50 rounded-xl transition-colors">
-                                <div class="flex items-center space-x-2.5">
-                                    <span class="w-2 h-2 rounded-full bg-purple-500"></span>
-                                    <span>Mulberry Silk & Supima®</span>
-                                </div>
-                                <span class="text-[9px] font-bold text-purple-700 bg-purple-50 px-1.5 py-0.2 rounded">LUXE</span>
-                            </a>
-                            <a href="{{ route('shop.index', ['collection' => 'bestsellers']) }}" 
-                               class="flex items-center justify-between px-3 py-2.5 text-xs font-bold text-zinc-800 hover:text-black hover:bg-zinc-50 rounded-xl transition-colors">
-                                <div class="flex items-center space-x-2.5">
-                                    <span class="w-2 h-2 rounded-full bg-amber-500"></span>
-                                    <span>Best Sellers</span>
-                                </div>
-                                <span class="text-[10px] text-zinc-400">★ 4.9</span>
-                            </a>
-                        </div>
-
-                    </div>
-                </div>
-
-                <!-- Center: Primary Navigation Links -->
-                <nav class="flex items-center space-x-6 xl:space-x-8">
+                <!-- Primary Navigation Links (Centered) -->
+                <nav class="flex items-center space-x-8 xl:space-x-10 2xl:space-x-12">
                     <a href="{{ route('home') }}" 
-                       class="text-xs uppercase font-bold tracking-[0.15em] transition-colors py-2 {{ request()->routeIs('home') ? 'text-[#8C6D46] font-extrabold' : 'text-zinc-800 hover:text-black' }}">
+                       class="text-xs uppercase font-bold tracking-[0.16em] transition-all py-2 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 hover:after:w-full after:h-0.5 after:bg-[#A4845B] after:transition-all after:duration-200 {{ request()->routeIs('home') ? 'text-[#8C6D46] after:w-full' : 'text-zinc-800 hover:text-black' }}">
                         Home
                     </a>
 
                     <a href="{{ route('shop.index', ['category' => 'mens-polo-t-shirts']) }}" 
-                       class="text-xs uppercase font-bold tracking-[0.15em] transition-colors py-2 {{ request('category') === 'mens-polo-t-shirts' ? 'text-[#8C6D46] font-extrabold' : 'text-zinc-800 hover:text-black' }}">
+                       class="text-xs uppercase font-bold tracking-[0.16em] transition-all py-2 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 hover:after:w-full after:h-0.5 after:bg-[#A4845B] after:transition-all after:duration-200 {{ request('category') === 'mens-polo-t-shirts' ? 'text-[#8C6D46] after:w-full' : 'text-zinc-800 hover:text-black' }}">
                         Men's Polo
                     </a>
 
                     <a href="{{ route('shop.index', ['category' => 'round-neck-t-shirts']) }}" 
-                       class="text-xs uppercase font-bold tracking-[0.15em] transition-colors py-2 {{ request('category') === 'round-neck-t-shirts' ? 'text-[#8C6D46] font-extrabold' : 'text-zinc-800 hover:text-black' }}">
+                       class="text-xs uppercase font-bold tracking-[0.16em] transition-all py-2 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 hover:after:w-full after:h-0.5 after:bg-[#A4845B] after:transition-all after:duration-200 {{ request('category') === 'round-neck-t-shirts' ? 'text-[#8C6D46] after:w-full' : 'text-zinc-800 hover:text-black' }}">
                         Round Neck
                     </a>
 
                     <a href="{{ route('shop.index', ['category' => 'new-arrival-t-shirts']) }}" 
-                       class="text-xs uppercase font-bold tracking-[0.15em] transition-colors py-2 {{ request('category') === 'new-arrival-t-shirts' || request('collection') === 'new-arrivals' ? 'text-[#8C6D46] font-extrabold' : 'text-zinc-800 hover:text-black' }}">
+                       class="text-xs uppercase font-bold tracking-[0.16em] transition-all py-2 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 hover:after:w-full after:h-0.5 after:bg-[#A4845B] after:transition-all after:duration-200 {{ request('category') === 'new-arrival-t-shirts' || request('collection') === 'new-arrivals' ? 'text-[#8C6D46] after:w-full' : 'text-zinc-800 hover:text-black' }}">
                         New Arrivals
                     </a>
 
                     <!-- Jacario Dedicated Customize Studio -->
                     <a href="{{ route('customize.index') }}" 
-                       class="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full text-xs uppercase font-extrabold tracking-wider transition-all {{ request()->routeIs('customize.*') ? 'bg-zinc-950 text-[#DFCAAB] shadow-xs' : 'bg-amber-500/10 text-zinc-900 hover:bg-zinc-950 hover:text-[#DFCAAB] border border-amber-600/30' }}">
+                       class="inline-flex items-center space-x-1.5 px-3.5 py-1 rounded-full text-xs uppercase font-extrabold tracking-wider transition-all {{ request()->routeIs('customize.*') ? 'bg-zinc-950 text-[#DFCAAB] shadow-xs' : 'bg-amber-500/10 text-zinc-900 hover:bg-zinc-950 hover:text-[#DFCAAB] border border-amber-600/30' }}">
                         <span class="w-1.5 h-1.5 rounded-full bg-[#A4845B]"></span>
                         <span>Customize Studio</span>
                         <span class="text-[8px] font-black uppercase px-1 py-0.2 rounded bg-[#A4845B] text-white">HOT</span>
                     </a>
 
                     <a href="{{ route('shop.index', ['collection' => 'bestsellers']) }}" 
-                       class="text-xs uppercase font-bold tracking-[0.15em] transition-colors py-2 {{ request('collection') === 'bestsellers' ? 'text-[#8C6D46] font-extrabold' : 'text-zinc-800 hover:text-black' }}">
+                       class="text-xs uppercase font-bold tracking-[0.16em] transition-all py-2 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 hover:after:w-full after:h-0.5 after:bg-[#A4845B] after:transition-all after:duration-200 {{ request('collection') === 'bestsellers' ? 'text-[#8C6D46] after:w-full' : 'text-zinc-800 hover:text-black' }}">
                         Best Sellers
                     </a>
 
                     <a href="{{ route('about') }}" 
-                       class="text-xs uppercase font-bold tracking-[0.15em] transition-colors py-2 {{ request()->routeIs('about') ? 'text-[#8C6D46] font-extrabold' : 'text-zinc-800 hover:text-black' }}">
+                       class="text-xs uppercase font-bold tracking-[0.16em] transition-all py-2 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 hover:after:w-full after:h-0.5 after:bg-[#A4845B] after:transition-all after:duration-200 {{ request()->routeIs('about') ? 'text-[#8C6D46] after:w-full' : 'text-zinc-800 hover:text-black' }}">
                         The Atelier
                     </a>
                 </nav>
-
-                <!-- Right: Promotional Callout -->
-                <div class="hidden xl:flex items-center space-x-2 text-xs font-bold text-zinc-700">
-                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-900 text-[10px] uppercase font-black tracking-wider">
-                        FLAT 20% OFF
-                    </span>
-                    <span class="text-zinc-500 font-medium">Free Shipping Above ₹1,999</span>
-                </div>
 
             </div>
         </div>
