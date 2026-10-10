@@ -26,8 +26,8 @@
                         <input type="text" 
                                name="search" 
                                value="{{ request('search') }}"
-                               placeholder="Search for polo t-shirts, round neck, silk knit, colors..." 
-                               class="w-full pl-5 pr-28 py-2.5 sm:py-3 text-xs sm:text-sm bg-zinc-50 hover:bg-white focus:bg-white text-zinc-900 placeholder-zinc-400 rounded-full border border-zinc-300 focus:border-[#A4845B] focus:ring-2 focus:ring-[#A4845B]/20 transition-all outline-none shadow-xs">
+                               aria-label="Search" 
+                               class="w-full pl-5 pr-28 py-2.5 sm:py-3 text-xs sm:text-sm bg-zinc-50 hover:bg-white focus:bg-white text-zinc-900 rounded-full border border-zinc-300 focus:border-[#A4845B] focus:ring-2 focus:ring-[#A4845B]/20 transition-all outline-none shadow-xs">
                         
                         <button type="submit" 
                                 class="absolute right-1.5 top-1/2 -translate-y-1/2 px-4 py-1.5 sm:py-2 bg-[#0B0D10] hover:bg-[#A4845B] text-white text-xs font-bold uppercase tracking-wider rounded-full transition-all duration-200 flex items-center space-x-1.5 shadow-sm">
@@ -221,7 +221,7 @@
             <input type="text" 
                    name="search" 
                    value="{{ request('search') }}"
-                   placeholder="Search luxury polos, round neck..." 
+                   aria-label="Search" 
                    class="w-full pl-9 pr-4 py-2 text-xs bg-white text-zinc-900 rounded-xl border border-zinc-300 focus:border-[#A4845B] outline-none shadow-xs">
             <svg class="w-4 h-4 text-zinc-400 absolute left-3 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
