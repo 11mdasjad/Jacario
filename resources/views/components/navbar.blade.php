@@ -19,13 +19,44 @@
                 </a>
             </div>
 
-            <!-- Center on Desktop: Prominent Search Bar (Webishop Theme Style) -->
-            <div class="hidden lg:flex flex-1 max-w-2xl mx-2">
+            <!-- Center on Desktop: Prominent Search Bar (Webishop Theme Style + Live Ajax Search) -->
+            <div class="hidden lg:flex flex-1 max-w-2xl mx-2"
+                 x-data="{
+                    query: '{{ request('search') }}',
+                    results: [],
+                    isLoading: false,
+                    isOpen: false,
+                    searchTimer: null,
+                    handleInput() {
+                        clearTimeout(this.searchTimer);
+                        if (!this.query || this.query.trim().length < 2) {
+                            this.results = [];
+                            this.isOpen = false;
+                            return;
+                        }
+                        this.isLoading = true;
+                        this.searchTimer = setTimeout(() => {
+                            fetch('{{ route('shop.search-ajax') }}?q=' + encodeURIComponent(this.query))
+                                .then(res => res.json())
+                                .then(data => {
+                                    this.results = data.results || [];
+                                    this.isOpen = true;
+                                    this.isLoading = false;
+                                })
+                                .catch(() => {
+                                    this.isLoading = false;
+                                });
+                        }, 250);
+                    }
+                 }"
+                 @click.away="isOpen = false">
                 <form action="{{ route('shop.index') }}" method="GET" class="relative w-full flex items-center">
                     <div class="relative w-full">
                         <input type="text" 
                                name="search" 
-                               value="{{ request('search') }}"
+                               x-model="query"
+                               @input="handleInput()"
+                               @focus="if(results.length > 0) isOpen = true"
                                aria-label="Search" 
                                class="w-full pl-5 pr-28 py-2.5 sm:py-3 text-xs sm:text-sm bg-zinc-50 hover:bg-white focus:bg-white text-zinc-900 rounded-full border border-zinc-300 focus:border-[#A4845B] focus:ring-2 focus:ring-[#A4845B]/20 transition-all outline-none shadow-xs">
                         
@@ -36,6 +67,36 @@
                             </svg>
                             <span class="hidden xl:inline">Search</span>
                         </button>
+
+                        <!-- Live Ajax Results Dropdown (Thumbnails & Prices) -->
+                        <div x-show="isOpen && results.length > 0"
+                             x-cloak
+                             x-transition
+                             class="absolute left-0 right-0 top-full mt-2 bg-white rounded-2xl shadow-2xl border border-zinc-200 p-2 z-50 overflow-hidden divide-y divide-zinc-100">
+                            <div class="px-3 py-1.5 flex items-center justify-between text-[10px] font-bold uppercase tracking-wider text-zinc-400">
+                                <span>Instant Matches</span>
+                                <span x-text="results.length + ' found'"></span>
+                            </div>
+                            <template x-for="item in results" :key="item.id">
+                                <a :href="item.url" class="flex items-center space-x-3 p-2.5 hover:bg-zinc-50 rounded-xl transition-colors group">
+                                    <img :src="item.image" :alt="item.name" class="w-10 h-12 object-cover rounded-lg bg-zinc-100 shrink-0">
+                                    <div class="min-w-0 flex-1 text-left">
+                                        <p class="text-[10px] text-zinc-400 font-semibold uppercase tracking-wider" x-text="item.category"></p>
+                                        <p class="text-xs font-bold text-zinc-900 group-hover:text-[#8C6D46] truncate" x-text="item.name"></p>
+                                        <div class="flex items-center space-x-2 mt-0.5">
+                                            <span class="text-xs font-bold text-zinc-950" x-text="item.price"></span>
+                                            <span class="text-[11px] text-zinc-400 line-through" x-show="item.original_price" x-text="item.original_price"></span>
+                                        </div>
+                                    </div>
+                                    <svg class="w-4 h-4 text-zinc-400 group-hover:text-black group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                                </a>
+                            </template>
+                            <div class="p-2 text-center bg-zinc-50 rounded-b-xl">
+                                <button type="submit" class="text-xs font-bold text-[#8C6D46] hover:underline">
+                                    View all results for "<span x-text="query"></span>" →
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </form>
             </div>

@@ -183,4 +183,38 @@ class ShopController extends Controller
             'shopBanners'
         ));
     }
+
+    public function searchAjax(Request $request)
+    {
+        $q = trim($request->input('q') ?? $request->input('search') ?? '');
+        if (strlen($q) < 2) {
+            return response()->json(['results' => []]);
+        }
+
+        $results = Product::active()
+            ->with(['category', 'images'])
+            ->where(function ($query) use ($q) {
+                $query->where('name', 'like', "%{$q}%")
+                      ->orWhere('fabric', 'like', "%{$q}%")
+                      ->orWhere('fit', 'like', "%{$q}%")
+                      ->orWhere('sku', 'like', "%{$q}%");
+            })
+            ->take(6)
+            ->get()
+            ->map(function ($p) {
+                return [
+                    'id' => $p->id,
+                    'name' => $p->name,
+                    'slug' => $p->slug,
+                    'url' => route('products.show', $p->slug),
+                    'category' => $p->category ? $p->category->name : 'Polo T-Shirt',
+                    'price' => '₹' . number_format($p->effective_price),
+                    'original_price' => $p->has_discount ? '₹' . number_format($p->base_price) : null,
+                    'has_discount' => $p->has_discount,
+                    'image' => $p->primaryImage ? $p->primaryImage->url : asset('images/placeholder-polo.svg'),
+                ];
+            });
+
+        return response()->json(['results' => $results]);
+    }
 }

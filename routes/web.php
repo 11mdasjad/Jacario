@@ -44,6 +44,7 @@ Route::post('/customize/save-design', [CustomizationController::class, 'saveDesi
 
 // Shop & Catalog
 Route::get('/shop', [ShopController::class, 'index'])->name('shop.index');
+Route::get('/shop/search-ajax', [ShopController::class, 'searchAjax'])->name('shop.search-ajax');
 Route::get('/products/{slug}', [ProductController::class, 'show'])->name('products.show');
 Route::post('/products/check-pincode', [ProductController::class, 'checkPincode'])->name('products.check-pincode');
 Route::post('/products/{slug}/reviews', [ProductController::class, 'storeReview'])->name('products.reviews.store');
