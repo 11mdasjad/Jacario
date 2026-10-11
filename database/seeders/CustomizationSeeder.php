@@ -48,14 +48,14 @@ class CustomizationSeeder extends Seeder
             ]
         );
 
-        // 2. Customize T-Shirt
+        // 2. Customize Plain T-Shirt
         $tshirt = CustomizableProduct::updateOrCreate(
             ['slug' => 't-shirt'],
             [
-                'name' => 'Customize T-Shirt',
+                'name' => 'Customize Plain T-Shirt',
                 'type' => 'tshirt',
                 'short_description' => 'Ultra-luxurious 220 GSM combed Supima® crewneck jersey. Ultra-soft touch, tailored modern fit, zero shrinkage.',
-                'description' => 'Create your signature luxury Crewneck T-Shirt. Made with premium combed compact organic cotton, designed for seamless drape, incredible breathability, and long-lasting durability. Upload your graphics or craft custom typography with precision placement.',
+                'description' => 'Create your signature luxury Plain Crewneck T-Shirt. Made with premium combed compact organic cotton, designed for seamless drape, incredible breathability, and long-lasting durability. Upload your graphics or craft custom typography with precision placement.',
                 'base_price' => 999.00,
                 'discount_price' => 849.00,
                 'sku' => 'JAC-CUST-TSHIRT',

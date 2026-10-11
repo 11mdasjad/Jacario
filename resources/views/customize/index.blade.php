@@ -90,7 +90,7 @@
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                             </a>
                             <a href="{{ route('customize.studio', 't-shirt') }}" class="px-6 py-3.5 bg-white/10 hover:bg-white/20 border border-white/20 text-white text-xs font-bold uppercase tracking-wider rounded-xl transition-all">
-                                Customize T-Shirt
+                                Customize Plain T-Shirt
                             </a>
                         </div>
                     </div>
@@ -215,7 +215,7 @@
         <div class="text-center max-w-2xl mx-auto mb-10 sm:mb-12">
             <span class="text-[10px] sm:text-xs font-extrabold uppercase tracking-[0.25em] text-[#8C6D46] block mb-1">Select Garment to Personalize</span>
             <h2 class="text-2xl sm:text-4xl font-serif-luxury font-bold text-zinc-950">Choose Your Master Garment</h2>
-            <p class="text-xs sm:text-sm text-zinc-600 mt-2">Currently available for our signature Polo T-Shirt and Crewneck T-Shirt.</p>
+            <p class="text-xs sm:text-sm text-zinc-600 mt-2">Currently available for our signature Polo T-Shirt and Plain T-Shirt.</p>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
@@ -373,7 +373,7 @@
                     </div>
                     <h3 class="text-base font-bold text-zinc-950 font-serif-luxury mb-2">Pick Your Garment & Color</h3>
                     <p class="text-xs text-zinc-600 leading-relaxed">
-                        Choose between our signature Polo T-Shirt or Crewneck T-Shirt across 10 luxury shades and select your size.
+                        Choose between our signature Polo T-Shirt or Plain T-Shirt across 10 luxury shades and select your size.
                     </p>
                 </div>
 

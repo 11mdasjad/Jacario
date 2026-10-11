@@ -818,7 +818,7 @@
                             Customize Polo
                         </a>
                         <a href="{{ route('customize.studio', 't-shirt') }}" class="px-6 py-3.5 bg-white/10 hover:bg-white/20 border border-white/20 text-white text-xs font-bold uppercase tracking-wider rounded-xl transition-all">
-                            Customize T-Shirt
+                            Customize Plain T-Shirt
                         </a>
                     </div>
                 </div>
@@ -837,7 +837,7 @@
                         <div class="aspect-square bg-zinc-950 rounded-xl p-2 mb-3 flex items-center justify-center">
                             <img src="{{ asset('images/customizer/tshirt/black.jpg') }}" alt="T-Shirt Preview" class="w-full h-full object-contain">
                         </div>
-                        <h4 class="text-xs font-bold text-white">Custom Crewneck</h4>
+                        <h4 class="text-xs font-bold text-white">Custom Plain T-Shirt</h4>
                         <p class="text-[10px] text-[#DFCAAB] mt-1 font-semibold">From ₹849</p>
                     </div>
                 </div>

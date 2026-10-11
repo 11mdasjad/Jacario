@@ -38,7 +38,7 @@ class CustomizationFeatureTest extends TestCase
         $response = $this->get(route('customize.index'));
         $response->assertStatus(200);
         $response->assertSee('Customize Polo T-Shirt');
-        $response->assertSee('Customize T-Shirt');
+        $response->assertSee('Customize Plain T-Shirt');
     }
 
     public function test_polo_and_tshirt_studio_pages_render_correctly()
@@ -49,7 +49,7 @@ class CustomizationFeatureTest extends TestCase
 
         $tshirtResponse = $this->get(route('customize.studio', 't-shirt'));
         $tshirtResponse->assertStatus(200);
-        $tshirtResponse->assertSee('Customize T-Shirt');
+        $tshirtResponse->assertSee('Customize Plain T-Shirt');
     }
 
     public function test_artwork_upload_endpoint_validates_and_stores_files()
