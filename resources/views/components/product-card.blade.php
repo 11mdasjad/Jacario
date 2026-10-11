@@ -175,8 +175,8 @@
             <div class="mt-2 sm:mt-3" x-show="!quickAddOpen">
                 <button type="button" 
                         @click="quickAddOpen = true" 
-                        class="w-full py-1.5 sm:py-2 bg-zinc-900 hover:bg-black text-[#DFCAAB] text-[10px] sm:text-xs font-bold uppercase tracking-wider rounded-lg transition-all duration-200 flex items-center justify-center space-x-1.5 active:scale-95 shadow-sm group/btn">
-                    <svg class="w-3 h-3 sm:w-3.5 sm:h-3.5 transition-transform duration-200 group-hover/btn:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                        class="w-full py-1.5 sm:py-2 bg-emerald-800 hover:bg-emerald-900 text-[#DFCAAB] text-[10px] sm:text-xs font-bold uppercase tracking-wider rounded-lg transition-all duration-200 flex items-center justify-center space-x-1.5 active:scale-95 shadow-sm group/btn">
+                    <svg class="w-3 h-3 sm:w-3.5 sm:h-3.5 transition-transform duration-200 group-hover/btn:scale-110 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
                     <span>Add to Cart</span>
                 </button>
             </div>
@@ -205,8 +205,8 @@
                 <button type="button" 
                         @click="addToCart()" 
                         :disabled="isAdding"
-                        class="w-full py-1.5 bg-[#0B0D10] text-[#DFCAAB] text-[10px] font-bold uppercase tracking-wider rounded-lg transition-colors hover:bg-black flex items-center justify-center space-x-1 shadow-sm active:scale-95 disabled:opacity-50">
-                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+                        class="w-full py-1.5 bg-emerald-800 hover:bg-emerald-900 text-[#DFCAAB] text-[10px] font-bold uppercase tracking-wider rounded-lg transition-colors flex items-center justify-center space-x-1 shadow-sm active:scale-95 disabled:opacity-50">
+                    <svg class="w-3 h-3 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
                     <span x-text="isAdding ? 'Adding to Cart...' : 'Add to Cart'"></span>
                 </button>
             </div>
