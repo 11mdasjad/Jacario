@@ -75,7 +75,7 @@ class BannerSeeder extends Seeder
             // 3 Shop Catalog Header Running Banners
             [
                 'title' => 'The Polo Collection',
-                'subtitle' => 'Meticulously tailored from 100% American Supima® cotton, Mulberry silk blends, and stay-flat collar technology.',
+                'subtitle' => 'Architectural structure tailored from boardroom to Riviera.',
                 'badge_text' => '✦ 50 Bespoke Silhouettes',
                 'cta_text' => 'Shop Supima® Series',
                 'cta_url' => '/shop?fabric=Supima',
@@ -87,7 +87,7 @@ class BannerSeeder extends Seeder
             ],
             [
                 'title' => 'Mulberry Silk & 24-Gauge Knits',
-                'subtitle' => 'Ultra-fine natural luster meets athletic breathability for effortless evening elegance.',
+                'subtitle' => 'Sculpted drape designed for effortless, understated luxury.',
                 'badge_text' => '★ Rare Silk Collection',
                 'cta_text' => 'Explore Silk Knits',
                 'cta_url' => '/shop?fabric=Silk',
@@ -99,7 +99,7 @@ class BannerSeeder extends Seeder
             ],
             [
                 'title' => 'Riviera Earth & Espresso Drop',
-                'subtitle' => '14 new season colorways inspired by Portofino coastlines and dyed with eco-friendly reactive pigments.',
+                'subtitle' => 'Limited-run silhouettes and rare blends, fresh from the Jacario Atelier.',
                 'badge_text' => '◆ New Season Arrivals',
                 'cta_text' => 'Shop New Arrivals',
                 'cta_url' => '/shop?collection=new-arrivals',

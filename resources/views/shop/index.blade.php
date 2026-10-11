@@ -61,9 +61,9 @@
                         Men's Luxury <span class="gold-gradient-text-light">Polo T-Shirts</span>
                     </h1>
 
-                    <!-- Editorial Subtitle -->
-                    <p class="text-xs sm:text-sm text-zinc-300 font-light leading-relaxed max-w-xl">
-                        Tailored from long-staple 100% American Supima® cotton, 240 GSM luxury interlock piqué, and bespoke anti-curl collar interlining. Engineered to maintain architectural structure from boardroom to Riviera.
+                    <!-- Editorial Subtitle (Punch Line) -->
+                    <p class="text-xs sm:text-sm text-zinc-300 font-medium leading-relaxed max-w-xl">
+                        Architectural structure tailored from boardroom to Riviera.
                     </p>
 
                     <!-- 4 Craftsmanship Pills -->
@@ -139,9 +139,9 @@
                         Round Neck <span class="gold-gradient-text-light">Luxury Tees</span>
                     </h1>
 
-                    <!-- Editorial Subtitle -->
-                    <p class="text-xs sm:text-sm text-zinc-300 font-light leading-relaxed max-w-xl">
-                        Featherweight 100% long-staple combed cotton engineered with sculpted drape, reinforced anti-sag collar ribbing, and ultra-soft tactile feel. Designed for effortless understated luxury.
+                    <!-- Editorial Subtitle (Punch Line) -->
+                    <p class="text-xs sm:text-sm text-zinc-300 font-medium leading-relaxed max-w-xl">
+                        Sculpted drape designed for effortless, understated luxury.
                     </p>
 
                     <!-- 4 Craftsmanship Pills -->
@@ -217,9 +217,9 @@
                         New Season <span class="gold-gradient-text-light">Arrivals</span>
                     </h1>
 
-                    <!-- Editorial Subtitle -->
-                    <p class="text-xs sm:text-sm text-zinc-300 font-light leading-relaxed max-w-xl">
-                        Discover the latest sartorial silhouettes, limited-run colorways, and rare fabric blends crafted for the modern connoisseur. Freshly dropped from the Jacario Atelier.
+                    <!-- Editorial Subtitle (Punch Line) -->
+                    <p class="text-xs sm:text-sm text-zinc-300 font-medium leading-relaxed max-w-xl">
+                        Limited-run silhouettes and rare blends, fresh from the Jacario Atelier.
                     </p>
 
                     <!-- 4 Craftsmanship Pills -->
