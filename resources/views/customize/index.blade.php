@@ -300,27 +300,47 @@
                             {{ $product->name }}
                         </h3>
 
-                        <p class="mt-2 text-xs sm:text-sm text-zinc-600 leading-relaxed min-h-[3rem]">
-                            {{ $product->short_description }}
-                        </p>
+                        <!-- Point-wise Specifications (Proper Manner) -->
+                        <ul class="mt-3.5 space-y-1.5 sm:space-y-2 text-xs sm:text-[13px] text-zinc-700">
+                            <li class="flex items-baseline space-x-2">
+                                <span class="text-zinc-900 font-bold leading-none select-none">•</span>
+                                <span><strong class="font-medium text-zinc-950">Fabric:</strong> 100% Cotton</span>
+                            </li>
+                            <li class="flex items-baseline space-x-2">
+                                <span class="text-zinc-900 font-bold leading-none select-none">•</span>
+                                <span><strong class="font-medium text-zinc-950">Fabric Weight:</strong> {{ $product->type === 'polo_tshirt' ? '240 GSM (Heavyweight premium feel)' : '220 GSM (Heavyweight premium feel)' }}</span>
+                            </li>
+                            <li class="flex items-baseline space-x-2">
+                                <span class="text-zinc-900 font-bold leading-none select-none">•</span>
+                                <span><strong class="font-medium text-zinc-950">Fit:</strong> Regular Fit</span>
+                            </li>
+                            <li class="flex items-baseline space-x-2">
+                                <span class="text-zinc-900 font-bold leading-none select-none">•</span>
+                                <span><strong class="font-medium text-zinc-950">Neck:</strong> {{ $product->type === 'polo_tshirt' ? 'Polo Collar' : 'Round Neck' }}</span>
+                            </li>
+                            <li class="flex items-baseline space-x-2">
+                                <span class="text-zinc-900 font-bold leading-none select-none">•</span>
+                                <span><strong class="font-medium text-zinc-950">Colours Available:</strong> White, Black, Navy, Olive + 6 More</span>
+                            </li>
+                            <li class="flex items-baseline space-x-2">
+                                <span class="text-zinc-900 font-bold leading-none select-none">•</span>
+                                <span><strong class="font-medium text-zinc-950">Sizes:</strong> S to 3XL</span>
+                            </li>
+                            <li class="flex items-baseline space-x-2">
+                                <span class="text-zinc-900 font-bold leading-none select-none">•</span>
+                                <span><strong class="font-medium text-zinc-950">Front Print Size:</strong> 4 x 4 in</span>
+                            </li>
+                        </ul>
 
-                        <!-- Highlights Specs -->
-                        <div class="mt-4 pt-4 border-t border-zinc-100 grid grid-cols-2 gap-2 text-xs text-zinc-700">
-                            <div class="flex items-center space-x-1.5">
-                                <svg class="w-3.5 h-3.5 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                                <span>10+ Luxury Colors</span>
-                            </div>
-                            <div class="flex items-center space-x-1.5">
-                                <svg class="w-3.5 h-3.5 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                                <span>Sizes S to 3XL</span>
-                            </div>
-                            <div class="flex items-center space-x-1.5">
+                        <!-- Highlights Specs Badges -->
+                        <div class="mt-4 pt-3.5 border-t border-zinc-100 flex flex-wrap items-center justify-between gap-2 text-xs">
+                            <div class="flex items-center space-x-1.5 text-emerald-800 font-semibold text-[11px] sm:text-xs">
                                 <svg class="w-3.5 h-3.5 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                                 <span>HD Digital Print & Embroidery</span>
                             </div>
-                            <div class="flex items-center space-x-1.5">
+                            <div class="flex items-center space-x-1.5 text-emerald-800 font-semibold text-[11px] sm:text-xs">
                                 <svg class="w-3.5 h-3.5 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                                <span>Save 35% on Bulk</span>
+                                <span>Save up to 35% on Bulk</span>
                             </div>
                         </div>
                     </div>
