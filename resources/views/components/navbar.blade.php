@@ -105,7 +105,7 @@
             <div class="flex items-center space-x-2 sm:space-x-4 shrink-0 text-zinc-800">
                 
                 <!-- Concierge Helpline (Desktop Only) -->
-                <a href="tel:{{ preg_replace('/[^0-9+]/', '', \App\Models\Setting::get('contact_phone', '+91 22 8900 1200')) }}" 
+                <a href="tel:{{ preg_replace('/[^0-9+]/', '', \App\Models\Setting::get('contact_phone', '+91 70116 39618')) }}" 
                    class="hidden xl:flex items-center space-x-2.5 p-1.5 rounded-xl hover:bg-zinc-100 transition-colors group">
                     <div class="w-9 h-9 rounded-full bg-amber-500/10 text-[#8C6D46] flex items-center justify-center shrink-0 group-hover:bg-[#8C6D46] group-hover:text-white transition-colors">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -114,7 +114,7 @@
                     </div>
                     <div class="text-left leading-tight">
                         <span class="block text-[10px] uppercase font-bold tracking-wider text-zinc-400">Call For Concierge</span>
-                        <span class="block text-xs font-bold text-zinc-900">{{ \App\Models\Setting::get('contact_phone', '+91 22 8900 1200') }}</span>
+                        <span class="block text-xs font-bold text-zinc-900">{{ \App\Models\Setting::get('contact_phone', '+91 70116 39618') }}</span>
                     </div>
                 </a>
 
@@ -474,6 +474,11 @@
                     <a href="{{ route('about') }}" @click="$store.nav.closeMobile()" class="flex items-center space-x-3 px-3 py-2.5 hover:bg-zinc-50 rounded-xl">
                         <svg class="w-4 h-4 text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
                         <span>The Atelier Heritage</span>
+                    </a>
+
+                    <a href="tel:{{ preg_replace('/[^0-9+]/', '', \App\Models\Setting::get('contact_phone', '+91 70116 39618')) }}" class="flex items-center space-x-3 px-3 py-2.5 hover:bg-zinc-50 rounded-xl text-zinc-900 font-semibold">
+                        <svg class="w-4 h-4 text-[#8C6D46]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+                        <span>Concierge: {{ \App\Models\Setting::get('contact_phone', '+91 70116 39618') }}</span>
                     </a>
                 </div>
             </div>

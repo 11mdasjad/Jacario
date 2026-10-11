@@ -13,7 +13,7 @@ class SettingSeeder extends Seeder
             'store_name' => 'JACARIO',
             'store_tagline' => 'Premium Polo T-Shirts, Made for Every Move',
             'contact_email' => 'concierge@jacario.com',
-            'contact_phone' => '+91 (0) 22 8900 1200',
+            'contact_phone' => '+91 70116 39618',
             'support_hours' => 'Mon – Sat: 9:00 AM – 8:00 PM IST',
             'store_address' => 'JACARIO Flagship Atelier, 42 Heritage Boulevard, Bandra West, Mumbai, MH 400050, India',
             'free_shipping_threshold' => '999',

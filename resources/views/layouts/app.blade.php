@@ -34,7 +34,7 @@
       "description": "Luxury fashion brand specializing exclusively in high-end Polo T-Shirts",
       "url": "{{ url('/') }}",
       "logo": "{{ asset('images/polos/black-polo.svg') }}",
-      "telephone": "{{ \App\Models\Setting::get('contact_phone', '+91 (0) 22 8900 1200') }}",
+      "telephone": "{{ \App\Models\Setting::get('contact_phone', '+91 70116 39618') }}",
       "address": {
         "@@type": "PostalAddress",
         "streetAddress": "42 Heritage Boulevard, Bandra West",

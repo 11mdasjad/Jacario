@@ -46,7 +46,7 @@
                     </div>
                     <div>
                         <p class="font-bold text-zinc-900">Telephone Assistance</p>
-                        <p class="text-zinc-600 mt-0.5">{{ \App\Models\Setting::get('contact_phone', '+91 (0) 22 8900 1200') }}</p>
+                        <p class="text-zinc-600 mt-0.5">{{ \App\Models\Setting::get('contact_phone', '+91 70116 39618') }}</p>
                         <p class="text-[10px] text-zinc-400 mt-0.5">{{ \App\Models\Setting::get('support_hours', 'Mon – Sat: 9:00 AM – 8:00 PM IST') }}</p>
                     </div>
                 </div>
