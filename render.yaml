@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: jacario
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    region: singapore
+    branch: main
+    envVars:
+      - key: APP_NAME
+        value: JACARIO
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: "false"
+      - key: APP_KEY
+        value: base64:qRxNQvd1HtuTf0+s9s4eCvVcC4gTUIWzEssrhdA8YWg=
+      - key: DB_CONNECTION
+        value: sqlite
+      - key: MAIL_MAILER
+        value: log
