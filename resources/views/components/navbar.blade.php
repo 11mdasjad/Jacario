@@ -235,28 +235,32 @@
          ======================================================== -->
     <div class="hidden lg:block bg-[#FAF8F5] border-t border-zinc-200/80">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-center h-13 sm:h-14">
+            <div class="flex items-center justify-center min-h-[56px] py-1.5">
                 
-                <!-- Primary Navigation Links (Centered) -->
-                <nav class="flex items-center space-x-9 xl:space-x-12 2xl:space-x-14">
+                <!-- Primary Navigation Links (Centered & Spaced) -->
+                <nav class="flex items-center justify-center flex-nowrap gap-8 lg:gap-10 xl:gap-12" style="display: flex; align-items: center; justify-content: center; gap: 2.5rem;">
                     <a href="{{ route('shop.index', ['category' => 'mens-polo-t-shirts']) }}" 
-                       class="text-[13px] xl:text-sm uppercase font-extrabold tracking-[0.14em] text-black hover:text-[#8C6D46] transition-all py-2 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 hover:after:w-full after:h-0.5 after:bg-[#A4845B] after:transition-all after:duration-200 {{ request('category') === 'mens-polo-t-shirts' ? 'font-black after:w-full text-[#8C6D46]' : '' }}">
+                       style="white-space: nowrap;"
+                       class="inline-flex items-center shrink-0 whitespace-nowrap text-[13px] xl:text-sm uppercase font-extrabold tracking-[0.14em] text-black hover:text-[#8C6D46] transition-all px-2 py-2 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 hover:after:w-full after:h-0.5 after:bg-[#A4845B] after:transition-all after:duration-200 {{ request('category') === 'mens-polo-t-shirts' ? 'font-black after:w-full text-[#8C6D46]' : '' }}">
                         Men's Polo
                     </a>
 
                     <a href="{{ route('shop.index', ['category' => 'round-neck-t-shirts']) }}" 
-                       class="text-[13px] xl:text-sm uppercase font-extrabold tracking-[0.14em] text-black hover:text-[#8C6D46] transition-all py-2 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 hover:after:w-full after:h-0.5 after:bg-[#A4845B] after:transition-all after:duration-200 {{ request('category') === 'round-neck-t-shirts' ? 'font-black after:w-full text-[#8C6D46]' : '' }}">
+                       style="white-space: nowrap;"
+                       class="inline-flex items-center shrink-0 whitespace-nowrap text-[13px] xl:text-sm uppercase font-extrabold tracking-[0.14em] text-black hover:text-[#8C6D46] transition-all px-2 py-2 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 hover:after:w-full after:h-0.5 after:bg-[#A4845B] after:transition-all after:duration-200 {{ request('category') === 'round-neck-t-shirts' ? 'font-black after:w-full text-[#8C6D46]' : '' }}">
                         Round Neck
                     </a>
 
                     <a href="{{ route('shop.index', ['category' => 'new-arrival-t-shirts']) }}" 
-                       class="text-[13px] xl:text-sm uppercase font-extrabold tracking-[0.14em] text-black hover:text-[#8C6D46] transition-all py-2 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 hover:after:w-full after:h-0.5 after:bg-[#A4845B] after:transition-all after:duration-200 {{ request('category') === 'new-arrival-t-shirts' || request('collection') === 'new-arrivals' ? 'font-black after:w-full text-[#8C6D46]' : '' }}">
+                       style="white-space: nowrap;"
+                       class="inline-flex items-center shrink-0 whitespace-nowrap text-[13px] xl:text-sm uppercase font-extrabold tracking-[0.14em] text-black hover:text-[#8C6D46] transition-all px-2 py-2 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 hover:after:w-full after:h-0.5 after:bg-[#A4845B] after:transition-all after:duration-200 {{ request('category') === 'new-arrival-t-shirts' || request('collection') === 'new-arrivals' ? 'font-black after:w-full text-[#8C6D46]' : '' }}">
                         New Arrivals
                     </a>
 
                     <!-- Jacario Dedicated Customize Studio -->
                     <a href="{{ route('customize.index') }}" 
-                       class="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full text-xs xl:text-[13px] uppercase font-black tracking-wider transition-all {{ request()->routeIs('customize.*') ? 'bg-black text-[#DFCAAB] shadow-sm' : 'bg-amber-500/10 text-black hover:bg-black hover:text-[#DFCAAB] border border-amber-600/40 shadow-xs' }}">
+                       style="white-space: nowrap;"
+                       class="inline-flex items-center shrink-0 whitespace-nowrap space-x-2 px-4 py-1.5 rounded-full text-xs xl:text-[13px] uppercase font-black tracking-wider transition-all {{ request()->routeIs('customize.*') ? 'bg-black text-[#DFCAAB] shadow-sm' : 'bg-amber-500/10 text-black hover:bg-black hover:text-[#DFCAAB] border border-amber-600/40 shadow-xs' }}">
                         <span class="w-2 h-2 rounded-full bg-[#A4845B]"></span>
                         <span>Customize Studio</span>
                         <span class="text-[9px] font-black uppercase px-1.5 py-0.5 rounded bg-[#A4845B] text-white">HOT</span>
