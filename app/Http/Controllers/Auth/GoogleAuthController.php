@@ -22,6 +22,24 @@ class GoogleAuthController extends Controller
     }
 
     /**
+     * Resolve the Google OAuth redirect URL accurately for both local and production environments.
+     */
+    protected function getRedirectUrl(Request $request): string
+    {
+        $configured = config('services.google.redirect');
+        if (!empty($configured) && filter_var($configured, FILTER_VALIDATE_URL)) {
+            return $configured;
+        }
+
+        // Force HTTPS in production or behind SSL reverse proxies
+        $isSecure = $request->isSecure() || app()->isProduction() || $request->header('X-Forwarded-Proto') === 'https';
+        $scheme = $isSecure ? 'https' : $request->getScheme();
+        $host = $request->getHttpHost();
+
+        return $scheme . '://' . $host . '/auth/google/callback';
+    }
+
+    /**
      * Redirect user to Google OAuth consent screen.
      */
     public function redirectToGoogle(Request $request)
@@ -30,10 +48,8 @@ class GoogleAuthController extends Controller
             session(['oauth_redirect' => $request->input('redirect')]);
         }
 
-        $redirectUrl = $request->getSchemeAndHttpHost() . '/auth/google/callback';
-
         return Socialite::driver('google')
-            ->redirectUrl($redirectUrl)
+            ->redirectUrl($this->getRedirectUrl($request))
             ->redirect();
     }
 
@@ -43,9 +59,8 @@ class GoogleAuthController extends Controller
     public function handleGoogleCallback(Request $request)
     {
         try {
-            $redirectUrl = $request->getSchemeAndHttpHost() . '/auth/google/callback';
             $googleUser = Socialite::driver('google')
-                ->redirectUrl($redirectUrl)
+                ->redirectUrl($this->getRedirectUrl($request))
                 ->user();
         } catch (\Throwable $e) {
             Log::error('Google OAuth failed: ' . $e->getMessage());
