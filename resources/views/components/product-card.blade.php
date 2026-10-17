@@ -85,24 +85,7 @@
     <!-- Image Stage -->
     <div class="relative block aspect-[4/5] bg-zinc-100 overflow-hidden">
         
-        <!-- Badges Container -->
-        <div class="absolute top-2.5 left-2.5 z-10 flex flex-col space-y-1">
-            @if($product->has_discount)
-                <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[9px] sm:text-[10px] font-bold uppercase tracking-wider bg-[#0B0D10] text-[#DFCAAB] border border-zinc-700 shadow-xs">
-                    {{ $product->discount_percent }}% OFF
-                </span>
-            @endif
 
-            @if($product->is_bestseller)
-                <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[9px] sm:text-[10px] font-bold uppercase tracking-wider bg-[#C5A880] text-zinc-950 shadow-xs">
-                    Bestseller
-                </span>
-            @elseif($product->is_new_arrival)
-                <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[9px] sm:text-[10px] font-bold uppercase tracking-wider bg-zinc-900 text-white shadow-xs">
-                    New
-                </span>
-            @endif
-        </div>
 
         <!-- Floating Wishlist Heart Button -->
         <button type="button" 

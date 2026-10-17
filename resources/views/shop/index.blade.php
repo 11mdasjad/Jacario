@@ -719,11 +719,6 @@
                                              alt="{{ $product->name }}" 
                                              class="w-full h-full object-cover">
                                     </a>
-                                    @if($product->has_discount)
-                                        <span class="absolute top-2 left-2 px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-[#0B0D10] text-[#DFCAAB] border border-zinc-700">
-                                            {{ $product->discount_percent }}% OFF
-                                        </span>
-                                    @endif
                                 </div>
 
                                 <!-- Content Center/Right -->
