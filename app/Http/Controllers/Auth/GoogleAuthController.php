@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
 
@@ -87,30 +89,53 @@ class GoogleAuthController extends Controller
             return redirect()->route('login')->with('error', 'Unable to retrieve your email from Google. Please try again.');
         }
 
-        // Look up by google_id first, then by email
-        $user = User::where('google_id', $googleUser->getId())
-            ->orWhere('email', $googleUser->getEmail())
-            ->first();
+        // Auto-ensure google_id column exists in database if migration was not executed
+        $hasGoogleId = Schema::hasColumn('users', 'google_id');
+        if (!$hasGoogleId) {
+            try {
+                Schema::table('users', function (Blueprint $table) {
+                    $table->string('google_id')->nullable()->unique()->after('email');
+                });
+                $hasGoogleId = true;
+            } catch (\Throwable $e) {
+                Log::warning('Could not auto-create google_id column on users table: ' . $e->getMessage());
+            }
+        }
+
+        // Look up user: by google_id if column exists, and by email
+        $user = null;
+        if ($hasGoogleId) {
+            $user = User::where('google_id', $googleUser->getId())
+                ->orWhere('email', $googleUser->getEmail())
+                ->first();
+        } else {
+            $user = User::where('email', $googleUser->getEmail())->first();
+        }
 
         if ($user) {
-            // Update google_id, avatar, and verify email
-            $user->update([
-                'google_id' => $googleUser->getId(),
+            $updateData = [
                 'avatar' => $user->avatar ?: $googleUser->getAvatar(),
                 'email_verified_at' => $user->email_verified_at ?: now(),
-            ]);
+            ];
+            if ($hasGoogleId) {
+                $updateData['google_id'] = $googleUser->getId();
+            }
+            $user->update($updateData);
         } else {
             // Register new customer account
-            $user = User::create([
+            $createData = [
                 'name' => $googleUser->getName() ?: 'Jacario Client',
                 'email' => $googleUser->getEmail(),
-                'google_id' => $googleUser->getId(),
                 'avatar' => $googleUser->getAvatar(),
                 'role' => 'customer',
                 'is_active' => true,
                 'password' => Hash::make(Str::random(32)),
                 'email_verified_at' => now(),
-            ]);
+            ];
+            if ($hasGoogleId) {
+                $createData['google_id'] = $googleUser->getId();
+            }
+            $user = User::create($createData);
         }
 
         if (!$user->is_active) {
