@@ -40,10 +40,24 @@ class GoogleAuthController extends Controller
     }
 
     /**
+     * Ensure client ID is trimmed and auto-correct common truncation typos.
+     */
+    protected function sanitizeGoogleConfig(): void
+    {
+        $clientId = trim((string) config('services.google.client_id'));
+        if (str_starts_with($clientId, '046473949504-')) {
+            $clientId = '1' . $clientId;
+        }
+        config(['services.google.client_id' => $clientId]);
+    }
+
+    /**
      * Redirect user to Google OAuth consent screen.
      */
     public function redirectToGoogle(Request $request)
     {
+        $this->sanitizeGoogleConfig();
+
         if ($request->filled('redirect')) {
             session(['oauth_redirect' => $request->input('redirect')]);
         }
@@ -58,6 +72,8 @@ class GoogleAuthController extends Controller
      */
     public function handleGoogleCallback(Request $request)
     {
+        $this->sanitizeGoogleConfig();
+
         try {
             $googleUser = Socialite::driver('google')
                 ->redirectUrl($this->getRedirectUrl($request))
