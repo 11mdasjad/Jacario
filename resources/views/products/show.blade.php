@@ -255,7 +255,7 @@
                     </div>
                     <span class="text-zinc-300">|</span>
                     <a href="#product-tabs-section" @click.prevent="activeProductTab = 'reviews'; document.getElementById('product-tabs-section').scrollIntoView({ behavior: 'smooth' })" class="text-xs font-semibold text-zinc-600 hover:text-black">
-                        {{ $product->reviews_count }} Ratings & Reviews
+                        {{ $product->daily_views_count }} Ratings & Reviews
                     </a>
                 </div>
 

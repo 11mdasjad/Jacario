@@ -235,36 +235,31 @@
          ======================================================== -->
     <div class="hidden lg:block bg-[#FAF8F5] border-t border-zinc-200/80">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-center h-12">
+            <div class="flex items-center justify-center h-13 sm:h-14">
                 
                 <!-- Primary Navigation Links (Centered) -->
-                <nav class="flex items-center space-x-8 xl:space-x-10 2xl:space-x-12">
-                    <a href="{{ route('home') }}" 
-                       class="text-xs uppercase font-bold tracking-[0.16em] transition-all py-2 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 hover:after:w-full after:h-0.5 after:bg-[#A4845B] after:transition-all after:duration-200 {{ request()->routeIs('home') ? 'text-[#8C6D46] after:w-full' : 'text-zinc-800 hover:text-black' }}">
-                        Home
-                    </a>
-
+                <nav class="flex items-center space-x-9 xl:space-x-12 2xl:space-x-14">
                     <a href="{{ route('shop.index', ['category' => 'mens-polo-t-shirts']) }}" 
-                       class="text-xs uppercase font-bold tracking-[0.16em] transition-all py-2 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 hover:after:w-full after:h-0.5 after:bg-[#A4845B] after:transition-all after:duration-200 {{ request('category') === 'mens-polo-t-shirts' ? 'text-[#8C6D46] after:w-full' : 'text-zinc-800 hover:text-black' }}">
+                       class="text-[13px] xl:text-sm uppercase font-extrabold tracking-[0.14em] text-black hover:text-[#8C6D46] transition-all py-2 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 hover:after:w-full after:h-0.5 after:bg-[#A4845B] after:transition-all after:duration-200 {{ request('category') === 'mens-polo-t-shirts' ? 'font-black after:w-full text-[#8C6D46]' : '' }}">
                         Men's Polo
                     </a>
 
                     <a href="{{ route('shop.index', ['category' => 'round-neck-t-shirts']) }}" 
-                       class="text-xs uppercase font-bold tracking-[0.16em] transition-all py-2 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 hover:after:w-full after:h-0.5 after:bg-[#A4845B] after:transition-all after:duration-200 {{ request('category') === 'round-neck-t-shirts' ? 'text-[#8C6D46] after:w-full' : 'text-zinc-800 hover:text-black' }}">
+                       class="text-[13px] xl:text-sm uppercase font-extrabold tracking-[0.14em] text-black hover:text-[#8C6D46] transition-all py-2 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 hover:after:w-full after:h-0.5 after:bg-[#A4845B] after:transition-all after:duration-200 {{ request('category') === 'round-neck-t-shirts' ? 'font-black after:w-full text-[#8C6D46]' : '' }}">
                         Round Neck
                     </a>
 
                     <a href="{{ route('shop.index', ['category' => 'new-arrival-t-shirts']) }}" 
-                       class="text-xs uppercase font-bold tracking-[0.16em] transition-all py-2 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 hover:after:w-full after:h-0.5 after:bg-[#A4845B] after:transition-all after:duration-200 {{ request('category') === 'new-arrival-t-shirts' || request('collection') === 'new-arrivals' ? 'text-[#8C6D46] after:w-full' : 'text-zinc-800 hover:text-black' }}">
+                       class="text-[13px] xl:text-sm uppercase font-extrabold tracking-[0.14em] text-black hover:text-[#8C6D46] transition-all py-2 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 hover:after:w-full after:h-0.5 after:bg-[#A4845B] after:transition-all after:duration-200 {{ request('category') === 'new-arrival-t-shirts' || request('collection') === 'new-arrivals' ? 'font-black after:w-full text-[#8C6D46]' : '' }}">
                         New Arrivals
                     </a>
 
                     <!-- Jacario Dedicated Customize Studio -->
                     <a href="{{ route('customize.index') }}" 
-                       class="inline-flex items-center space-x-1.5 px-3.5 py-1 rounded-full text-xs uppercase font-extrabold tracking-wider transition-all {{ request()->routeIs('customize.*') ? 'bg-zinc-950 text-[#DFCAAB] shadow-xs' : 'bg-amber-500/10 text-zinc-900 hover:bg-zinc-950 hover:text-[#DFCAAB] border border-amber-600/30' }}">
-                        <span class="w-1.5 h-1.5 rounded-full bg-[#A4845B]"></span>
+                       class="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full text-xs xl:text-[13px] uppercase font-black tracking-wider transition-all {{ request()->routeIs('customize.*') ? 'bg-black text-[#DFCAAB] shadow-sm' : 'bg-amber-500/10 text-black hover:bg-black hover:text-[#DFCAAB] border border-amber-600/40 shadow-xs' }}">
+                        <span class="w-2 h-2 rounded-full bg-[#A4845B]"></span>
                         <span>Customize Studio</span>
-                        <span class="text-[8px] font-black uppercase px-1 py-0.2 rounded bg-[#A4845B] text-white">HOT</span>
+                        <span class="text-[9px] font-black uppercase px-1.5 py-0.5 rounded bg-[#A4845B] text-white">HOT</span>
                     </a>
 
                 </nav>
@@ -349,7 +344,9 @@
                 <!-- User Header Card in Drawer -->
                 <div class="bg-gradient-to-br from-zinc-950 via-zinc-900 to-zinc-950 text-white p-5">
                     <div class="flex items-center justify-between pb-3">
-                        <img src="{{ asset('images/logo-horizontal-white.png') }}" alt="JACARIO" class="h-7 sm:h-8 w-auto object-contain opacity-95">
+                        <a href="{{ route('home') }}" @click="$store.nav.closeMobile()" class="block focus:outline-none" aria-label="JACARIO Home">
+                            <img src="{{ asset('images/logo-horizontal-white.png') }}" alt="JACARIO" class="h-7 sm:h-8 w-auto object-contain opacity-95 hover:opacity-100 transition-opacity">
+                        </a>
                         <button @click="$store.nav.closeMobile()" class="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors" aria-label="Close Menu">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                         </button>

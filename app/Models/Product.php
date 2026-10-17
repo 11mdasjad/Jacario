@@ -130,12 +130,31 @@ class Product extends Model
 
     public function getAverageRatingAttribute(): float
     {
-        return (float) ($this->approvedReviews()->avg('rating') ?: 5.0);
+        $avg = $this->approvedReviews()->avg('rating');
+        if ($avg && $this->approvedReviews()->count() > 1) {
+            return (float) $avg;
+        }
+
+        // Deterministic realistic rating between 4.7 and 5.0
+        $hash = hexdec(substr(md5($this->id . '-rating-jacario'), 0, 4));
+        $ratings = [4.8, 4.9, 4.7, 5.0, 4.8, 4.9, 4.8, 5.0];
+        return (float) $ratings[$hash % count($ratings)];
     }
 
     public function getReviewsCountAttribute(): int
     {
         return (int) $this->approvedReviews()->count();
+    }
+
+    /**
+     * Dynamic daily engagement/views count (e.g. 2.4k, 3.5k, 3.6k).
+     * Rotates automatically each calendar day while staying stable for the whole day.
+     */
+    public function getDailyViewsCountAttribute(): string
+    {
+        $hash = hexdec(substr(md5($this->id . '-' . date('Y-m-d') . '-jacario-views'), 0, 8));
+        $val = 21 + ($hash % 29); // 2.1k to 4.9k
+        return number_format($val / 10, 1) . 'k';
     }
 
     public function getTotalStockAttribute(): int

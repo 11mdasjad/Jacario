@@ -22,7 +22,7 @@
         'has_discount' => $product->has_discount,
         'discount_percent' => $product->discount_percent,
         'rating' => number_format($product->average_rating, 1),
-        'reviews_count' => $product->reviews_count,
+        'reviews_count' => $product->daily_views_count,
         'description' => $product->short_description ?: $product->fabric,
         'sizes' => $sizes->map(fn($s) => ['id' => $s->id, 'code' => $s->code, 'name' => $s->name]),
         'colors' => $colors->map(fn($c) => ['id' => $c->id, 'name' => $c->name, 'hex_code' => $c->hex_code]),
@@ -122,20 +122,12 @@
                  class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500">
         </a>
 
-        <!-- Desktop Hover Quick View Overlay Button -->
-        <button type="button" 
-                @click.prevent="openQuickView()" 
-                class="hidden md:flex absolute inset-x-3 bottom-3 py-2 bg-white/95 backdrop-blur-md text-zinc-950 text-[11px] font-bold uppercase tracking-widest rounded-xl items-center justify-center space-x-1.5 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300 shadow-md hover:bg-black hover:text-white z-10">
-            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-            <span>Quick View</span>
-        </button>
-
         <!-- Myntra-Style Floating Rating Pill on Image -->
         <div class="absolute bottom-2 left-2 z-10 inline-flex items-center space-x-1 px-1.5 py-0.5 rounded-md bg-white/90 backdrop-blur-xs border border-zinc-200/80 shadow-xs text-[10px] font-bold text-zinc-800">
             <span>{{ number_format($product->average_rating, 1) }}</span>
             <svg class="w-2.5 h-2.5 text-amber-500 fill-amber-500 inline-block" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
             <span class="text-zinc-400">|</span>
-            <span class="text-zinc-500 font-medium text-[9px]">{{ $product->reviews_count }}</span>
+            <span class="text-zinc-600 font-semibold text-[9.5px]">{{ $product->daily_views_count }}</span>
         </div>
     </div>
 
