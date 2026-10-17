@@ -117,11 +117,8 @@
     <!-- Product Info (Compact for 2-Col Mobile) -->
     <div class="p-2.5 sm:p-4 flex-1 flex flex-col justify-between space-y-2 sm:space-y-3">
         <div>
-            <!-- Brand & Category -->
-            <div class="flex items-center justify-between">
-                <p class="text-[9px] sm:text-[10px] font-bold text-zinc-900 uppercase tracking-widest">JACARIO</p>
-                <p class="text-[9px] sm:text-[10px] text-[#8C6D46] font-medium truncate max-w-[80px] sm:max-w-none">{{ $product->category->name }}</p>
-            </div>
+            <!-- Brand -->
+            <p class="text-[9px] sm:text-[10px] font-bold text-zinc-900 uppercase tracking-widest">JACARIO</p>
 
             <!-- Product Title -->
             <h3 class="text-xs sm:text-sm font-semibold text-zinc-900 group-hover:text-[#8C6D46] transition-colors line-clamp-1 mt-0.5">
