@@ -185,20 +185,7 @@
                      @mouseenter="zooming = true"
                      @mouseleave="zooming = false"
                      @mousemove="handleMouseMove($event)">
-                    
-                    <!-- Badges -->
-                    <div class="absolute top-3 left-3 sm:top-4 sm:left-4 z-10 flex flex-col space-y-1.5 pointer-events-none">
-                        @if($product->has_discount)
-                            <span class="px-2 py-0.5 sm:px-2.5 sm:py-1 rounded text-[10px] sm:text-[11px] font-bold uppercase tracking-wider bg-[#0B0D10] text-[#DFCAAB] border border-zinc-700 shadow-sm">
-                                {{ $product->discount_percent }}% OFF
-                            </span>
-                        @endif
-                        @if($product->is_bestseller)
-                            <span class="px-2 py-0.5 sm:px-2.5 sm:py-1 rounded text-[10px] sm:text-[11px] font-bold uppercase tracking-wider bg-[#C5A880] text-zinc-950 shadow-sm">
-                                Best Seller
-                            </span>
-                        @endif
-                    </div>
+
 
                     <!-- Photo Index Badge -->
                     <div class="absolute bottom-3 right-3 z-10 px-2 py-0.5 rounded-full bg-black/60 backdrop-blur-xs text-white text-[10px] font-bold pointer-events-none">

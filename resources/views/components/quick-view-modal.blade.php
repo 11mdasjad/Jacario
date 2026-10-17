@@ -117,13 +117,7 @@ style="display: none;"
                     <!-- Left: Product Image Stage -->
                     <div class="relative aspect-[4/3] sm:aspect-[4/5] bg-zinc-100 overflow-hidden">
                         <img :src="selectedImage" :alt="product.name" class="w-full h-full object-cover">
-                        
-                        <!-- Badges -->
-                        <div class="absolute top-3 left-3 flex flex-col space-y-1">
-                            <template x-if="product.has_discount">
-                                <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-[#0B0D10] text-[#DFCAAB] border border-zinc-700 shadow-xs" x-text="product.discount_percent + '% OFF'"></span>
-                            </template>
-                        </div>
+
                     </div>
 
                     <!-- Right: Product Details & Selectors -->
